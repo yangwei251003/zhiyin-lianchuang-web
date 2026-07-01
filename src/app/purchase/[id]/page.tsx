@@ -1,0 +1,102 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
+import { Container } from '@/components/layout/Container'
+import { PurchaseDetail } from '@/components/purchase/PurchaseDetail'
+import type { Database } from '@/types/database'
+
+type PurchaseRow = Database['public']['Tables']['purchases']['Row']
+type PurchaseOrderRow =
+  Database['public']['Tables']['purchase_orders']['Row']
+
+interface PurchaseDetailPageProps {
+  params: Promise<{ id: string }>
+}
+
+// 生成动态 metadata
+export async function generateMetadata({
+  params,
+}: PurchaseDetailPageProps): Promise<Metadata> {
+  const { id } = await params
+  const supabase = await createClient()
+  const { data: purchase } = await supabase
+    .from('purchases')
+    .select('title')
+    .eq('id', id)
+    .maybeSingle()
+  if (!purchase) return { title: '活动详情 · 智印联创' }
+  return {
+    title: `${purchase.title} · 集采详情 · 智印联创`,
+    description: `查看 ${purchase.title} 的集采详情并参团`,
+  }
+}
+
+// 集采活动详情页（服务端组件）
+export default async function PurchaseDetailPage({
+  params,
+}: PurchaseDetailPageProps) {
+  const { id } = await params
+  const supabase = await createClient()
+
+  // 1. 获取活动详情
+  const { data: purchase } = await supabase
+    .from('purchases')
+    .select('*')
+    .eq('id', id)
+    .maybeSingle()
+
+  if (!purchase) notFound()
+  const purchaseRow = purchase as PurchaseRow
+
+  // 2. 检查当前用户是否已参团（不强制登录）
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+  let myOrder: PurchaseOrderRow | null = null
+  if (session) {
+    const { data: orderData } = await supabase
+      .from('purchase_orders')
+      .select('*')
+      .eq('purchase_id', id)
+      .eq('user_id', session.user.id)
+      .maybeSingle()
+    myOrder = (orderData as PurchaseOrderRow | null) ?? null
+  }
+
+  // 3. 获取参团人次（purchase_orders 总数）
+  const { count: orderCount } = await supabase
+    .from('purchase_orders')
+    .select('id', { count: 'exact', head: true })
+    .eq('purchase_id', id)
+
+  return (
+    <main className="pb-12">
+      {/* ===== 面包屑 ===== */}
+      <Container className="pt-6">
+        <nav
+          className="flex items-center gap-1.5 text-xs text-ink-tertiary"
+          aria-label="面包屑"
+        >
+          <Link href="/" className="hover:text-primary">
+            首页
+          </Link>
+          <span>/</span>
+          <Link href="/purchase" className="hover:text-primary">
+            集采商城
+          </Link>
+          <span>/</span>
+          <span className="text-ink-secondary">活动详情</span>
+        </nav>
+      </Container>
+
+      <Container size="lg" className="mt-4">
+        <PurchaseDetail
+          purchase={purchaseRow}
+          myOrder={myOrder}
+          orderCount={orderCount ?? 0}
+        />
+      </Container>
+    </main>
+  )
+}

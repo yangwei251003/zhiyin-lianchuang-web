@@ -1,15 +1,19 @@
 @import "tailwindcss";
 
+/* 加载 tailwind.config.ts 主题映射（Tailwind v4 兼容 v3 配置） */
+@config "../../tailwind.config.ts";
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1e293b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter), var(--font-noto-sc), -apple-system,
+    "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +24,58 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* 对齐 miniprogram/app.wxss 页面渐变背景 */
+  background: linear-gradient(
+    180deg,
+    #e8f1fb 0%,
+    #f0f6fd 30%,
+    #f5f9fe 60%,
+    #f1f5f9 100%
+  );
+  background-attachment: fixed;
+  color: var(--color-ink-primary, #1e293b);
+  font-family: var(--font-inter), var(--font-noto-sc), -apple-system,
+    "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* 创业孵化文章详情排版样式 */
+.article-content h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid #2a6cdb;
+  padding-left: 0.75rem;
+  line-height: 1.4;
+}
+.article-content h3:first-child {
+  margin-top: 0;
+}
+.article-content p {
+  margin-bottom: 1.25rem;
+  line-height: 1.8;
+  color: #334155;
+  font-size: 1rem;
+}
+.article-content strong {
+  color: #0f172a;
+  font-weight: 700;
+}
+.article-content ul, .article-content ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.25rem;
+}
+.article-content ul {
+  list-style-type: disc;
+}
+.article-content ol {
+  list-style-type: decimal;
+}
+.article-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+  color: #334155;
+}
+
