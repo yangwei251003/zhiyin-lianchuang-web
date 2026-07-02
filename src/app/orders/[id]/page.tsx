@@ -50,6 +50,10 @@ interface OrderDetailPageProps {
   params: Promise<{ id: string }>
 }
 
+export async function generateStaticParams() {
+  return [{ id: '1' }]
+}
+
 // 生成动态 metadata
 export async function generateMetadata({
   params,

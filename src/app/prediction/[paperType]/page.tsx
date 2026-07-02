@@ -26,7 +26,6 @@ const FORECAST_OPTIONS = [7, 14, 30] as const
 
 interface PredictionPageProps {
   params: Promise<{ paperType: string }>
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 // 解析 days 查询参数，非法值回退为 7
@@ -36,6 +35,10 @@ function resolveDays(raw: string | string[] | undefined): number {
   return (FORECAST_OPTIONS as readonly number[]).includes(parsed)
     ? parsed
     : 7
+}
+
+export async function generateStaticParams() {
+  return PAPER_TYPES.map((paperType) => ({ paperType }))
 }
 
 export async function generateMetadata({
@@ -52,14 +55,12 @@ export async function generateMetadata({
 
 export default async function PredictionPage({
   params,
-  searchParams,
 }: PredictionPageProps) {
   const { paperType: rawPaperType } = await params
   const paperType = decodeURIComponent(rawPaperType)
   if (!PAPER_TYPES.includes(paperType)) notFound()
 
-  const sp = await searchParams
-  const days = resolveDays(sp.days)
+  const days = 7
 
   const supabase = await createClient()
 

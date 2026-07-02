@@ -14,31 +14,21 @@ export const metadata: Metadata = {
 
 const PAGE_SIZE = 10
 
-interface MessagesPageProps {
-  searchParams: Promise<{ [key: string]: string | undefined }>
-}
-
 // 消息中心页（服务端组件）
-// 服务端按 type / unread / page 查询当前用户的消息，交给客户端组件交互
-export default async function MessagesPage({
-  searchParams,
-}: MessagesPageProps) {
-  const params = await searchParams
+// 静态导出时不支持 searchParams，使用默认参数，客户端组件处理筛选
+export default async function MessagesPage() {
   const session = await requireAuth()
   const supabase = await createClient()
 
-  const type = params.type || 'all'
-  const unreadOnly = params.unread === 'true'
-  const page = Math.max(1, Number(params.page) || 1)
+  const type = 'all'
+  const unreadOnly = false
+  const page = 1
 
   // 主查询：消息列表 + 总数
   let messagesQuery = supabase
     .from('messages')
     .select('*', { count: 'exact' })
     .eq('user_id', session.user.id)
-
-  if (type !== 'all') messagesQuery = messagesQuery.eq('type', type)
-  if (unreadOnly) messagesQuery = messagesQuery.eq('is_read', false)
 
   const { data, count } = await messagesQuery
     .order('created_at', { ascending: false })
