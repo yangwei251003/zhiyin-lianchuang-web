@@ -45,3 +45,8 @@ next-env.d.ts
 
 .vercel
 .env*
+# CloudBase CLI temp files
+cloudbase-cli*
+cloudbase-mcp*
+node-v20.zip
+npm-install.js

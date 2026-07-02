@@ -15,8 +15,6 @@ interface LoginPageProps {
   searchParams: Promise<{ [key: string]: string | undefined }>
 }
 
-// 登录页（服务端组件）
-// 已登录用户直接重定向到首页或 from 指定的页面
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const params = await searchParams
   const from = params.from

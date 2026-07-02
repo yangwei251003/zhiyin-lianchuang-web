@@ -11,8 +11,6 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'
 
-// 注册页（服务端组件）
-// 已登录用户直接重定向到首页
 export default async function RegisterPage() {
   const supabase = await createClient()
   const {
