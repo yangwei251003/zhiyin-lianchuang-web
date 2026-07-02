@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description: '登录智印联创账户，开启印刷行业 AI 智能撮合之旅。',
 }
 
+export const dynamic = 'force-dynamic'
+
 interface LoginPageProps {
   searchParams: Promise<{ [key: string]: string | undefined }>
 }

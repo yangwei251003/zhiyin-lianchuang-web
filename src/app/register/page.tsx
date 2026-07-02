@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description: '创建智印联创账户，加入印刷行业 AI 智能撮合平台。',
 }
 
+export const dynamic = 'force-dynamic'
+
 // 注册页（服务端组件）
 // 已登录用户直接重定向到首页
 export default async function RegisterPage() {
