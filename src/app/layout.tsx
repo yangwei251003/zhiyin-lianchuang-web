@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Inter, Noto_Sans_SC } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/components/providers/AuthProvider'
 import { ToastProvider } from '@/components/providers/ToastProvider'
@@ -8,22 +7,26 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { BottomNav } from '@/components/layout/BottomNav'
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
-
-const notoSansSC = Noto_Sans_SC({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-noto-sc',
-  display: 'swap',
-})
-
 export const metadata: Metadata = {
-  title: '智印联创',
-  description: '智印联创 - 印刷行业 AI 智能撮合与纸价预测平台',
+  title: {
+    default: '智印联创 · 印刷产业 AI 协同平台',
+    template: '%s · 智印联创',
+  },
+  description: '智印联创 — 印刷行业领先的 AI 智能撮合与纸价预测平台。汇聚订单撮合、集中采购、创业孵化、AI纸价预测四大核心能力，连接印刷产业上下游，驱动数字化转型与智能制造升级。',
+  keywords: ['印刷平台', 'AI印刷', '智印联创', '纸价预测', '印刷订单', '集采商城', '印刷供应链', '数字印刷', '智能制造'],
+  authors: [{ name: '智印联创' }],
+  creator: '智印联创',
+  openGraph: {
+    type: 'website',
+    locale: 'zh_CN',
+    title: '智印联创 · 印刷产业 AI 协同平台',
+    description: '印刷行业领先的AI智能撮合与纸价预测平台，连接印刷产业上下游',
+    siteName: '智印联创',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({
@@ -34,7 +37,8 @@ export default function RootLayout({
   return (
     <html
       lang="zh-CN"
-      className={`${inter.variable} ${notoSansSC.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className="h-full antialiased"
     >
       <body className="flex min-h-full flex-col">
         <AuthProvider>

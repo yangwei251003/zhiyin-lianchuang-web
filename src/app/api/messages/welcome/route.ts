@@ -3,6 +3,9 @@ import { createClient } from '@supabase/supabase-js'
 import { sendMessage, welcomeMessage } from '@/lib/messages'
 import type { Database } from '@/types/database'
 
+export const dynamic = 'force-static'
+export const runtime = 'nodejs'
+
 // POST /api/messages/welcome
 // 注册成功后，客户端调用此接口向新用户发送欢迎消息
 // 使用 service_role key 绕过 RLS（新用户还未有会话时）

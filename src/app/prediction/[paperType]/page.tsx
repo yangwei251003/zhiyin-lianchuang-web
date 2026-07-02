@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ShieldAlert, TrendingDown, Cpu, Sparkles, Mail } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
 import { PriceChart } from '@/components/charts/PriceChart'
@@ -99,7 +99,7 @@ export default async function PredictionPage({
   const trend = deriveTrend(changeRate)
   const updatedAt = latest?.date ?? ''
 
-  // 其他纸种最新价格（去重保留每个纸种最新一条）
+  // 其他纸种最新价格
   const { data: othersRaw } = await supabase
     .from('price_predictions')
     .select('paper_type, price, change_rate, date')
@@ -125,35 +125,9 @@ export default async function PredictionPage({
   const isDown = changeRate < 0
 
   return (
-    <main className="pb-10">
-      {/* ===== Hero：蓝紫渐变 + 面包屑与标题 ===== */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            'linear-gradient(135deg, #2A6CDB 0%, #5B5CD9 55%, #8B5CF6 100%)',
-        }}
-      >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%)',
-          }}
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-16 -left-10 h-52 w-52 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)',
-          }}
-        />
-        <Container className="relative py-10 sm:py-14">
-          <PredictionHeader paperType={paperType} />
-        </Container>
-      </section>
+    <main className="pb-16 bg-slate-50 min-h-screen">
+      {/* ===== 页头 ===== */}
+      <PredictionHeader paperType={paperType} />
 
       {/* ===== 浮层控制条：纸种切换 + 预测天数 ===== */}
       <Container className="relative z-10 -mt-6">
@@ -200,7 +174,7 @@ export default async function PredictionPage({
               <PriceChart
                 data={chartData}
                 paperType={paperType}
-                height={440}
+                height={400}
               />
             ) : (
               <div className="flex h-64 flex-col items-center justify-center gap-2 text-sm text-ink-tertiary">
@@ -209,6 +183,54 @@ export default async function PredictionPage({
               </div>
             )}
           </div>
+        </section>
+
+        {/* ===== 新增：智印大脑采购避险决策与预警 ===== */}
+        <section className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          
+          {/* 预警面板 */}
+          <div className="md:col-span-2 rounded-xl border border-orange-200 bg-orange-50/50 p-5 shadow-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <ShieldAlert className="h-5 w-5 text-orange-600" />
+              <h3 className="text-sm font-bold text-orange-900">“智印大脑”避险采购备货预警</h3>
+              <span className="ml-auto rounded-full bg-orange-100 px-2 py-0.5 text-3xs font-semibold text-orange-800">波动指数: 中偏高</span>
+            </div>
+            <p className="text-xs leading-relaxed text-orange-800">
+              根据 <strong>Prophet+Transformer</strong> 预测模型，由于受木浆与漂针浆进口海运成本上涨影响，{paperType}价格在未来两周面临 <strong>2.3% ~ 3.5%</strong> 的高频推涨可能。
+            </p>
+            <div className="mt-4 flex items-start gap-2 rounded-lg bg-white p-3 border border-orange-100">
+              <TrendingDown className="h-4.5 w-4.5 text-green-600 shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-xs font-bold text-slate-800">避险策略指导建议</h4>
+                <p className="text-3xs text-slate-500 mt-0.5 leading-normal">
+                  建议月均使用量超过 15 吨的包装印刷/商业画册成员企业，于<strong>本周内锁定 75%</strong> 的下月用纸合同，或利用平台集采通道完成联合锁价，以规避价格阶梯上涨带来的溢价风险。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 订阅快报 */}
+          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-1.5 mb-2.5">
+                <Cpu className="h-4.5 w-4.5 text-purple-600" />
+                <h3 className="text-sm font-bold text-slate-800">订阅波动预警</h3>
+              </div>
+              <p className="text-3xs leading-relaxed text-slate-500">
+                加入“智印大脑”短信/邮件预警推送。一旦纸张现货价单日波动突破 1.5% 警戒线，系统将在 10 分钟内完成模型计算并推送最新决策。
+              </p>
+            </div>
+            <div className="mt-4">
+              <div className="flex items-center gap-1.5 rounded-lg border border-slate-200 px-2.5 py-1.5 bg-slate-50">
+                <Mail className="h-4 w-4 text-slate-400" />
+                <span className="text-2xs text-slate-400">输入接收预警的邮箱</span>
+              </div>
+              <button className="w-full mt-2 rounded-lg bg-primary py-2 text-2xs font-bold text-white transition-opacity hover:opacity-90">
+                开启 AI 订阅推送
+              </button>
+            </div>
+          </div>
+
         </section>
 
         {/* ===== AI 智能解读 ===== */}

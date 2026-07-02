@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { useUIStore } from '@/store/ui-store'
 import { cn } from '@/lib/utils'
+import { motion } from 'framer-motion'
 
 interface BottomNavItem {
   label: string
@@ -25,7 +26,6 @@ const items: BottomNavItem[] = [
   { label: '我的', href: '/mine', icon: UserIcon },
 ]
 
-// 移动端底部导航：四个一级入口，对齐小程序 tabBar
 export function BottomNav() {
   const pathname = usePathname()
   const unread = useUIStore((s) => s.unreadCount)
@@ -35,7 +35,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 flex h-14 items-stretch border-t border-line bg-white/95 backdrop-blur md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-40 flex h-14 items-stretch border-t border-white/20 bg-white/75 backdrop-blur-xl shadow-glass md:hidden"
       aria-label="底部导航"
     >
       {items.map(({ label, href, icon: Icon }) => {
@@ -46,22 +46,39 @@ export function BottomNav() {
             href={href}
             aria-current={active ? 'page' : undefined}
             className={cn(
-              'relative flex flex-1 flex-col items-center justify-center gap-0.5 text-2xs transition-colors',
-              active ? 'text-primary' : 'text-ink-tertiary',
+              'relative flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] transition-all duration-fast select-none',
+              active ? 'text-primary font-medium' : 'text-ink-tertiary hover:text-ink-secondary',
             )}
           >
-            <span className="relative">
-              <Icon className="h-5 w-5" />
-              {href === '/messages' && unread > 0 && (
-                <span className="absolute -right-1.5 -top-1 inline-flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-danger px-1 text-2xs font-medium text-white">
-                  {unread > 99 ? '99+' : unread}
-                </span>
-              )}
+            <span className="relative flex flex-col items-center justify-center">
+              {/* 微交互缩放动画 */}
+              <motion.div
+                animate={active ? { scale: 1.15, y: -1 } : { scale: 1, y: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="relative"
+              >
+                <Icon className="h-5 w-5" />
+                {href === '/messages' && unread > 0 && (
+                  <span className="absolute -right-1.5 -top-1 inline-flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-danger px-1 text-2xs font-bold text-white shadow-sm">
+                    {unread > 99 ? '99+' : unread}
+                  </span>
+                )}
+              </motion.div>
             </span>
-            <span>{label}</span>
+            <span className="mt-0.5">{label}</span>
+
+            {/* Active指示点 */}
+            {active && (
+              <motion.span
+                layoutId="bottom-active-dot"
+                className="absolute bottom-1.5 h-1 w-1 rounded-full bg-primary"
+                transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+              />
+            )}
           </Link>
         )
       })}
     </nav>
   )
 }
+

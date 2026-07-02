@@ -1,23 +1,33 @@
 import { cn } from '@/lib/utils'
 
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg'
+export type CardVariant = 'default' | 'glass' | 'dark' | 'elevated'
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   hover?: boolean
   padding?: CardPadding
+  variant?: CardVariant
 }
 
 const paddingStyles: Record<CardPadding, string> = {
   none: '',
   sm: 'p-3',
-  md: 'p-4',
-  lg: 'p-6',
+  md: 'p-4 sm:p-5',
+  lg: 'p-6 sm:p-8',
+}
+
+const variantStyles: Record<CardVariant, string> = {
+  default: 'bg-white border border-line shadow-sm',
+  glass: 'glass-card border border-white/10 shadow-glass',
+  dark: 'bg-gradient-to-br from-industrial-surface1 to-industrial-surface2 border border-industrial-border text-white shadow-industrial',
+  elevated: 'bg-white border border-line/80 shadow-md hover:shadow-xl',
 }
 
 // 卡片容器：圆角、阴影、边框，可选 hover 浮起效果
 export function Card({
   hover = false,
   padding = 'md',
+  variant = 'default',
   className,
   children,
   ...props
@@ -25,9 +35,10 @@ export function Card({
   return (
     <div
       className={cn(
-        'bg-canvas-card rounded-lg border border-line shadow-sm transition-all duration-base ease-out-expo',
+        'rounded-2xl transition-all duration-base ease-out-expo',
+        variantStyles[variant],
         hover &&
-          'cursor-pointer hover:-translate-y-0.5 hover:shadow-lg',
+          'cursor-pointer hover:-translate-y-1 hover:shadow-lg',
         paddingStyles[padding],
         className,
       )}
@@ -37,3 +48,4 @@ export function Card({
     </div>
   )
 }
+

@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
+import { PageHeader } from '@/components/layout/PageHeader'
 import { cn } from '@/lib/utils'
 import type { Database } from '@/types/database'
 
@@ -126,49 +127,15 @@ export default async function StartupHomePage() {
 
   return (
     <main className="pb-12">
-      {/* ===== Hero 区 ===== */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            'linear-gradient(135deg, #F08035 0%, #E26B2C 45%, #7C3AED 100%)',
-        }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%)',
-          }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)',
-          }}
-        />
-        <Container className="relative py-12 sm:py-16">
-          <nav
-            className="mb-3 text-xs text-white/70"
-            aria-label="面包屑"
-          >
-            <Link href="/" className="hover:text-white">
-              首页
-            </Link>
-            <span className="mx-1.5">/</span>
-            <span className="text-white">创业孵化</span>
-          </nav>
-          <h1 className="text-3xl font-bold text-white sm:text-4xl">
-            创业孵化
-          </h1>
-          <p className="mt-3 max-w-2xl text-sm text-white/85 sm:text-base">
-            印刷行业创业者的成长加速器 —— 知识库、导师咨询、成功案例、投资测算，助你从 0 到 1 跑通印刷生意
-          </p>
-        </Container>
-      </section>
+      <PageHeader
+        title="创业孵化"
+        subtitle="Startup Incubator · Growth Accelerator"
+        desc="印刷行业创业者的成长加速器 —— 知识库、导师咨询、成功案例、投资测算，助你从 0 到 1 跑通印刷生意"
+        theme="orange"
+        badge="创业加速通道"
+        icon={<Lightbulb className="h-3.5 w-3.5" />}
+        breadcrumbs={[{ label: '首页', href: '/' }, { label: '创业孵化' }]}
+      />
 
       {/* ===== 四大模块入口 ===== */}
       <Container className="mt-8">

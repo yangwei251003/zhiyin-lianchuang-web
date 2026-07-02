@@ -2,6 +2,9 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { zhipuChatCompletion, type ZhipuMessage } from '@/lib/ai/zhipu'
 import { getArticleSummaryFallback } from '@/lib/ai/fallback'
 
+export const dynamic = 'force-static'
+export const runtime = 'nodejs'
+
 // 文章摘要 API
 // 适配前端 AIArticleSummary 组件实际发送的字段（article_id, title, content）
 // 返回 { summary, fallback }

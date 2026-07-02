@@ -38,12 +38,10 @@ export function PurchaseCountdown({
   className,
 }: PurchaseCountdownProps) {
   const endMs = new Date(endTime).getTime()
-  const [remaining, setRemaining] = useState<Remaining>(() =>
-    Number.isNaN(endMs) ? ZERO : getRemaining(endMs),
-  )
-  const [expired, setExpired] = useState<boolean>(
-    () => Number.isNaN(endMs) || endMs - Date.now() <= 0,
-  )
+  // 服务端与客户端均从 ZERO 开始，避免 Hydration mismatch
+  const [remaining, setRemaining] = useState<Remaining>(ZERO)
+  const [expired, setExpired] = useState<boolean>(false)
+  const [mounted, setMounted] = useState(false) // 客户端 mount 标志
   const onEndRef = useRef(onEnd)
   const endedRef = useRef(false)
 
@@ -52,6 +50,9 @@ export function PurchaseCountdown({
   }, [onEnd])
 
   useEffect(() => {
+    // 仅在客户端（mount后）运行，彻底避免 Hydration mismatch
+    setMounted(true)
+
     if (Number.isNaN(endMs)) {
       setExpired(true)
       return
@@ -115,6 +116,24 @@ export function PurchaseCountdown({
     { value: remaining.minutes, label: '分' },
     { value: remaining.seconds, label: '秒' },
   ]
+
+  // 挂载前显示骨架，避免 00:00:00 初始闪烁
+  if (!mounted) {
+    return (
+      <div className={cn('inline-flex items-end gap-1.5', className)} role="timer">
+        <span className="mr-1 text-xs text-ink-tertiary">剩余</span>
+        {['天', '时', '分', '秒'].map((label, idx) => (
+          <div key={label} className="flex items-end gap-1.5">
+            <div className="flex min-w-[2.25rem] flex-col items-center rounded-md bg-canvas px-1.5 py-1">
+              <span className="text-lg font-bold tabular-nums leading-none text-primary">--</span>
+              <span className="mt-0.5 text-2xs text-ink-tertiary">{label}</span>
+            </div>
+            {idx < 3 && <span className="pb-1 text-sm font-bold text-primary">:</span>}
+          </div>
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div

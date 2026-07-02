@@ -3,6 +3,9 @@ import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/database'
 import { fetchPulpFuturesData, PAPER_PRICE_BASE } from '@/lib/price-data'
 
+export const dynamic = 'force-static'
+export const runtime = 'nodejs'
+
 type PricePredictionInsert =
   Database['public']['Tables']['price_predictions']['Insert']
 

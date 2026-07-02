@@ -13,6 +13,7 @@ import {
 import { Container } from '@/components/layout/Container'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import { PageHeader } from '@/components/layout/PageHeader'
 
 export const metadata: Metadata = {
   title: '技术培训 · 智印学堂 · 智印联创',
@@ -67,46 +68,15 @@ const TECHNICAL_INFO = [
 export default function TrainingPage() {
   return (
     <main className="pb-16">
-      {/* ===== Hero 头部：紫色渐变设计 ===== */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            'linear-gradient(135deg, #7C3AED 0%, #6366F1 50%, #4F46E5 100%)',
-        }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%)',
-          }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-16 -left-12 h-52 w-52 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)',
-          }}
-        />
-        <Container className="relative py-12 sm:py-16">
-          <div className="flex items-center gap-3">
-            <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm">
-              <GraduationCap className="h-6 w-6 text-white" />
-            </span>
-            <div>
-              <h1 className="text-2xl font-bold text-white sm:text-3xl">
-                智印学堂 · 技术培训中心
-              </h1>
-              <p className="mt-1.5 text-sm text-white/80">
-                掌握一流印刷技术，规范企业安全生产，赋能从业者全面成长
-              </p>
-            </div>
-          </div>
-        </Container>
-      </section>
+      <PageHeader
+        title="智印学堂 · 技术培训中心"
+        subtitle="Training Center · Skills Empowerment"
+        desc="掌握一流印刷技术，规范企业安全生产，提供设备操作演示与行业权威规范，赋能从业者全面成长"
+        theme="purple"
+        badge="技术规范与安全"
+        icon={<GraduationCap className="h-3.5 w-3.5" />}
+        breadcrumbs={[{ label: '首页', href: '/' }, { label: '技术培训' }]}
+      />
 
       {/* ===== 内容区 ===== */}
       <Container className="mt-8">

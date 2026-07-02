@@ -65,21 +65,27 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true })
         try {
           const supabase = createClient()
-          const { error } = await supabase.auth.signUp({
+          const { data, error } = await supabase.auth.signUp({
             email,
             password,
             options: {
               data: { nickname: nickname || email.split('@')[0] },
-              // 让 Supabase 发送 OTP 邮件而不是魔法链接
-              emailRedirectTo: undefined,
             },
           })
           if (error) {
             set({ isLoading: false })
             return { error: error.message }
           }
-          // 注册成功：保存邮箱等待 OTP 验证，不立即登录
-          set({ isLoading: false, pendingEmail: email })
+          if (data.user) {
+            await get().setSession(data.user)
+            // 发送欢迎消息（非阻塞）
+            void fetch('/api/messages/welcome', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ userId: data.user.id }),
+            }).catch(() => null)
+          }
+          set({ isLoading: false, pendingEmail: null })
           return { error: null }
         } catch (e) {
           set({ isLoading: false })

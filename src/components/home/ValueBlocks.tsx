@@ -1,12 +1,11 @@
 'use client'
 
-import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
-  ChevronDown,
   Coins,
   HeartHandshake,
   Leaf,
+  CheckCircle2,
   type LucideIcon,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -19,7 +18,6 @@ interface ValueBlock {
   title: string
   headline: string
   points: string[]
-  /** 主题色 */
   theme: 'primary' | 'environment' | 'society'
 }
 
@@ -28,11 +26,11 @@ const VALUE_BLOCKS: ValueBlock[] = [
     key: 'economy',
     icon: Coins,
     title: '经济价值',
-    headline: '帮助联盟成员降低 8-15% 成本',
+    headline: '降低采购成本与撮合效率升级',
     points: [
-      '降低采购成本，集中采购与智能议价',
-      '提升撮合效率，AI 智能匹配订单与产能',
-      'AI 价格预测，把握纸价走势降低库存风险',
+      '降低采购成本：集中采购与智能议价',
+      '提升撮合效率：AI 智能匹配订单与产能',
+      '价格走势预判：把握纸价降低库存风险',
     ],
     theme: 'primary',
   },
@@ -40,11 +38,11 @@ const VALUE_BLOCKS: ValueBlock[] = [
     key: 'environment',
     icon: Leaf,
     title: '环境价值',
-    headline: '助力国家「双碳」目标实现',
+    headline: '助力国家绿色低碳「双碳」目标',
     points: [
-      '优先推荐绿色印刷认证供应商',
-      '智能排产与订单优化，减少能源浪费',
-      '构建可持续印刷供应链体系',
+      '绿色资质筛选：优先推荐环保认证供应商',
+      '智能低碳排产：优化产能分配减少能源浪费',
+      '绿色可持续：构建低碳环保的印刷供应链',
     ],
     theme: 'environment',
   },
@@ -52,129 +50,94 @@ const VALUE_BLOCKS: ValueBlock[] = [
     key: 'society',
     icon: HeartHandshake,
     title: '社会价值',
-    headline: '降低行业门槛，带动产业升级',
+    headline: '降低行业壁垒，带动产业升级',
     points: [
-      '技术培训与创业指导，降低入门门槛',
-      '订单分发，帮助闲置产能找到出口',
-      '带动就业，赋能印刷行业从业者',
+      '技术赋能：提供课程培训与创业指导',
+      '闲置产能流转：帮助中小微印企开拓订单',
+      '促进行业健康：促成上下游共赢新生态',
     ],
     theme: 'society',
   },
 ]
 
 export function ValueBlocks() {
-  const [isHovered, setIsHovered] = useState(false)
-  const [isExpanded, setIsExpanded] = useState(false)
-  const isOpen = isHovered || isExpanded
-
   return (
-    <section className="py-12 sm:py-16">
-      <div
-        className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onClick={() => setIsExpanded((prev) => !prev)}
-      >
-        <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold text-ink-primary sm:text-3xl">
-            我们的价值
+    <section className="relative py-16 sm:py-20 bg-canvas/40">
+      <div className="grid-bg-light absolute inset-0 opacity-40 pointer-events-none" />
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* 标题 */}
+        <div className="mb-12 text-center">
+          <div className="mb-5 inline-flex items-center gap-3">
+            <div className="h-px w-10 bg-primary/30" />
+            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+              Our Vision & Mission
+            </span>
+            <div className="h-px w-10 bg-primary/30" />
+          </div>
+          <h2 className="text-3xl font-bold tracking-tight text-ink-primary sm:text-4xl">
+            平台核心价值
           </h2>
-          <p className="mt-2 text-sm text-ink-secondary sm:text-base">
-            经济 · 环境 · 社会 三位一体
+          <p className="mx-auto mt-3 max-w-xl text-base text-ink-secondary">
+            经济 · 环境 · 社会 三位一体，驱动印刷产业的可持续发展
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
-          {VALUE_BLOCKS.map((block) => {
+        {/* 价值卡片展示（直接展开） */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {VALUE_BLOCKS.map((block, idx) => {
             const Icon = block.icon
+            const cfg = THEME_CFG[block.theme]
             return (
-              <div
+              <motion.div
                 key={block.key}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.19, 1, 0.22, 1] }}
                 className={cn(
-                  'overflow-hidden rounded-xl border bg-white shadow-sm transition-all duration-base ease-out-expo',
-                  'cursor-pointer hover:-translate-y-1 hover:shadow-lg',
-                  THEME_BORDER[block.theme],
+                  'relative overflow-hidden rounded-2xl border bg-white p-6 shadow-sm transition-all duration-base hover:-translate-y-1 hover:shadow-lg',
+                  cfg.border
                 )}
-                role="button"
-                tabIndex={0}
-                aria-expanded={isOpen}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    setIsExpanded((prev) => !prev)
-                  }
-                }}
               >
-                {/* 主题色背景块 */}
-                <div
-                  className={cn(
-                    'relative p-4 sm:p-5',
-                    THEME_TINT[block.theme],
-                  )}
-                >
-                  {/* Chevron indicator in top right */}
-                  <div className="absolute right-4 top-4 text-ink-tertiary">
-                    <motion.span
-                      animate={{ rotate: isOpen ? 180 : 0 }}
-                      transition={{ duration: 0.25, ease: 'easeOut' }}
-                      className="inline-flex"
-                    >
-                      <ChevronDown className="h-4 w-4" />
-                    </motion.span>
-                  </div>
+                {/* 顶部色条 */}
+                <div className="absolute left-0 top-0 h-1.5 w-full" style={{ background: cfg.primaryColor }} />
 
+                {/* 卡片头部 */}
+                <div className="flex items-center gap-4 mb-4">
                   <div
-                    className={cn(
-                      'mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg sm:h-12 sm:w-12',
-                      THEME_ICON_BG[block.theme],
-                    )}
+                    className="flex h-11 w-11 items-center justify-center rounded-xl transition-transform duration-base group-hover:scale-110"
+                    style={{ background: cfg.bg, border: `1px solid ${cfg.primaryColor}20` }}
                   >
-                    <Icon
-                      className={cn(
-                        'h-5 w-5 sm:h-6 sm:w-6',
-                        THEME_ICON_TEXT[block.theme],
-                      )}
-                    />
+                    <Icon className="h-5 w-5" style={{ color: cfg.primaryColor }} />
                   </div>
-                  <h3 className="text-lg font-bold text-ink-primary">
-                    {block.title}
-                  </h3>
-                  <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-ink-secondary">
-                    {block.headline}
-                  </p>
+                  <div>
+                    <h3 className="text-lg font-bold text-ink-primary">{block.title}</h3>
+                    <p className="text-xs text-ink-tertiary">{block.headline}</p>
+                  </div>
                 </div>
 
-                {/* 展开要点列表 */}
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      key="points"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: 'easeInOut' }}
-                      className="overflow-hidden"
+                {/* 要点列表 */}
+                <ul className="space-y-3 border-t border-line/60 pt-4">
+                  {block.points.map((point, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-secondary"
                     >
-                      <ul className="space-y-2 p-4 sm:p-5 border-t border-line/30">
-                        {block.points.map((point, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-start gap-2 text-xs sm:text-sm leading-relaxed text-ink-primary"
-                          >
-                            <span
-                              className={cn(
-                                'mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full',
-                                THEME_DOT[block.theme],
-                              )}
-                            />
-                            <span>{point}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                      <CheckCircle2
+                        className="mt-0.5 h-4.5 w-4.5 flex-shrink-0"
+                        style={{ color: cfg.primaryColor }}
+                      />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* 背景发光 */}
+                <div
+                  className="pointer-events-none absolute -right-10 -bottom-10 h-32 w-32 rounded-full opacity-30"
+                  style={{ background: `radial-gradient(circle, ${cfg.primaryColor}30 0%, transparent 75%)` }}
+                />
+              </motion.div>
             )
           })}
         </div>
@@ -183,32 +146,21 @@ export function ValueBlocks() {
   )
 }
 
-const THEME_TINT: Record<ValueBlock['theme'], string> = {
-  primary: 'bg-primary-bg/60',
-  environment: 'bg-environment-bg/60',
-  society: 'bg-society-bg/60',
+const THEME_CFG = {
+  primary: {
+    primaryColor: '#2A6CDB',
+    bg: '#E8F1FB',
+    border: 'border-primary/15',
+  },
+  environment: {
+    primaryColor: '#2BAE6E',
+    bg: '#EBF9F3',
+    border: 'border-environment/15',
+  },
+  society: {
+    primaryColor: '#F08035',
+    bg: '#FFF5ED',
+    border: 'border-society/15',
+  },
 }
 
-const THEME_BORDER: Record<ValueBlock['theme'], string> = {
-  primary: 'border-primary/20',
-  environment: 'border-environment/20',
-  society: 'border-society/20',
-}
-
-const THEME_ICON_BG: Record<ValueBlock['theme'], string> = {
-  primary: 'bg-primary-bg',
-  environment: 'bg-environment-bg',
-  society: 'bg-society-bg',
-}
-
-const THEME_ICON_TEXT: Record<ValueBlock['theme'], string> = {
-  primary: 'text-primary',
-  environment: 'text-environment',
-  society: 'text-society',
-}
-
-const THEME_DOT: Record<ValueBlock['theme'], string> = {
-  primary: 'bg-primary',
-  environment: 'bg-environment',
-  society: 'bg-society',
-}

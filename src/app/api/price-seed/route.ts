@@ -8,6 +8,9 @@ import {
 } from '@/lib/price-data'
 import { zhipuChatCompletion } from '@/lib/ai/zhipu'
 
+export const dynamic = 'force-static'
+export const runtime = 'nodejs'
+
 type PricePredictionInsert =
   Database['public']['Tables']['price_predictions']['Insert']
 

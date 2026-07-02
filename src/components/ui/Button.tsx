@@ -12,6 +12,7 @@ export type ButtonVariant =
   | 'destructive'
   | 'success'
   | 'warning'
+  | 'premium'
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon'
 
 export interface ButtonProps
@@ -37,6 +38,8 @@ const variantStyles: Record<ButtonVariant, string> = {
     'bg-success text-white shadow-sm hover:bg-success-light hover:shadow-green hover:-translate-y-0.5',
   warning:
     'bg-warning text-white shadow-sm hover:brightness-110 hover:-translate-y-0.5',
+  premium:
+    'bg-gradient-to-r from-[#0E2040] via-[#1A5CC8] to-[#0E2040] text-white border border-white/10 shadow-lg hover:shadow-blue hover:-translate-y-0.5 btn-premium',
 }
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -67,7 +70,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          'inline-flex items-center justify-center font-medium transition-all duration-fast ease-out-expo',
+          'inline-flex items-center justify-center font-semibold transition-all duration-fast ease-out-expo select-none cursor-pointer',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-1',
           'disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-50',
           variantStyles[variant],
@@ -84,3 +87,4 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     )
   },
 )
+

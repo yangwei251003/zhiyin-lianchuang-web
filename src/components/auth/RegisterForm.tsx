@@ -1,20 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Eye, EyeOff, Lock, Mail, User, CheckCircle, RefreshCw, ArrowLeft } from 'lucide-react'
+import { Eye, EyeOff, Lock, Mail, User, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { OtpInput } from '@/components/auth/OtpInput'
 import { useAuthStore } from '@/store/auth-store'
 import { useUIStore } from '@/store/ui-store'
 
-// ─── Step 1 Schema ────────────────────────────────────────────────────────────
+// ─── Schema 校验规则 ────────────────────────────────────────────────────────
 const registerSchema = z
   .object({
     nickname: z.string().min(2, '昵称至少 2 个字').max(20, '昵称最多 20 个字'),
@@ -40,50 +39,16 @@ const registerSchema = z
 
 type RegisterValues = z.infer<typeof registerSchema>
 
-// ─── 组件 ──────────────────────────────────────────────────────────────────────
+// ─── 注册表单组件 ──────────────────────────────────────────────────────────
 export function RegisterForm() {
   const router = useRouter()
   const signUp = useAuthStore((s) => s.signUp)
-  const verifyOtp = useAuthStore((s) => s.verifyOtp)
-  const resendOtp = useAuthStore((s) => s.resendOtp)
-  const pendingEmail = useAuthStore((s) => s.pendingEmail)
   const addToast = useUIStore((s) => s.addToast)
 
-  // step: 'form' | 'otp' | 'done'
-  const [step, setStep] = useState<'form' | 'otp' | 'done'>('form')
-  const [sentEmail, setSentEmail] = useState('')
-  const [otp, setOtp] = useState('')
-  const [otpError, setOtpError] = useState('')
-  const [verifying, setVerifying] = useState(false)
+  // step: 'form' | 'done'
+  const [step, setStep] = useState<'form' | 'done'>('form')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
-
-  // 倒计时重发
-  const [countdown, setCountdown] = useState(0)
-  const [resending, setResending] = useState(false)
-
-  // 若 store 中已有 pendingEmail（页面刷新）则直接跳到 OTP 步骤
-  useEffect(() => {
-    if (pendingEmail && step === 'form') {
-      setSentEmail(pendingEmail)
-      setStep('otp')
-      startCountdown()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const startCountdown = () => {
-    setCountdown(60)
-    const timer = setInterval(() => {
-      setCountdown((c) => {
-        if (c <= 1) {
-          clearInterval(timer)
-          return 0
-        }
-        return c - 1
-      })
-    }, 1000)
-  }
 
   const {
     register,
@@ -100,7 +65,7 @@ export function RegisterForm() {
     },
   })
 
-  // ─── Step 1: 注册信息提交 ───────────────────────────────────────────────────
+  // ─── 注册信息提交 ──────────────────────────────────────────────────────────
   const onRegisterSubmit = async (values: RegisterValues) => {
     const { error } = await signUp(
       values.email.trim(),
@@ -114,54 +79,18 @@ export function RegisterForm() {
       addToast({ type: 'error', message: friendly })
       return
     }
-    setSentEmail(values.email.trim())
-    setStep('otp')
-    startCountdown()
-    addToast({ type: 'success', message: `验证码已发送至 ${values.email.trim()}` })
-  }
-
-  // ─── Step 2: OTP 验证 ───────────────────────────────────────────────────────
-  const handleVerify = async () => {
-    if (otp.length !== 8) {
-      setOtpError('请输入完整的 8 位验证码')
-      return
-    }
-    setVerifying(true)
-    setOtpError('')
-    const { error } = await verifyOtp(sentEmail, otp)
-    setVerifying(false)
-    if (error) {
-      setOtpError('验证码错误或已过期，请重新输入')
-      setOtp('')
-      return
-    }
     setStep('done')
-    addToast({ type: 'success', message: '邮箱验证成功，欢迎加入智印联创！' })
+    addToast({ type: 'success', message: '注册成功，欢迎加入智印联创！' })
     setTimeout(() => {
       router.push('/')
       router.refresh()
     }, 1500)
   }
 
-  const handleResend = async () => {
-    if (countdown > 0 || resending) return
-    setResending(true)
-    const { error } = await resendOtp(sentEmail)
-    setResending(false)
-    if (error) {
-      addToast({ type: 'error', message: '重新发送失败，请稍后再试' })
-      return
-    }
-    addToast({ type: 'success', message: '验证码已重新发送' })
-    setOtp('')
-    setOtpError('')
-    startCountdown()
-  }
-
   return (
     <div className="rounded-2xl border border-line bg-white p-6 shadow-lg sm:p-8">
       <AnimatePresence mode="wait">
-        {/* ====== Step 1: 注册信息 ====== */}
+        {/* ====== 注册输入表单 ====== */}
         {step === 'form' && (
           <motion.div
             key="form"
@@ -179,9 +108,6 @@ export function RegisterForm() {
             </div>
 
             <form onSubmit={handleSubmit(onRegisterSubmit)} className="space-y-4" noValidate>
-              {/* 步骤指示器 */}
-              <StepIndicator current={1} />
-
               {/* 昵称 */}
               <Input
                 label="昵称"
@@ -271,7 +197,7 @@ export function RegisterForm() {
               </div>
 
               <Button type="submit" size="lg" className="w-full" loading={isSubmitting} disabled={isSubmitting}>
-                {isSubmitting ? '发送验证码中...' : '注册并获取验证码'}
+                {isSubmitting ? '正在注册...' : '立即注册'}
               </Button>
             </form>
 
@@ -281,88 +207,6 @@ export function RegisterForm() {
                 立即登录
               </Link>
             </div>
-          </motion.div>
-        )}
-
-        {/* ====== Step 2: OTP 验证 ====== */}
-        {step === 'otp' && (
-          <motion.div
-            key="otp"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.2 }}
-            className="text-center"
-          >
-            {/* 返回按钮 */}
-            <button
-              type="button"
-              onClick={() => { setStep('form'); setOtp(''); setOtpError('') }}
-              className="mb-4 inline-flex items-center gap-1 text-sm text-ink-tertiary transition-colors hover:text-ink-primary"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              返回修改信息
-            </button>
-
-            {/* 标题 */}
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-ink-primary">验证邮箱</h1>
-              <p className="mt-2 text-sm text-ink-secondary">
-                验证码已发送至
-              </p>
-              <p className="mt-1 font-semibold text-primary">{sentEmail}</p>
-              <p className="mt-1 text-xs text-ink-tertiary">请查收邮件，填入 6 位数字验证码</p>
-            </div>
-
-            {/* 步骤指示器 */}
-            <StepIndicator current={2} />
-
-            {/* 8格 OTP 输入 */}
-            <div className="mt-6">
-              <OtpInput
-                length={8}
-                value={otp}
-                onChange={(v) => { setOtp(v); setOtpError('') }}
-                disabled={verifying}
-              />
-              {otpError && (
-                <p className="mt-3 text-sm text-danger">{otpError}</p>
-              )}
-            </div>
-
-            {/* 验证按钮 */}
-            <Button
-              size="lg"
-              className="mt-6 w-full"
-              loading={verifying}
-              disabled={verifying || otp.length !== 8}
-              onClick={handleVerify}
-            >
-              {verifying ? '验证中...' : '确认验证'}
-            </Button>
-
-            {/* 重新发送 */}
-            <div className="mt-4 flex items-center justify-center gap-1 text-sm text-ink-secondary">
-              <span>没收到邮件？</span>
-              <button
-                type="button"
-                onClick={handleResend}
-                disabled={countdown > 0 || resending}
-                className="inline-flex items-center gap-1 font-medium text-primary transition-colors hover:text-primary-light disabled:text-ink-tertiary disabled:cursor-not-allowed"
-              >
-                {resending
-                  ? <><RefreshCw className="h-3.5 w-3.5 animate-spin" />发送中</>
-                  : countdown > 0
-                    ? `${countdown}s 后可重发`
-                    : '重新发送'
-                }
-              </button>
-            </div>
-
-            {/* 提示 */}
-            <p className="mt-4 rounded-lg bg-canvas p-3 text-xs text-ink-tertiary">
-              若邮件未到达，请检查垃圾邮件文件夹。验证码 10 分钟内有效。
-            </p>
           </motion.div>
         )}
 
@@ -390,37 +234,6 @@ export function RegisterForm() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
-  )
-}
-
-// 步骤指示器
-function StepIndicator({ current }: { current: 1 | 2 }) {
-  return (
-    <div className="mb-5 flex items-center gap-2">
-      {[1, 2].map((step) => (
-        <div key={step} className="flex items-center gap-2">
-          <div
-            className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold transition-colors ${
-              step < current
-                ? 'bg-success text-white'
-                : step === current
-                  ? 'bg-primary text-white'
-                  : 'bg-line text-ink-tertiary'
-            }`}
-          >
-            {step < current ? '✓' : step}
-          </div>
-          <span
-            className={`text-xs ${
-              step === current ? 'font-semibold text-ink-primary' : 'text-ink-tertiary'
-            }`}
-          >
-            {step === 1 ? '填写信息' : '邮箱验证'}
-          </span>
-          {step < 2 && <div className="h-px w-8 bg-line" />}
-        </div>
-      ))}
     </div>
   )
 }

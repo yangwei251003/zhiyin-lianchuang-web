@@ -2,6 +2,9 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { zhipuChatCompletion, type ZhipuMessage } from '@/lib/ai/zhipu'
 import { getPurchaseAdviceFallback } from '@/lib/ai/fallback'
 
+export const dynamic = 'force-static'
+export const runtime = 'nodejs'
+
 // 集采采购建议 API
 // 适配前端 AIPurchaseAdvice 组件实际发送的蛇形字段
 // 返回 { action: 'buy'|'wait'|'ended', title, reason, confidence, fallback }
