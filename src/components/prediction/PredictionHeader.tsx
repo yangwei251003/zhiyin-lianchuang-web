@@ -16,10 +16,9 @@ export function PredictionHeader({ paperType }: PredictionHeaderProps) {
       icon={<Brain className="h-3.5 w-3.5" />}
       breadcrumbs={[
         { label: '首页', href: '/' },
-        { label: 'AI 纸价预测', href: '/prediction/铜版纸' },
+        { label: 'AI 纸价预测', href: '/prediction/白卡纸' },
         { label: paperType },
       ]}
     />
   )
 }
-

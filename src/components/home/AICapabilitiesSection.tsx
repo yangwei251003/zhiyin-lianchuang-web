@@ -37,7 +37,7 @@ const CAPABILITIES: AICapability[] = [
     title: 'AI 纸价预测',
     subtitle: 'Price Prediction',
     desc: '整合原材料期货、市场供需、季节因素等数据，AI 预测未来 30 天纸价走势，辅助采购决策降低风险。',
-    href: '/prediction/铜版纸',
+    href: '/prediction/白卡纸',
     tag: '独家能力',
     gradient: 'linear-gradient(135deg, #061020 0%, #1A2A5C 100%)',
     iconBg: 'rgba(0,180,216,0.2)',

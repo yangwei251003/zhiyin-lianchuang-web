@@ -29,7 +29,7 @@ export function AIPredictionEntry({ predictions }: AIPredictionEntryProps) {
             className="lg:col-span-2"
           >
             <Link
-              href="/prediction/铜版纸"
+              href="/prediction/白卡纸"
               className={cn(
                 'group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl p-7 shadow-lg sm:p-8',
                 'transition-all duration-base hover:-translate-y-1 hover:shadow-xl',
@@ -138,7 +138,7 @@ export function AIPredictionEntry({ predictions }: AIPredictionEntryProps) {
               )}
 
               <Link
-                href="/prediction/铜版纸"
+                href="/prediction/白卡纸"
                 className="mt-5 inline-flex items-center gap-1.5 self-start text-sm font-bold text-primary transition-all duration-base hover:gap-2.5"
               >
                 查看完整预测
@@ -151,4 +151,3 @@ export function AIPredictionEntry({ predictions }: AIPredictionEntryProps) {
     </section>
   )
 }
-

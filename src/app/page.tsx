@@ -67,7 +67,7 @@ const services = [
   {
     title: '纸价信息',
     description: '接入获授权市场数据后，按规格和区域呈现价格与趋势。',
-    href: '/prediction/铜版纸',
+    href: '/prediction/白卡纸',
     icon: LineChart,
   },
   {
@@ -123,7 +123,7 @@ export default function HomePage() {
                 <ArrowRight className="size-5" aria-hidden />
               </Link>
               <Link
-                href="/prediction/铜版纸"
+                href="/prediction/白卡纸"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/30 bg-white/10 px-6 text-base font-semibold text-white backdrop-blur transition hover:bg-white/20"
               >
                 <BarChart3 className="size-5" aria-hidden />
@@ -241,7 +241,7 @@ export default function HomePage() {
             <p className="text-sm font-semibold text-[#1E3A5F]">纸价信息</p>
             <h2 className="mt-2 text-3xl font-bold text-[#1F2937]">价格数据按授权来源呈现</h2>
             <p className="mt-3 max-w-2xl text-base leading-7 text-[#4B5563]">{PRICE_DATA_STATUS.detail}</p>
-            <Link href="/prediction/铜版纸" className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-sm border border-[#1E3A5F] px-4 text-sm font-semibold text-[#1E3A5F] hover:bg-[#EEF3F8]">
+            <Link href="/prediction/白卡纸" className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-sm border border-[#1E3A5F] px-4 text-sm font-semibold text-[#1E3A5F] hover:bg-[#EEF3F8]">
               查看数据接入说明
               <ArrowRight className="size-4" aria-hidden />
             </Link>

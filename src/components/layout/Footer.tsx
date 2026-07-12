@@ -14,7 +14,7 @@ const sections: FooterSection[] = [
     links: [
       { label: '订单大厅', href: '/orders' },
       { label: '集采商城', href: '/purchase' },
-      { label: '纸价信息', href: '/prediction/铜版纸' },
+      { label: '纸价信息', href: '/prediction/白卡纸' },
       { label: '创业孵化', href: '/startup' },
     ],
   },
