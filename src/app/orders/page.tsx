@@ -4,6 +4,7 @@ import { Factory, Plus, ShoppingBag } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
 import { OrderList } from '@/components/order/OrderList'
+import { ShowcaseRail } from '@/components/common/ShowcaseRail'
 import type { Database } from '@/types/database'
 
 export const metadata: Metadata = {
@@ -74,7 +75,7 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
     }))
 
   return (
-    <main className="min-h-screen bg-[#F6F7F8] pb-12">
+    <main className="min-h-screen bg-gradient-to-b from-[#07152d] via-[#0d1b3a] to-[#07152d] pb-12">
       <section className="border-b border-[#D9DEE6] bg-white">
         <Container className="py-8 sm:py-10">
           <nav className="mb-4 text-xs text-ink-tertiary" aria-label="面包屑">
@@ -125,6 +126,7 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
           pageSize={PAGE_SIZE}
           filters={{ status, category, keyword }}
         />
+        <ShowcaseRail module="orders" title="公开需求案例信号台" />
       </Container>
     </main>
   )

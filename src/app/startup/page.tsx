@@ -16,6 +16,7 @@ import {
   PUBLIC_RESEARCH_FACTS,
 } from '@/lib/public-content'
 import { cn } from '@/lib/utils'
+import { ShowcaseRail } from '@/components/common/ShowcaseRail'
 
 export const metadata: Metadata = {
   title: '创业孵化 · 智印联创',
@@ -70,7 +71,7 @@ const THEME_CONFIG: Record<ModuleEntry['theme'], { bar: string; icon: string; te
 
 export default function StartupHomePage() {
   return (
-    <main className="pb-12">
+    <main className="min-h-screen bg-gradient-to-b from-[#07152d] via-[#10234b] to-[#07152d] pb-12 text-white">
       <section className="border-b-2 border-society bg-white">
         <Container className="py-8 sm:py-10">
           <nav className="mb-4 text-xs text-ink-tertiary" aria-label="面包屑">
@@ -163,6 +164,7 @@ export default function StartupHomePage() {
           </ul>
         </section>
       </Container>
+      <Container><ShowcaseRail module="startup" title="图文创业资源与案例" /></Container>
     </main>
   )
 }

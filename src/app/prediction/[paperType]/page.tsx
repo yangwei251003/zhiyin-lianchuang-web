@@ -94,6 +94,8 @@ export default async function PredictionPage({ params }: PredictionPageProps) {
       <Container className="py-6 sm:py-8">
         <PaperTypeTabs current={paperType} />
 
+        <section className="mt-6 grid gap-4 lg:grid-cols-[1.2fr_1fr]"><div className="rounded-xl border border-cyan-300/20 bg-gradient-to-br from-[#0d1a30] to-[#152d5e] p-5 text-white"><p className="text-xs font-semibold text-cyan-200">官方行业指标</p><h2 className="mt-2 text-xl font-bold">工业生产者价格指数（PPI）</h2><p className="mt-3 text-sm leading-6 text-slate-200">国家统计局公开数据发布库按月发布工业价格指标，可用于观察宏观成本环境，不作为纸种报价或采购建议。</p><a className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-200 hover:text-white" href="https://data.stats.gov.cn/" target="_blank" rel="noreferrer">查看国家统计局数据发布库 <ExternalLink className="size-4" /></a></div><div className="rounded-xl border border-fuchsia-300/20 bg-gradient-to-br from-[#1b143d] to-[#0d1a30] p-5 text-white"><p className="text-xs font-semibold text-fuchsia-200">期货行情参考</p><h2 className="mt-2 text-xl font-bold">纸浆期货与现货报价分开展示</h2><p className="mt-3 text-sm leading-6 text-slate-200">纸浆期货只能反映相关市场行情，平台不将其换算为铜版纸、白卡纸等成品纸价格。</p></div></section>
+
         {latest && latestIsFresh ? (
           <>
             <section className="mt-6 grid gap-6 border-t-2 border-[#173B63] border-x border-b border-[#D9DEE6] bg-white p-5 sm:p-6 lg:grid-cols-[minmax(0,1fr)_300px]">

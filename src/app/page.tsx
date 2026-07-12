@@ -22,6 +22,7 @@ import {
   PUBLIC_PLATFORM_PROFILE,
   PUBLIC_RESEARCH_FACTS,
 } from '@/lib/public-content'
+import { HeroBackground } from '@/components/home/HeroBackground'
 
 export const metadata: Metadata = {
   title: '智印联创 - 印刷产业协同服务平台',
@@ -98,44 +99,46 @@ const process = [
 export default function HomePage() {
   return (
     <main className="bg-white text-[#172033]">
-      <section className="border-b border-[#D9DEE6] bg-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[minmax(0,1fr)_420px] lg:px-8 lg:py-24">
+      <section className="relative overflow-hidden border-b border-cyan-300/20 bg-[#061020] text-white">
+        <HeroBackground />
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[minmax(0,1fr)_420px] lg:px-8 lg:py-28">
           <div className="max-w-3xl">
-            <div className="print-rule w-16" aria-hidden />
-            <h1 className="mt-7 text-4xl font-bold leading-tight text-[#172033] sm:text-5xl">
+            <div className="h-1 w-16 bg-gradient-to-r from-cyan-300 via-fuchsia-500 to-yellow-300" aria-hidden />
+            <p className="mt-7 text-sm font-semibold text-cyan-200">未来印刷产业协同平台</p>
+            <h1 className="mt-3 text-4xl font-bold leading-tight text-white sm:text-6xl">
               {PUBLIC_PLATFORM_PROFILE.name}
-              <span className="mt-3 block text-2xl font-semibold text-[#173B63] sm:text-3xl">
+              <span className="mt-3 block text-2xl font-semibold text-cyan-100 sm:text-3xl">
                 {PUBLIC_PLATFORM_PROFILE.tagline}
               </span>
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#425066]">
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-200">
               为印刷企业提供清晰的供需沟通、采购意向和行业信息服务，让协作从需求描述开始。
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/register"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[#D97706] px-6 text-base font-semibold text-white transition-colors hover:bg-[#B45309] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D97706]"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-600 px-6 text-base font-semibold text-white shadow-[0_0_30px_rgba(34,211,238,.35)] transition hover:-translate-y-0.5"
               >
                 免费入驻
                 <ArrowRight className="size-5" aria-hidden />
               </Link>
               <Link
                 href="/prediction/铜版纸"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-[#1E3A5F] px-6 text-base font-semibold text-[#1E3A5F] transition-colors hover:bg-[#EEF3F8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3A5F]"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/30 bg-white/10 px-6 text-base font-semibold text-white backdrop-blur transition hover:bg-white/20"
               >
                 <BarChart3 className="size-5" aria-hidden />
                 查看纸价信息
               </Link>
             </div>
-            <p className="mt-5 text-sm leading-6 text-[#6B7280]">{PUBLIC_PLATFORM_PROFILE.launchNotice}</p>
+            <p className="mt-5 text-sm leading-6 text-slate-400">{PUBLIC_PLATFORM_PROFILE.launchNotice}</p>
           </div>
 
-          <aside className="relative overflow-hidden border border-[#D9DEE6] bg-[#F6F7F8] p-6 sm:p-7">
+          <aside className="relative overflow-hidden rounded-2xl border border-white/20 bg-slate-950/45 p-6 shadow-2xl backdrop-blur-xl sm:p-7">
             <div className="absolute right-0 top-0 h-24 w-24 border-b border-l border-[#D9DEE6] print-dots" aria-hidden />
             <div className="relative flex items-start justify-between gap-6 border-b border-[#D9DEE6] pb-6">
               <div>
-                <p className="text-xs font-semibold text-[#173B63]">服务索引</p>
-                <h2 className="mt-2 text-xl font-bold text-[#172033]">从产业协作的真实需求出发</h2>
+                <p className="text-xs font-semibold text-cyan-200">服务索引</p>
+                <h2 className="mt-2 text-xl font-bold text-white">从产业协作的真实需求出发</h2>
               </div>
               <Image src="/images/企业logo.png" alt="智印联创" width={160} height={32} className="h-8 w-auto object-contain" />
             </div>
@@ -143,11 +146,11 @@ export default function HomePage() {
               {PUBLIC_PARTNERS.map((partner) => (
                 <div key={partner} className="flex gap-3 py-4">
                   <Building2 className="mt-0.5 size-5 shrink-0 text-[#047857]" strokeWidth={1.7} aria-hidden />
-                  <p className="text-sm leading-6 text-[#425066]">{partner}</p>
+                  <p className="text-sm leading-6 text-slate-200">{partner}</p>
                 </div>
               ))}
             </div>
-            <p className="relative mt-5 border-l-2 border-[#D97706] pl-3 text-xs leading-5 text-[#6B7280]">公开内容与价格信息均以已核验来源为准，不以示例数据填充。</p>
+            <p className="relative mt-5 border-l-2 border-fuchsia-400 pl-3 text-xs leading-5 text-slate-300">公开内容与价格信息均以已核验来源为准，不以示例数据填充。</p>
           </aside>
         </div>
       </section>
