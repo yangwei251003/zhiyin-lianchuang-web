@@ -5,6 +5,7 @@ import { AlertTriangle, ArrowRight, BarChart3, ExternalLink, Info } from 'lucide
 import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
 import { PriceChart } from '@/components/charts/PriceChart'
+import { AIAnalysis } from '@/components/prediction/AIAnalysis'
 import { PaperTypeTabs } from '@/components/prediction/PaperTypeTabs'
 import { PAPER_TYPES, type PaperType } from '@/lib/price-data'
 
@@ -45,39 +46,43 @@ export default async function PredictionPage({ params }: PredictionPageProps) {
   if (!PAPER_TYPES.includes(paperType as PaperType)) notFound()
 
   const supabase = await createClient()
-  const { data: latestRows } = await supabase
+  const { data: verifiedRows } = await supabase
     .from('market_prices')
     .select('*')
     .eq('paper_type', paperType)
     .eq('verification_status', 'verified')
     .order('observed_at', { ascending: false })
-    .limit(1)
+    .limit(100)
 
-  const latest = latestRows?.[0] ?? null
+  // 同一纸种可能同时存在多地区、多规格报价。优先展示样本更完整的同口径序列，
+  // 避免一条更晚但口径不同的记录截断已验证的历史趋势。
+  const seriesByDefinition = new Map<string, NonNullable<typeof verifiedRows>>()
+  for (const row of verifiedRows ?? []) {
+    const key = [row.source, row.region, row.market, row.specification].join('|')
+    const series = seriesByDefinition.get(key) ?? []
+    series.push(row)
+    seriesByDefinition.set(key, series)
+  }
+  const selectedSeries = Array.from(seriesByDefinition.values())
+    .sort((a, b) => b.length - a.length || new Date(b[0].observed_at).getTime() - new Date(a[0].observed_at).getTime())[0]
+    ?.sort((a, b) => new Date(a.observed_at).getTime() - new Date(b.observed_at).getTime()) ?? []
+  const latest = selectedSeries.at(-1) ?? null
   const latestIsFresh = latest
     // Server-rendered price visibility must compare with the request-time clock.
     // eslint-disable-next-line react-hooks/purity
     ? Date.now() - new Date(latest.observed_at).getTime() <= LATEST_QUOTE_MAX_AGE_MS
     : false
-  const { data: historyRows } = latest
-    ? await supabase
-      .from('market_prices')
-      .select('*')
-      .eq('paper_type', paperType)
-      .eq('verification_status', 'verified')
-      .eq('source', latest.source)
-      .eq('region', latest.region)
-      .eq('market', latest.market)
-      .eq('specification', latest.specification)
-      .order('observed_at', { ascending: true })
-      .limit(30)
-    : { data: [] }
-
-  const chartData = (historyRows ?? []).map((row) => ({
+  const chartData = selectedSeries.slice(-30).map((row) => ({
     date: row.observed_at.slice(0, 10),
     price: row.price,
     is_predicted: false,
   }))
+  const firstPrice = chartData[0]?.price
+  const latestPrice = chartData.at(-1)?.price
+  const changeRate = firstPrice && latestPrice
+    ? ((latestPrice - firstPrice) / firstPrice) * 100
+    : 0
+  const trend = changeRate > 0.1 ? 'up' : changeRate < -0.1 ? 'down' : 'flat'
 
   return (
     <main className="min-h-screen bg-[#F6F7F8] pb-16">
@@ -143,16 +148,47 @@ export default async function PredictionPage({ params }: PredictionPageProps) {
                 </div>
               )}
             </section>
+
+            <section className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
+              <AIAnalysis
+                analysis={null}
+                paperType={paperType}
+                changeRate={changeRate}
+                trend={trend}
+                recentPrices={chartData.map(({ date, price }) => ({ date, price }))}
+              />
+              <aside className="border border-[#D9DEE6] bg-white p-5">
+                <p className="text-xs font-semibold text-[#1E3A5F]">智印大脑 · 数据质量</p>
+                <h2 className="mt-2 text-lg font-bold text-[#1F2937]">AI 分析以可追溯数据为边界</h2>
+                <dl className="mt-5 space-y-4 text-sm">
+                  <div><dt className="text-[#6B7280]">当前输入</dt><dd className="mt-1 font-semibold text-[#1F2937]">{chartData.length} 条同口径公开报价</dd></div>
+                  <div><dt className="text-[#6B7280]">分析方式</dt><dd className="mt-1 font-semibold text-[#1F2937]">趋势识别、采购建议、风险提示</dd></div>
+                  <div><dt className="text-[#6B7280]">30 天数值预测</dt><dd className="mt-1 font-semibold text-[#1F2937]">待同口径历史样本达到 14 条后启用</dd></div>
+                </dl>
+                <p className="mt-5 border-t border-[#E5E7EB] pt-4 text-xs leading-5 text-[#6B7280]">AI 输出仅分析已接入数据，不把纸浆期货、不同规格或未核验网页价格混入成品纸预测。</p>
+              </aside>
+            </section>
           </>
         ) : (
-          <section className="mt-6 border border-[#E5E7EB] bg-white p-8 text-center sm:p-12">
-            <BarChart3 className="mx-auto size-10 text-[#8A9199]" strokeWidth={1.5} aria-hidden />
-            <h2 className="mt-4 text-xl font-bold text-[#1F2937]">{latest ? '最新公开报价已超过展示期限' : '暂未获得可公开验证的报价'}</h2>
-            <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-[#4B5563]">为了避免误导采购决策，此页面不会用模拟值、纸浆期货换算值、过期价格或未标注规格的网络价格填充。</p>
-            <Link href="/purchase" className="mt-6 inline-flex min-h-11 items-center gap-2 border border-[#1E3A5F] px-4 text-sm font-semibold text-[#1E3A5F] hover:bg-[#EEF3F8]">
-              提交采购意向
-              <ArrowRight className="size-4" aria-hidden />
-            </Link>
+          <section className="mt-6 border border-[#E5E7EB] bg-white p-6 sm:p-8">
+            <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
+              <div>
+                <div className="flex items-center gap-3"><BarChart3 className="size-8 text-[#1E3A5F]" strokeWidth={1.5} aria-hidden /><div><p className="text-xs font-semibold text-[#1E3A5F]">公开数据采集状态</p><h2 className="mt-1 text-xl font-bold text-[#1F2937]">{latest ? '最新公开报价已超过展示期限' : `${paperType}尚未接入同口径报价`}</h2></div></div>
+                <p className="mt-5 max-w-xl text-sm leading-6 text-[#4B5563]">平台只写入同时具备来源链接、规格、地区、单位与报价日期的公开记录。纸浆期货、不同克重纸张或没有明确来源的网络数字不会被换算或补填为{paperType}价格。</p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Link href="/prediction/白卡纸" className="inline-flex min-h-11 items-center gap-2 bg-[#1E3A5F] px-4 text-sm font-semibold text-white hover:bg-[#16304f]">查看已验证报价样例 <ArrowRight className="size-4" aria-hidden /></Link>
+                  <Link href="/purchase" className="inline-flex min-h-11 items-center gap-2 border border-[#1E3A5F] px-4 text-sm font-semibold text-[#1E3A5F] hover:bg-[#EEF3F8]">提交采购意向 <ArrowRight className="size-4" aria-hidden /></Link>
+                </div>
+              </div>
+              <aside className="border-l-0 border-[#E5E7EB] pt-1 lg:border-l lg:pl-6">
+                <h3 className="font-bold text-[#1F2937]">AI 预测启用条件</h3>
+                <ol className="mt-4 space-y-4 text-sm leading-6 text-[#4B5563]">
+                  <li><span className="mr-2 font-semibold text-[#1E3A5F]">01</span>同一来源、地区、规格的历史报价达到 14 条。</li>
+                  <li><span className="mr-2 font-semibold text-[#1E3A5F]">02</span>AI 再输出趋势、采购建议和风险提示，不把预测值当成真实报价。</li>
+                  <li><span className="mr-2 font-semibold text-[#1E3A5F]">03</span>每次分析都显示输入数据范围和来源，便于复核。</li>
+                </ol>
+              </aside>
+            </div>
           </section>
         )}
 

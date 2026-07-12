@@ -31,7 +31,8 @@ const navItems: NavItem[] = [
   { label: '集采商城', href: '/purchase' },
   { label: '创业孵化', href: '/startup' },
   { label: '技术培训', href: '/training' },
-  { label: '纸价信息', href: '/prediction/铜版纸' },
+  { label: '智印大脑', href: '/ai-chat' },
+  { label: '纸价信息', href: '/prediction/白卡纸' },
   { label: '消息',     href: '/messages' },
 ]
 

@@ -95,6 +95,7 @@ export function PriceChart({
   paperType,
   className,
 }: PriceChartProps) {
+  const hasForecast = data.some((item) => item.is_predicted)
   const { chartData, currentPrice } = useMemo(() => {
     // 按日期升序排序，确保时间轴递增
     const sorted = [...data].sort((a, b) => a.date.localeCompare(b.date))
@@ -149,7 +150,7 @@ export function PriceChart({
               />
               历史
             </span>
-            <span className="inline-flex items-center gap-1">
+            {hasForecast && <span className="inline-flex items-center gap-1">
               <span
                 className="inline-block h-0.5 w-3 rounded-full"
                 style={{
@@ -157,7 +158,7 @@ export function PriceChart({
                 }}
               />
               预测
-            </span>
+            </span>}
           </div>
         </div>
       )}
