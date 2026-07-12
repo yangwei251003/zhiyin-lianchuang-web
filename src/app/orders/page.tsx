@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Factory, Plus, ShoppingBag } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
@@ -76,39 +77,41 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#07152d] via-[#0d1b3a] to-[#07152d] pb-12">
-      <section className="border-b border-[#D9DEE6] bg-white">
-        <Container className="py-8 sm:py-10">
-          <nav className="mb-4 text-xs text-ink-tertiary" aria-label="面包屑">
-            <Link href="/" className="hover:text-primary">首页</Link>
+      <section className="relative overflow-hidden border-b border-cyan-300/20 bg-[#07152d]">
+        <Image src="/images/external/press-studio.jpg" alt="创意工作室内的传统印刷设备与海报" fill priority className="object-cover opacity-25" sizes="100vw" />
+        <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(7,21,45,.98),rgba(7,21,45,.84),rgba(7,21,45,.65))]" />
+        <Container className="relative py-8 sm:py-10">
+          <nav className="mb-4 text-xs text-slate-400" aria-label="面包屑">
+            <Link href="/" className="hover:text-cyan-200">首页</Link>
             <span className="mx-1.5">/</span>
-            <span className="text-ink-secondary">订单大厅</span>
+            <span className="text-slate-200">订单大厅</span>
           </nav>
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <p className="print-index text-xs font-semibold">01 / 供需撮合</p>
-              <h1 className="mt-2 text-2xl font-bold text-ink-primary sm:text-3xl">订单大厅</h1>
-              <p className="mt-3 text-sm leading-6 text-ink-secondary">
+              <p className="text-xs font-semibold text-cyan-300">01 / 供需撮合</p>
+              <h1 className="mt-2 text-2xl font-bold text-white sm:text-3xl">订单大厅</h1>
+              <p className="mt-3 text-sm leading-6 text-slate-200">
                 浏览已公开的印刷需求。提交需求或产能信息后，平台将协助供需双方进行报价沟通；实际合作条款由双方确认。
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
               <Link
                 href="/orders/publish"
-                className="inline-flex h-10 items-center gap-2 rounded-sm bg-[#D97706] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#B45309]"
+                className="inline-flex h-10 items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-600 px-4 text-sm font-semibold text-slate-950 transition hover:brightness-110"
               >
                 <Plus className="h-4 w-4" />
                 发布需求
               </Link>
               <Link
                 href="/orders/publish-capacity"
-                className="inline-flex h-10 items-center gap-2 rounded-sm border border-line bg-white px-4 text-sm font-semibold text-ink-primary transition-colors hover:border-primary hover:text-primary"
+                className="inline-flex h-10 items-center gap-2 rounded-lg border border-white/30 bg-white/10 px-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20"
               >
                 <Factory className="h-4 w-4" />
                 发布产能
               </Link>
               <Link
                 href="/orders/capacities"
-                className="inline-flex h-10 items-center gap-2 rounded-sm border border-line bg-white px-4 text-sm font-semibold text-ink-primary transition-colors hover:border-primary hover:text-primary"
+                className="inline-flex h-10 items-center gap-2 rounded-lg border border-white/30 bg-white/10 px-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20"
               >
                 <ShoppingBag className="h-4 w-4" />
                 查看产能

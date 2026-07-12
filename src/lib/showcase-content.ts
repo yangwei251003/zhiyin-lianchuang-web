@@ -30,4 +30,8 @@ export const ASSET_MANIFEST = [
   { path: '/videos/manroland.mp4', purpose: '首页备用设备视频', source: '项目本地素材', license: '项目方确认可用', alt: '印刷设备走纸画面' },
   { path: '/images/purchase/coated_paper.jpg', purpose: '集采材料展示', source: '项目本地素材', license: '项目方确认可用', alt: '铜版纸材料' },
   { path: '/images/startup/article_1.jpg', purpose: '创业资源展示', source: '项目本地素材', license: '项目方确认可用', alt: '印刷创业资料' },
+  { path: '/images/external/press-studio.jpg', purpose: '订单大厅协同信号台背景', source: 'Pexels / AI25.Studio Studio', sourceUrl: 'https://www.pexels.com/photo/view-of-graphic-designers-studio-with-a-press-and-posters-6620972/', license: 'Pexels License（免费下载和使用）', downloadedAt: '2026-07-12', alt: '创意工作室内的传统印刷设备与海报' },
+  { path: '/images/external/press-production.png', purpose: '集采商城材料光谱背景', source: 'Pexels', sourceUrl: 'https://www.pexels.com/photo/machinery-in-factory-19316517/', license: 'Pexels License（免费下载和使用）', downloadedAt: '2026-07-12', alt: '正在运行的工业印刷设备细节' },
+  { path: '/images/external/press-tools.jpg', purpose: '创业孵化视觉背景', source: 'Pexels', sourceUrl: 'https://www.pexels.com/photo/person-working-on-industrial-machine-6620977/', license: 'Pexels License（免费下载和使用）', downloadedAt: '2026-07-12', alt: '工作人员调整印刷设备' },
+  { path: '/images/external/press-detail.jpg', purpose: '技术培训工艺卡片插图', source: 'Pexels', sourceUrl: 'https://www.pexels.com/photo/green-and-black-industrial-machine-1440504/', license: 'Pexels License（免费下载和使用）', downloadedAt: '2026-07-12', alt: '工业印刷设备的精密机械细节' },
 ] as const

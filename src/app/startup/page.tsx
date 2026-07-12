@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import {
   ArrowRight,
@@ -72,16 +73,18 @@ const THEME_CONFIG: Record<ModuleEntry['theme'], { bar: string; icon: string; te
 export default function StartupHomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#07152d] via-[#10234b] to-[#07152d] pb-12 text-white">
-      <section className="border-b-2 border-society bg-white">
-        <Container className="py-8 sm:py-10">
-          <nav className="mb-4 text-xs text-ink-tertiary" aria-label="面包屑">
-            <Link href="/" className="hover:text-primary">首页</Link>
+      <section className="relative overflow-hidden border-b border-fuchsia-300/20 bg-[#07152d]">
+        <Image src="/images/external/press-tools.jpg" alt="工作人员调整印刷设备" fill priority className="object-cover opacity-25" sizes="100vw" />
+        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(7,21,45,.98),rgba(16,35,75,.88),rgba(7,21,45,.62))]" />
+        <Container className="relative py-8 sm:py-10">
+          <nav className="mb-4 text-xs text-slate-400" aria-label="面包屑">
+            <Link href="/" className="hover:text-cyan-200">首页</Link>
             <span className="mx-1.5">/</span>
-            <span className="text-ink-secondary">创业孵化</span>
+            <span className="text-slate-200">创业孵化</span>
           </nav>
-          <p className="text-xs font-semibold text-society">产教融合服务</p>
-          <h1 className="mt-2 text-2xl font-bold text-ink-primary sm:text-3xl">创业孵化</h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-ink-secondary">
+          <p className="text-xs font-semibold text-fuchsia-300">产教融合服务</p>
+          <h1 className="mt-2 text-2xl font-bold text-white sm:text-3xl">创业孵化</h1>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-200">
             为印刷创业者提供公开学习资源、导师咨询与筹备测算。平台不承诺投资回报或经营结果，所有信息请结合自身情况独立判断。
           </p>
         </Container>
