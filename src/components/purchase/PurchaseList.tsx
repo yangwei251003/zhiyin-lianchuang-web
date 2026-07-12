@@ -50,18 +50,33 @@ export function PurchaseList({
   pageSize,
   filters,
 }: PurchaseListProps) {
+  const filterKey = `${filters.status}:${filters.keyword}`
+
+  return (
+    <PurchaseListContent
+      key={filterKey}
+      initialPurchases={initialPurchases}
+      totalCount={totalCount}
+      currentPage={currentPage}
+      pageSize={pageSize}
+      filters={filters}
+    />
+  )
+}
+
+function PurchaseListContent({
+  initialPurchases,
+  totalCount,
+  currentPage,
+  pageSize,
+  filters,
+}: PurchaseListProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
   // 本地受控状态：与 URL 参数保持同步
   const [status, setStatus] = useState(filters.status)
   const [keyword, setKeyword] = useState(filters.keyword)
-
-  // 当 URL 参数变化（如浏览器前进/后退）时同步本地状态
-  useEffect(() => {
-    setStatus(filters.status)
-    setKeyword(filters.keyword)
-  }, [filters.status, filters.keyword])
 
   // 关键词搜索防抖（500ms）
   useEffect(() => {
@@ -109,12 +124,12 @@ export function PurchaseList({
   return (
     <div className="space-y-5">
       {/* ===== 筛选条 ===== */}
-      <div className="rounded-xl border border-line bg-white p-4 shadow-sm sm:p-5">
+      <div className="border border-line bg-white p-4 sm:p-5">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
           <div className="flex-1">
             <Input
               type="search"
-              placeholder="搜索活动标题或商品名"
+            placeholder="搜索采购意向或物资名称"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               leftIcon={<Search className="h-4 w-4" />}
@@ -154,9 +169,9 @@ export function PurchaseList({
         </div>
         <div className="mt-3 flex items-center justify-between text-xs text-ink-tertiary">
           <span>
-            共{' '}
+            已找到{' '}
             <span className="font-semibold text-ink-secondary">{totalCount}</span>{' '}
-            个集采活动
+            条公开采购信息
           </span>
         </div>
       </div>
@@ -171,16 +186,16 @@ export function PurchaseList({
           ))}
         </div>
       ) : (
-        <div className="rounded-xl border border-line bg-white shadow-sm">
+        <div className="border border-line bg-white">
           <EmptyState
             variant={hasFilters ? 'search' : 'default'}
             title={
-              hasFilters ? '未找到符合条件的集采活动' : '集采商城暂无活动'
+              hasFilters ? '未找到符合条件的采购信息' : '暂未收录公开采购信息'
             }
             description={
               hasFilters
                 ? '试试调整筛选条件或更换关键词'
-                : '敬请期待新一轮集采活动上线'
+                : '新的采购意向审核后会在这里展示'
             }
           />
         </div>
@@ -207,7 +222,7 @@ function PurchaseListSkeleton() {
       {Array.from({ length: 6 }).map((_, i) => (
         <div
           key={i}
-          className="overflow-hidden rounded-2xl border border-line bg-white"
+          className="overflow-hidden rounded-lg border border-line bg-white"
         >
           <Skeleton className="h-36 w-full sm:h-40" />
           <div className="space-y-2.5 p-4">

@@ -8,7 +8,7 @@ import { CompanyAuthForm } from '@/components/mine/CompanyAuthForm'
 
 export const metadata: Metadata = {
   title: '企业认证 · 智印联创',
-  description: '完成企业实名认证，解锁平台全部交易功能。',
+  description: '提交企业资料，按流程完成平台信息审核。',
 }
 
 // 企业实名认证页（服务端组件）
@@ -48,7 +48,7 @@ export default async function CompanyAuthPage() {
             企业实名认证
           </h1>
           <p className="mt-2 text-sm text-ink-secondary">
-            完成认证后可发布订单、参与报价与集采拼单
+            审核通过后可发布需求、发布产能和提交报价沟通
           </p>
         </div>
 

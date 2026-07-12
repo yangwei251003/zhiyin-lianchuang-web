@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
 import { Badge } from '@/components/ui/Badge'
 import { AIArticleSummary } from '@/components/startup/AIArticleSummary'
+import { sanitizeArticleHtml } from '@/lib/content/sanitize'
 import type { Database } from '@/types/database'
 
 type ArticleRow = Database['public']['Tables']['articles']['Row']
@@ -73,6 +74,7 @@ export default async function ArticleDetailPage({
   >[]
 
   const tags = Array.isArray(articleRow.tags) ? articleRow.tags : []
+  const safeContent = sanitizeArticleHtml(articleRow.content)
 
   return (
     <main className="pb-16 min-h-screen bg-slate-50/50">
@@ -155,9 +157,9 @@ export default async function ArticleDetailPage({
 
           {/* 正文内容 */}
           <article className="mt-8">
-            <div 
+            <div
               className="article-content"
-              dangerouslySetInnerHTML={{ __html: articleRow.content }}
+              dangerouslySetInnerHTML={{ __html: safeContent }}
             />
           </article>
 

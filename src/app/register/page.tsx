@@ -6,7 +6,7 @@ import { RegisterForm } from '@/components/auth/RegisterForm'
 
 export const metadata: Metadata = {
   title: '注册 · 智印联创',
-  description: '创建智印联创账户，加入印刷行业 AI 智能撮合平台。',
+  description: '创建智印联创账户，使用印刷产业协同服务。',
 }
 
 export const dynamic = 'force-dynamic'

@@ -32,7 +32,7 @@ export async function generateMetadata({
   if (!purchase) return { title: '活动详情 · 智印联创' }
   return {
     title: `${purchase.title} · 集采详情 · 智印联创`,
-    description: `查看 ${purchase.title} 的集采详情并参团`,
+    description: `查看 ${purchase.title} 的采购意向信息并提交沟通需求`,
   }
 }
 
@@ -53,7 +53,7 @@ export default async function PurchaseDetailPage({
   if (!purchase) notFound()
   const purchaseRow = purchase as PurchaseRow
 
-  // 2. 检查当前用户是否已参团（不强制登录）
+  // 2. 检查当前用户是否已提交采购意向（不强制登录）
   const {
     data: { session },
   } = await supabase.auth.getSession()
@@ -67,12 +67,6 @@ export default async function PurchaseDetailPage({
       .maybeSingle()
     myOrder = (orderData as PurchaseOrderRow | null) ?? null
   }
-
-  // 3. 获取参团人次（purchase_orders 总数）
-  const { count: orderCount } = await supabase
-    .from('purchase_orders')
-    .select('id', { count: 'exact', head: true })
-    .eq('purchase_id', id)
 
   return (
     <main className="pb-12">
@@ -98,7 +92,6 @@ export default async function PurchaseDetailPage({
         <PurchaseDetail
           purchase={purchaseRow}
           myOrder={myOrder}
-          orderCount={orderCount ?? 0}
         />
       </Container>
     </main>

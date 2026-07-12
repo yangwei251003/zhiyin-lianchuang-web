@@ -1,15 +1,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Plus, Factory, ShoppingBag } from 'lucide-react'
+import { Factory, Plus, ShoppingBag } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
 import { OrderList } from '@/components/order/OrderList'
-import { PageHeader } from '@/components/layout/PageHeader'
 import type { Database } from '@/types/database'
 
 export const metadata: Metadata = {
   title: '订单大厅 · 智印联创',
-  description: '汇集全网印刷需求，在线投标接单，AI智能撮合，让产能变现更高效。',
+  description: '浏览公开印刷需求，提交需求或产能信息后与平台及合作方沟通。',
 }
 
 type OrderRow = Database['public']['Tables']['orders']['Row']
@@ -75,46 +74,49 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
     }))
 
   return (
-    <main className="pb-12">
-      {/* ===== 页头：企业级工业风格 ===== */}
-      <PageHeader
-        title="订单大厅"
-        subtitle="Order Hall · AI Smart Matching"
-        desc="汇集全网印刷需求，AI 智能撮合，在线投标接单，让产能变现更高效"
-        theme="blue"
-        badge="AI 智能撮合"
-        icon={<ShoppingBag className="h-3.5 w-3.5" />}
-        breadcrumbs={[{ label: '首页', href: '/' }, { label: '订单大厅' }]}
-        stats={[
-          { value: String(count ?? 0), label: '当前订单' },
-        ]}
-        actions={
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/orders/publish"
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-white px-5 text-sm font-semibold text-primary shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
-            >
-              <Plus className="h-4 w-4" />
-              发布订单
-            </Link>
-            <Link
-              href="/orders/publish-capacity"
-              className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/20"
-            >
-              <Factory className="h-4 w-4" />
-              发布产能
-            </Link>
-            <Link
-              href="/orders/capacities"
-              className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/20"
-            >
-              查看产能
-            </Link>
+    <main className="min-h-screen bg-[#F6F7F8] pb-12">
+      <section className="border-b border-[#D9DEE6] bg-white">
+        <Container className="py-8 sm:py-10">
+          <nav className="mb-4 text-xs text-ink-tertiary" aria-label="面包屑">
+            <Link href="/" className="hover:text-primary">首页</Link>
+            <span className="mx-1.5">/</span>
+            <span className="text-ink-secondary">订单大厅</span>
+          </nav>
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="print-index text-xs font-semibold">01 / 供需撮合</p>
+              <h1 className="mt-2 text-2xl font-bold text-ink-primary sm:text-3xl">订单大厅</h1>
+              <p className="mt-3 text-sm leading-6 text-ink-secondary">
+                浏览已公开的印刷需求。提交需求或产能信息后，平台将协助供需双方进行报价沟通；实际合作条款由双方确认。
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href="/orders/publish"
+                className="inline-flex h-10 items-center gap-2 rounded-sm bg-[#D97706] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#B45309]"
+              >
+                <Plus className="h-4 w-4" />
+                发布需求
+              </Link>
+              <Link
+                href="/orders/publish-capacity"
+                className="inline-flex h-10 items-center gap-2 rounded-sm border border-line bg-white px-4 text-sm font-semibold text-ink-primary transition-colors hover:border-primary hover:text-primary"
+              >
+                <Factory className="h-4 w-4" />
+                发布产能
+              </Link>
+              <Link
+                href="/orders/capacities"
+                className="inline-flex h-10 items-center gap-2 rounded-sm border border-line bg-white px-4 text-sm font-semibold text-ink-primary transition-colors hover:border-primary hover:text-primary"
+              >
+                <ShoppingBag className="h-4 w-4" />
+                查看产能
+              </Link>
+            </div>
           </div>
-        }
-      />
+        </Container>
+      </section>
 
-      {/* ===== 列表区：筛选 + 卡片 + 分页（客户端交互） ===== */}
       <Container className="mt-6">
         <OrderList
           initialOrders={ordersWithCount}

@@ -2,9 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Calculator, Wallet, Layers, HelpCircle, ArrowRight } from 'lucide-react'
+import { Calculator, Wallet, Layers, ArrowRight } from 'lucide-react'
 import { Container } from '@/components/layout/Container'
-import { Card } from '@/components/ui/Card'
 import { InvestmentCalculator } from '@/components/startup/InvestmentCalculator'
 
 export default function CalculatorPage() {
@@ -33,7 +32,7 @@ export default function CalculatorPage() {
             数智化测算中心
           </h1>
           <p className="mt-2 max-w-xl text-sm text-white/80">
-            平台提供“双轮驱动”测算体系：支持一键预算整体开店资金，以及快速评估单项印品的纸张利用率与放损率。
+            提供创业预算记录与画册用纸量估算。结果仅用于前期测算，实际生产请以工艺单、供应商报价和合同约定为准。
           </p>
         </Container>
       </section>
@@ -55,7 +54,7 @@ export default function CalculatorPage() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-900">创业资金投资计算器</h3>
                 <p className="mt-2 text-xs leading-relaxed text-slate-500">
-                  一键测算印刷创业所需的厂房租金、设备购置、原材料备货及员工工资开支，科学评估首期流动资金需求，精准测算回本周期。
+                  汇总厂房、设备、原材料和人员等自填预算项目，帮助梳理前期资金准备范围。
                 </p>
               </div>
               <div className="mt-6 flex items-center gap-1.5 text-xs font-semibold text-purple-600">
@@ -78,7 +77,7 @@ export default function CalculatorPage() {
                 </span>
                 <h3 className="text-lg font-bold text-slate-900">纸张损耗与工艺测算工装</h3>
                 <p className="mt-1 text-xs leading-relaxed text-slate-500">
-                  结合画册P数、克重、开数与加放损耗率公式，精准核算生产每本画册所需的令纸量与吨数，并拉取预测纸价实时测算物料成本结构。
+                  根据开本、页数、克重、印数和自填损耗率估算用纸张数、令数及重量；可选填已取得的供应商报价作材料预算参考。
                 </p>
               </div>
               <div className="mt-6 flex items-center gap-1.5 text-xs font-semibold text-blue-600">

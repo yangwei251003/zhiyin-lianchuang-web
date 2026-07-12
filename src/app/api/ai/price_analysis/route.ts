@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { zhipuChatCompletion, type ZhipuMessage } from '@/lib/ai/zhipu'
 import { getPriceAnalysisFallback } from '@/lib/ai/fallback'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
 interface RecentPrice {

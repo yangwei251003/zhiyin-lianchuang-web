@@ -35,7 +35,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 flex h-14 items-stretch border-t border-white/20 bg-white/75 backdrop-blur-xl shadow-glass md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-40 flex h-14 items-stretch border-t border-[#D9DEE6] bg-white md:hidden"
       aria-label="底部导航"
     >
       {items.map(({ label, href, icon: Icon }) => {
@@ -81,4 +81,3 @@ export function BottomNav() {
     </nav>
   )
 }
-

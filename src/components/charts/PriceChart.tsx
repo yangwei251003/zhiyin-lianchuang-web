@@ -37,10 +37,10 @@ interface ChartDatum {
 }
 
 // 颜色常量（对齐 tailwind.config.ts）
-const PRIMARY = '#2A6CDB'
-const WARNING = '#F0A040'
-const GRID = '#E2E8F0'
-const INK_TERTIARY = '#94A3B8'
+const PRIMARY = '#1E3A5F'
+const WARNING = '#D97706'
+const GRID = '#E5E7EB'
+const INK_TERTIARY = '#6B7280'
 
 // 自定义 Tooltip 内容
 interface ChartTooltipProps {

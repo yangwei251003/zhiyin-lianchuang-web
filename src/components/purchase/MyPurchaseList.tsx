@@ -16,7 +16,6 @@ import {
   PURCHASE_ORDER_STATUS_OPTIONS,
   PURCHASE_ORDER_STATUS_LABEL,
   PURCHASE_ORDER_STATUS_VARIANT,
-  formatPrice,
 } from '@/lib/purchase-config'
 import { cn } from '@/lib/utils'
 
@@ -93,7 +92,7 @@ export function MyPurchaseList({
       <div className="flex items-center justify-between text-xs text-ink-tertiary">
         <span>
           共 <span className="font-semibold text-ink-secondary">{totalCount}</span>{' '}
-          条参团记录
+          条采购意向
         </span>
       </div>
 
@@ -109,15 +108,15 @@ export function MyPurchaseList({
       ) : (
         <div className="rounded-xl border border-line bg-white shadow-sm">
           <EmptyState
-            title="您还没有参与过集采"
-            description="前往集采商城，参团享批量优惠价"
+            title="您还没有提交采购意向"
+            description="浏览公开采购信息，按需提交预计用量后进入沟通流程"
             action={
               <Link
                 href="/purchase"
                 className="inline-flex h-10 items-center justify-center gap-1.5 rounded-md bg-primary px-4 text-sm font-medium text-white shadow-sm transition-all duration-base ease-out-expo hover:-translate-y-0.5 hover:bg-primary-light"
               >
                 <ShoppingBag className="h-4 w-4" />
-                逛逛集采商城
+                浏览采购信息
               </Link>
             }
           />
@@ -154,36 +153,14 @@ function MyPurchaseItemCard({ item }: { item: MyPurchaseItem }) {
     <Link
       href={purchaseHref}
       className={cn(
-        'group flex items-center gap-3 rounded-2xl border border-line bg-canvas-card p-4 shadow-sm',
-        'transition-all duration-base ease-out-expo',
-        'hover:-translate-y-0.5 hover:shadow-md hover:border-primary/30',
+        'group flex items-center gap-3 rounded-lg border border-line bg-white p-4',
+        'transition-colors duration-fast',
+        'hover:border-primary/50 hover:bg-primary-bg-subtle/30',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40',
       )}
     >
-      {/* 左：商品图缩略 */}
-      <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-canvas">
-        {item.purchase?.product_image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={item.purchase.product_image}
-            alt={productName}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div
-            className="flex h-full w-full items-center justify-center"
-            style={{
-              background:
-                'linear-gradient(135deg, #E8F1FB 0%, #F5F9FE 100%)',
-            }}
-          >
-            <Package
-              className="h-6 w-6 text-primary/40"
-              strokeWidth={1.5}
-              aria-hidden
-            />
-          </div>
-        )}
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-canvas text-primary">
+        <Package className="h-5 w-5" strokeWidth={1.5} aria-hidden />
       </div>
 
       {/* 中：信息 */}
@@ -212,14 +189,11 @@ function MyPurchaseItemCard({ item }: { item: MyPurchaseItem }) {
         <div className="mt-2 flex items-end justify-between gap-2 border-t border-line-light pt-2">
           <div className="flex items-baseline gap-3">
             <span className="text-2xs text-ink-tertiary">
-              数量{' '}
+              预计数量{' '}
               <span className="font-semibold text-ink-secondary">
                 {item.quantity}
               </span>{' '}
               件
-            </span>
-            <span className="text-base font-bold text-primary">
-              ¥{formatPrice(item.total_price)}
             </span>
           </div>
         </div>
@@ -238,7 +212,7 @@ function MyPurchaseSkeleton() {
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}
-          className="flex items-center gap-3 rounded-2xl border border-line bg-white p-4"
+          className="flex items-center gap-3 rounded-lg border border-line bg-white p-4"
         >
           <Skeleton className="h-16 w-16 shrink-0 rounded-lg" />
           <div className="flex-1 space-y-2.5">

@@ -542,10 +542,107 @@ export type Database = {
         }
         Relationships: []
       }
+
+      // ===== 已授权市场价格 =====
+      market_prices: {
+        Row: {
+          id: string
+          paper_type: string
+          region: string
+          market: string
+          specification: string
+          price: number
+          unit: string
+          observed_at: string
+          source: string
+          source_reference: string | null
+          source_url: string | null
+          verification_status: 'pending' | 'verified' | 'rejected'
+          verified_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          paper_type: string
+          region: string
+          market?: string
+          specification: string
+          price: number
+          unit?: string
+          observed_at: string
+          source: string
+          source_reference?: string | null
+          source_url?: string | null
+          verification_status?: 'pending' | 'verified' | 'rejected'
+          verified_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          paper_type?: string
+          region?: string
+          market?: string
+          specification?: string
+          price?: number
+          unit?: string
+          observed_at?: string
+          source?: string
+          source_reference?: string | null
+          source_url?: string | null
+          verification_status?: 'pending' | 'verified' | 'rejected'
+          verified_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+
+      // ===== 用户反馈 =====
+      feedback_entries: {
+        Row: {
+          id: string
+          user_id: string
+          category: string
+          module: string
+          rating: number | null
+          content: string
+          contact: string
+          status: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          category: string
+          module?: string
+          rating?: number | null
+          content: string
+          contact?: string
+          status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          category?: string
+          module?: string
+          rating?: number | null
+          content?: string
+          contact?: string
+          status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
-    Views: {}
-    Functions: {}
-    Enums: {}
+    Views: Record<string, never>
+    Functions: Record<string, never>
+    Enums: Record<string, never>
   }
 }
 

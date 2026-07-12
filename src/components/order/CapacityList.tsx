@@ -57,19 +57,23 @@ export function CapacityList({
   pageSize,
   filters,
 }: CapacityListProps) {
+  const filterKey = `${filters.deviceType}:${filters.region}:${filters.status}`
+  return <CapacityListContent key={filterKey} initialCapacities={initialCapacities} totalCount={totalCount} currentPage={currentPage} pageSize={pageSize} filters={filters} />
+}
+
+function CapacityListContent({
+  initialCapacities,
+  totalCount,
+  currentPage,
+  pageSize,
+  filters,
+}: CapacityListProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
   const [deviceType, setDeviceType] = useState(filters.deviceType)
   const [region, setRegion] = useState(filters.region)
   const [status, setStatus] = useState(filters.status)
-
-  // URL 参数变化时同步本地状态
-  useEffect(() => {
-    setDeviceType(filters.deviceType)
-    setRegion(filters.region)
-    setStatus(filters.status)
-  }, [filters.deviceType, filters.region, filters.status])
 
   const navigate = (next: {
     deviceType?: string

@@ -1,16 +1,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { History, Package, UserCheck, TrendingDown, ArrowRight, PiggyBank, ShieldCheck } from 'lucide-react'
+import { ClipboardList, History, UserCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
 import { PurchaseList } from '@/components/purchase/PurchaseList'
-import { PurchaseDashboard } from '@/components/purchase/PurchaseDashboard'
-import { PageHeader } from '@/components/layout/PageHeader'
 import type { Database } from '@/types/database'
 
 export const metadata: Metadata = {
   title: '集采商城 · 智印联创',
-  description: '汇集印刷耗材联合集采活动，拼团更低价格，让采购更省钱。',
+  description: '收集印刷耗材采购意向，促进需求方、供货方的采购沟通。',
 }
 
 type PurchaseRow = Database['public']['Tables']['purchases']['Row']
@@ -52,77 +50,47 @@ export default async function PurchasePage({
   const purchaseList = (purchases ?? []) as PurchaseRow[]
 
   return (
-    <main className="pb-12 bg-slate-50 min-h-screen">
-      {/* ===== 页头 ===== */}
-      <PageHeader
-        title="集采商城"
-        subtitle="Purchase Mall · Centralized Procurement"
-        desc="联合集采，拼团更优惠。汇集印刷耗材集采活动，参团即享批发价，平均降本 8-15%"
-        theme="green"
-        badge="联合集采降本"
-        icon={<Package className="h-3.5 w-3.5" />}
-        breadcrumbs={[{ label: '首页', href: '/' }, { label: '集采商城' }]}
-        stats={[
-          { value: String(count ?? 0), label: '活跃集采项目' },
-        ]}
-        actions={
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/purchase/mine"
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-white px-5 text-sm font-semibold text-primary shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
-            >
-              <UserCheck className="h-4 w-4" />
-              我的集采
-            </Link>
-            <Link
-              href="/purchase/history"
-              className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/20"
-            >
-              <History className="h-4 w-4" />
-              历史集采
-            </Link>
-          </div>
-        }
-      />
-
-      {/* ===== 列表区 ===== */}
-      <Container className="mt-6 space-y-6">
-        
-        {/* 新增：集采降本联盟战报 */}
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
-              <PiggyBank className="h-5 w-5" />
+    <main className="min-h-screen bg-[#F6F7F8] pb-12">
+      <section className="border-b border-[#D9DEE6] bg-white">
+        <Container className="py-8 sm:py-10">
+          <nav className="mb-4 text-xs text-ink-tertiary" aria-label="面包屑">
+            <Link href="/" className="hover:text-primary">首页</Link>
+            <span className="mx-1.5">/</span>
+            <span className="text-ink-secondary">集采商城</span>
+          </nav>
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="print-index text-xs font-semibold">02 / 采购意向撮合</p>
+              <h1 className="mt-2 text-2xl font-bold text-ink-primary sm:text-3xl">集采商城</h1>
+              <p className="mt-3 text-sm leading-6 text-ink-secondary">
+                收集印刷耗材采购意向，帮助有相近需求的企业与供货方建立联系。本站不提供在线支付，价格、供货与交付以双方后续沟通确认为准。
+              </p>
             </div>
-            <div>
-              <span className="block text-3xs text-slate-400">已为联盟成员累计节省</span>
-              <span className="text-lg font-bold text-slate-800">¥241,850 <span className="text-3xs font-normal text-slate-400">元</span></span>
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href="/purchase/mine"
+                className="inline-flex h-10 items-center gap-2 rounded-sm bg-[#D97706] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#B45309]"
+              >
+                <UserCheck className="h-4 w-4" />
+                我的意向
+              </Link>
+              <Link
+                href="/purchase/history"
+                className="inline-flex h-10 items-center gap-2 rounded-sm border border-line bg-white px-4 text-sm font-semibold text-ink-primary transition-colors hover:border-primary hover:text-primary"
+              >
+                <History className="h-4 w-4" />
+                已归档活动
+              </Link>
             </div>
           </div>
-
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
-              <TrendingDown className="h-5 w-5" />
-            </div>
-            <div>
-              <span className="block text-3xs text-slate-400">首期拼团降本比例</span>
-              <span className="text-lg font-bold text-slate-800">低于均价 11.8% <span className="text-3xs font-normal text-slate-400">(以量换价)</span></span>
-            </div>
+          <div className="mt-5 flex items-center gap-2 border-l-2 border-[#D97706] bg-[#FFF9F0] px-3 py-2 text-xs leading-5 text-ink-secondary">
+            <ClipboardList className="h-4 w-4 shrink-0 text-success" />
+            仅展示经过平台审核后公开的采购信息；意向提交不构成交易、付款或供货承诺。
           </div>
+        </Container>
+      </section>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
-              <ShieldCheck className="h-5 w-5" />
-            </div>
-            <div>
-              <span className="block text-3xs text-slate-400">联盟集采累计总量</span>
-              <span className="text-lg font-bold text-slate-800">1,840 <span className="text-3xs font-normal text-slate-400">吨 (纸张/耗材)</span></span>
-            </div>
-          </div>
-        </section>
-
-        <PurchaseDashboard />
-        
+      <Container className="mt-6">
         <PurchaseList
           initialPurchases={purchaseList}
           totalCount={count ?? 0}

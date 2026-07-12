@@ -43,16 +43,20 @@ export function MentorList({
   filters,
   availableExpertise,
 }: MentorListProps) {
+  const filterKey = `${filters.expertise}:${filters.keyword}`
+  return <MentorListContent key={filterKey} initialMentors={initialMentors} filters={filters} availableExpertise={availableExpertise} />
+}
+
+function MentorListContent({
+  initialMentors,
+  filters,
+  availableExpertise,
+}: MentorListProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
   const [expertise, setExpertise] = useState(filters.expertise)
   const [keyword, setKeyword] = useState(filters.keyword)
-
-  useEffect(() => {
-    setExpertise(filters.expertise)
-    setKeyword(filters.keyword)
-  }, [filters.expertise, filters.keyword])
 
   // 关键词搜索防抖（500ms）
   useEffect(() => {

@@ -9,7 +9,7 @@ import { MessageList } from '@/components/message/MessageList'
 
 export const metadata: Metadata = {
   title: '消息中心 · 智印联创',
-  description: '查看系统通知、订单消息与集采提醒。',
+  description: '查看系统通知、订单沟通与采购意向提醒。',
 }
 
 const PAGE_SIZE = 10
@@ -25,7 +25,7 @@ export default async function MessagesPage() {
   const page = 1
 
   // 主查询：消息列表 + 总数
-  let messagesQuery = supabase
+  const messagesQuery = supabase
     .from('messages')
     .select('*', { count: 'exact' })
     .eq('user_id', session.user.id)
@@ -80,7 +80,7 @@ export default async function MessagesPage() {
                   消息中心
                 </h1>
                 <p className="mt-1 text-sm text-white/80">
-                  系统通知、订单消息与集采提醒，尽在掌握
+                  系统通知、订单沟通与采购意向提醒
                 </p>
               </div>
             </div>

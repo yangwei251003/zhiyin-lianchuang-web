@@ -6,7 +6,7 @@ import { PAPER_TYPES } from '@/lib/price-data'
 
 export interface PaperTypeTabsProps {
   current: string
-  paperTypes?: string[]
+  paperTypes?: readonly string[]
 }
 
 // 纸种切换 Tabs：当前纸种高亮（primary 蓝填充），点击跳转 /prediction/[paperType]
@@ -24,7 +24,7 @@ export function PaperTypeTabs({
 
   return (
     <div
-      className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-1"
+      className="-mx-1 flex items-center gap-1 overflow-x-auto border-b border-[#D9DEE6] px-1"
       role="tablist"
       aria-label="纸种切换"
     >
@@ -38,11 +38,11 @@ export function PaperTypeTabs({
             aria-selected={active}
             onClick={() => handleClick(paperType)}
             className={cn(
-              'inline-flex shrink-0 items-center rounded-full px-4 py-2 text-sm font-medium transition-all duration-base ease-out-expo',
+              'inline-flex shrink-0 items-center border-b-2 border-transparent px-4 py-3 text-sm font-medium transition-colors duration-fast',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30',
               active
-                ? 'bg-primary text-white shadow-blue'
-                : 'border border-line bg-white text-ink-secondary hover:border-primary/30 hover:text-primary',
+                ? 'border-[#D97706] bg-transparent text-[#173B63]'
+                : 'bg-transparent text-ink-secondary hover:border-primary/30 hover:text-primary',
             )}
           >
             {paperType}

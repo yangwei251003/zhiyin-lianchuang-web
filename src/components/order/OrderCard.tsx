@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { formatDistanceToNow } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
-import { MapPin, Wrench, Cpu, Leaf } from 'lucide-react'
+import { CalendarClock, MapPin, MessageSquare, Wrench } from 'lucide-react'
 import type { Database } from '@/types/database'
 import { Badge, type BadgeVariant } from '@/components/ui/Badge'
 import { cn } from '@/lib/utils'
@@ -53,22 +53,7 @@ function formatBudget(value: number): string {
   return value.toLocaleString('zh-CN')
 }
 
-// 稳定计算一个AI匹配度 (91-99%)
-function getAiMatchScore(id: string): number {
-  let hash = 0
-  for (let i = 0; i < id.length; i++) {
-    hash = id.charCodeAt(i) + ((hash << 5) - hash)
-  }
-  return 91 + (Math.abs(hash) % 9)
-}
-
-// 判定是否适用“绿色印刷”标签
-function checkIsGreen(title: string, desc: string | null, craft: string | null): boolean {
-  const text = `${title} ${desc || ''} ${craft || ''}`
-  return text.includes('绿色') || text.includes('环保') || text.includes('大豆油墨') || text.includes('无菌') || text.includes('纸')
-}
-
-// 订单卡片：列表页循环渲染，点击跳转详情
+// 订单卡片仅展示发布者填写或系统真实聚合的信息。
 export function OrderCard({
   order,
   className,
@@ -88,8 +73,6 @@ export function OrderCard({
   }
 
   const chips = [order.craft, order.region].filter(Boolean)
-  const aiScore = getAiMatchScore(order.id)
-  const isGreen = checkIsGreen(order.title, order.description, order.craft)
 
   return (
     <article
@@ -103,9 +86,9 @@ export function OrderCard({
         }
       }}
       className={cn(
-        'group relative flex overflow-hidden rounded-2xl border border-line bg-canvas-card shadow-sm',
-        'cursor-pointer transition-all duration-base ease-out-expo',
-        'hover:-translate-y-1 hover:shadow-lg hover:border-primary/30',
+        'group relative flex overflow-hidden rounded-lg border border-line bg-white',
+        'cursor-pointer transition-colors duration-fast',
+        'hover:border-primary/50 hover:bg-primary-bg-subtle/30',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40',
         className,
       )}
@@ -114,22 +97,12 @@ export function OrderCard({
       <div className={cn('w-1.5 shrink-0', categoryBar)} aria-hidden />
 
       <div className="flex flex-1 flex-col gap-2.5 p-4">
-        {/* 顶部：分类标签 + AI撮合度 + 状态 Badge */}
+        {/* 顶部：分类与状态 */}
         <div className="flex items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="inline-flex items-center rounded-full bg-primary-bg px-2.5 py-0.5 text-xs font-semibold text-primary">
+            <span className="inline-flex items-center rounded-md bg-primary-bg px-2 py-1 text-xs font-semibold text-primary">
               {order.category}
             </span>
-            <span className="inline-flex items-center gap-0.5 rounded-full bg-purple-50 px-2.5 py-0.5 text-3xs font-bold text-purple-600 border border-purple-100">
-              <Cpu className="h-2.5 w-2.5" />
-              AI 撮合 {aiScore}%
-            </span>
-            {isGreen && (
-              <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-50 px-2 py-0.5 text-3xs font-bold text-emerald-600 border border-emerald-100">
-                <Leaf className="h-2.5 w-2.5" />
-                绿色环保
-              </span>
-            )}
           </div>
           <Badge variant={status.variant} size="md">
             {status.label}
@@ -148,40 +121,42 @@ export function OrderCard({
           </p>
         )}
 
-        {/* 参数胶囊：工艺 / 地区 */}
+        {/* 需求要点 */}
         {chips.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5">
             {order.craft && (
-              <span className="inline-flex items-center gap-0.5 rounded-full bg-canvas px-2 py-0.5 text-2xs text-ink-secondary">
+              <span className="inline-flex items-center gap-1 rounded-md bg-canvas px-2 py-1 text-2xs text-ink-secondary">
                 <Wrench className="h-3 w-3" />
                 {order.craft}
               </span>
             )}
             {order.region && (
-              <span className="inline-flex items-center gap-0.5 rounded-full bg-canvas px-2 py-0.5 text-2xs text-ink-secondary">
+              <span className="inline-flex items-center gap-1 rounded-md bg-canvas px-2 py-1 text-2xs text-ink-secondary">
                 <MapPin className="h-3 w-3" />
                 {order.region}
               </span>
             )}
             {typeof order.bid_count === 'number' && (
-              <span className="inline-flex items-center rounded-full bg-canvas px-2 py-0.5 text-2xs text-ink-secondary">
-                {order.bid_count} 条报价
+              <span className="inline-flex items-center gap-1 rounded-md bg-canvas px-2 py-1 text-2xs text-ink-secondary">
+                <MessageSquare className="h-3 w-3" />
+                {order.bid_count} 条沟通记录
               </span>
             )}
           </div>
         )}
 
-        {/* 底部：预算强调 + 相对时间 */}
+        {/* 底部：预算区间与发布时间 */}
         <div className="mt-1 flex items-end justify-between gap-2 border-t border-line-light pt-2.5">
           <div className="flex flex-col">
-            <span className="text-2xs text-ink-tertiary">预算</span>
-            <span className="text-base font-bold text-primary">
+            <span className="text-2xs text-ink-tertiary">发布预算区间</span>
+            <span className="text-sm font-semibold text-ink-primary">
               ¥{formatBudget(order.budget_min)}
               <span className="mx-0.5 text-ink-tertiary">~</span>
               ¥{formatBudget(order.budget_max)}
             </span>
           </div>
-          <span className="shrink-0 text-2xs text-ink-tertiary">
+          <span className="inline-flex shrink-0 items-center gap-1 text-2xs text-ink-tertiary">
+            <CalendarClock className="h-3 w-3" />
             {formatDistanceToNow(new Date(order.created_at), {
               addSuffix: true,
               locale: zhCN,

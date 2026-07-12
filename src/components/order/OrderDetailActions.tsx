@@ -61,7 +61,7 @@ export function OrderDetailActions({
   if (!isLoggedIn) {
     return (
       <div className="flex flex-wrap items-center gap-3">
-        <Link href="/login">
+        <Link href={`/login?from=${encodeURIComponent(`/orders/${orderId}`)}`}>
           <Button leftIcon={<LogIn className="h-4 w-4" />}>
             登录后可投标
           </Button>

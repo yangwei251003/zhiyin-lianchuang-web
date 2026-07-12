@@ -1,113 +1,67 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Users } from 'lucide-react'
-import { createClient } from '@/lib/supabase/server'
+import { ArrowRight, CalendarCheck, Users } from 'lucide-react'
 import { Container } from '@/components/layout/Container'
-import { MentorList } from '@/components/startup/MentorList'
-import type { Database } from '@/types/database'
+import { PUBLIC_MENTORS } from '@/lib/public-content'
 
 export const metadata: Metadata = {
   title: '创业导师 · 智印联创',
-  description: '资深印刷行业专家 1 对 1 创业指导，设备选型、成本控制、客户开发、电商运营。',
+  description: '查看项目已确认的校内专业导师和企业产业导师信息。',
 }
 
-type MentorRow = Database['public']['Tables']['mentors']['Row']
-
-interface MentorsPageProps {
-  searchParams: Promise<{ [key: string]: string | undefined }>
-}
-
-// 创业导师列表页（服务端组件）
-// 筛选通过 URL searchParams 驱动：服务端读取参数重新查询
-export default async function MentorsPage({ searchParams }: MentorsPageProps) {
-  const params = await searchParams
-  const expertise = params.expertise || 'all'
-  const keyword = (params.keyword || '').trim()
-
-  const supabase = await createClient()
-
-  // 主查询：导师列表
-  let query = supabase.from('mentors').select('*')
-
-  if (expertise !== 'all') {
-    // expertise 数组 contains 筛选
-    query = query.contains('expertise', [expertise])
-  }
-  if (keyword) {
-    const kw = keyword.replace(/,/g, '\\,')
-    query = query.or(
-      `name.ilike.%${kw}%,title.ilike.%${kw}%,company.ilike.%${kw}%`,
-    )
-  }
-
-  const { data: mentors } = await query.order('created_at', {
-    ascending: false,
-  })
-  const mentorList = (mentors ?? []) as MentorRow[]
-
-  // 聚合可选专长：取所有导师的 expertise 去重
-  const { data: allExpertiseRows } = await supabase
-    .from('mentors')
-    .select('expertise')
-  const expertiseSet = new Set<string>()
-  for (const row of allExpertiseRows ?? []) {
-    const arr = (row as { expertise: string[] | null }).expertise
-    if (Array.isArray(arr)) {
-      arr.forEach((t) => expertiseSet.add(t))
-    }
-  }
-  const availableExpertise = Array.from(expertiseSet).sort()
-
+export default function MentorsPage() {
   return (
     <main className="pb-12">
-      {/* ===== 页头 ===== */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            'linear-gradient(135deg, #2BAE6E 0%, #4ECB9E 60%, #6FD9B5 100%)',
-        }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%)',
-          }}
-        />
-        <Container className="relative py-10 sm:py-12">
-          <nav
-            className="mb-3 text-xs text-white/70"
-            aria-label="面包屑"
-          >
-            <Link href="/" className="hover:text-white">
-              首页
-            </Link>
+      <section className="border-b-2 border-environment bg-white">
+        <Container className="py-8 sm:py-10">
+          <nav className="mb-4 text-xs text-ink-tertiary" aria-label="面包屑">
+            <Link href="/" className="hover:text-primary">首页</Link>
             <span className="mx-1.5">/</span>
-            <Link href="/startup" className="hover:text-white">
-              创业孵化
-            </Link>
+            <Link href="/startup" className="hover:text-primary">创业孵化</Link>
             <span className="mx-1.5">/</span>
-            <span className="text-white">创业导师</span>
+            <span className="text-ink-secondary">创业导师</span>
           </nav>
-          <h1 className="flex items-center gap-2 text-2xl font-bold text-white sm:text-3xl">
-            <Users className="h-7 w-7" />
+          <p className="text-xs font-semibold text-environment">导师支持</p>
+          <h1 className="mt-2 flex items-center gap-2 text-2xl font-bold text-ink-primary sm:text-3xl">
+            <Users className="h-6 w-6 text-environment" />
             创业导师
           </h1>
-          <p className="mt-2 max-w-xl text-sm text-white/80 sm:text-base">
-            资深印刷行业专家 1 对 1 指导，覆盖设备选型、成本控制、客户开发、电商运营
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-ink-secondary">
+            以下导师信息以项目商业计划书为依据。咨询范围、时间和具体安排将在双方确认后另行沟通。
           </p>
         </Container>
       </section>
 
-      {/* ===== 列表区 ===== */}
       <Container className="mt-6">
-        <MentorList
-          initialMentors={mentorList}
-          filters={{ expertise, keyword }}
-          availableExpertise={availableExpertise}
-        />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {PUBLIC_MENTORS.map((mentor) => (
+            <article key={mentor.name} className="rounded-lg border border-line bg-white p-5">
+              <div className="flex items-start gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-environment-bg text-base font-semibold text-environment">
+                  {mentor.name.slice(0, 1)}
+                </span>
+                <div className="min-w-0">
+                  <h2 className="text-lg font-semibold text-ink-primary">{mentor.name}</h2>
+                  <p className="mt-1 text-sm text-ink-secondary">{mentor.title}</p>
+                  <p className="mt-3 text-sm leading-6 text-ink-secondary">{mentor.expertise}</p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <section className="mt-6 flex flex-col gap-4 border-l-2 border-environment bg-environment-bg px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="flex items-center gap-2 text-sm font-semibold text-ink-primary">
+              <CalendarCheck className="h-4 w-4 text-environment" />
+              提交咨询需求
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-ink-secondary">导师排班与咨询流程确认后，平台会依据提交内容安排后续联系。</p>
+          </div>
+          <Link href="/feedback" className="inline-flex h-10 shrink-0 items-center gap-1 rounded-md bg-primary px-4 text-sm font-semibold text-white hover:bg-primary-light">
+            提交需求 <ArrowRight className="h-4 w-4" />
+          </Link>
+        </section>
       </Container>
     </main>
   )

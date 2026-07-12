@@ -98,7 +98,7 @@ export default async function MinePage() {
             我的中心
           </h1>
           <p className="mt-2 text-sm text-ink-secondary">
-            管理个人资料、交易记录与企业认证
+            管理个人资料、参与记录与企业资料
           </p>
         </div>
 

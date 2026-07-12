@@ -1,108 +1,50 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Lightbulb } from 'lucide-react'
-import { createClient } from '@/lib/supabase/server'
+import { BookOpen, Lightbulb } from 'lucide-react'
 import { Container } from '@/components/layout/Container'
-import { CaseList } from '@/components/startup/CaseList'
-import type { Database } from '@/types/database'
+import { EmptyState } from '@/components/common/EmptyState'
 
 export const metadata: Metadata = {
   title: '创业案例 · 智印联创',
-  description: '印刷行业真实创业案例，从设备选型到月营收突破的成长故事。',
+  description: '查看经案例主体授权并完成审核后公开的创业实践材料。',
 }
 
-type CaseRow = Database['public']['Tables']['cases']['Row']
-
-interface CasesPageProps {
-  searchParams: Promise<{ [key: string]: string | undefined }>
-}
-
-// 创业案例列表页（服务端组件）
-// 筛选通过 URL searchParams 驱动：服务端读取参数重新查询
-export default async function CasesPage({ searchParams }: CasesPageProps) {
-  const params = await searchParams
-  const industry = params.industry || 'all'
-  const keyword = (params.keyword || '').trim()
-
-  const supabase = await createClient()
-
-  // 主查询：案例列表
-  let query = supabase.from('cases').select('*')
-
-  if (industry !== 'all') {
-    query = query.eq('industry', industry)
-  }
-  if (keyword) {
-    const kw = keyword.replace(/,/g, '\\,')
-    query = query.or(`title.ilike.%${kw}%,summary.ilike.%${kw}%`)
-  }
-
-  const { data: cases } = await query.order('created_at', {
-    ascending: false,
-  })
-  const caseList = (cases ?? []) as CaseRow[]
-
-  // 聚合可选行业：取所有案例的 industry 去重
-  const { data: allIndustryRows } = await supabase
-    .from('cases')
-    .select('industry')
-  const industrySet = new Set<string>()
-  for (const row of allIndustryRows ?? []) {
-    const ind = (row as { industry: string | null }).industry
-    if (ind) industrySet.add(ind)
-  }
-  const availableIndustries = Array.from(industrySet).sort()
-
+export default function CasesPage() {
   return (
     <main className="pb-12">
-      {/* ===== 页头 ===== */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            'linear-gradient(135deg, #F08035 0%, #F5A66B 60%, #F8C08A 100%)',
-        }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%)',
-          }}
-        />
-        <Container className="relative py-10 sm:py-12">
-          <nav
-            className="mb-3 text-xs text-white/70"
-            aria-label="面包屑"
-          >
-            <Link href="/" className="hover:text-white">
-              首页
-            </Link>
+      <section className="border-b-2 border-society bg-white">
+        <Container className="py-8 sm:py-10">
+          <nav className="mb-4 text-xs text-ink-tertiary" aria-label="面包屑">
+            <Link href="/" className="hover:text-primary">首页</Link>
             <span className="mx-1.5">/</span>
-            <Link href="/startup" className="hover:text-white">
-              创业孵化
-            </Link>
+            <Link href="/startup" className="hover:text-primary">创业孵化</Link>
             <span className="mx-1.5">/</span>
-            <span className="text-white">创业案例</span>
+            <span className="text-ink-secondary">创业案例</span>
           </nav>
-          <h1 className="flex items-center gap-2 text-2xl font-bold text-white sm:text-3xl">
-            <Lightbulb className="h-7 w-7" />
+          <p className="text-xs font-semibold text-society">公开实践材料</p>
+          <h1 className="mt-2 flex items-center gap-2 text-2xl font-bold text-ink-primary sm:text-3xl">
+            <Lightbulb className="h-6 w-6 text-society" />
             创业案例
           </h1>
-          <p className="mt-2 max-w-xl text-sm text-white/80 sm:text-base">
-            真实印刷创业者的成长故事，从起步到盈利的完整路径参考
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-ink-secondary">
+            仅展示已获案例主体授权且完成审核的内容。平台不公开未经确认的投入、营收、客户或经营结果。
           </p>
         </Container>
       </section>
 
-      {/* ===== 列表区 ===== */}
       <Container className="mt-6">
-        <CaseList
-          initialCases={caseList}
-          filters={{ industry, keyword }}
-          availableIndustries={availableIndustries}
-        />
+        <div className="rounded-lg border border-line bg-white">
+          <EmptyState
+            title="公开案例征集中"
+            description="案例主体授权和事实核验完成后，相关内容会在此处发布。"
+            icon={<BookOpen className="h-10 w-10" strokeWidth={1.5} />}
+            action={
+              <Link href="/feedback" className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-semibold text-white hover:bg-primary-light">
+                提交案例线索
+              </Link>
+            }
+          />
+        </div>
       </Container>
     </main>
   )

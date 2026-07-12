@@ -16,7 +16,7 @@ export function AuthShell({ children }: AuthShellProps) {
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/auth_side.jpg"
-            alt="工业印刷 AI 平台"
+            alt="印刷产业协同服务"
             fill
             priority
             className="object-cover"
@@ -65,7 +65,7 @@ export function AuthShell({ children }: AuthShellProps) {
               color: '#7BA6F0',
             }}
           >
-            Industrial AI Ecosystem
+            印刷产业协同服务
           </span>
           <h2 className="text-3xl font-extrabold leading-tight text-white xl:text-4xl">
             连接印刷全产业链
@@ -73,8 +73,8 @@ export function AuthShell({ children }: AuthShellProps) {
             开启数字智造新时代
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-white/70">
-            汇聚智能订单匹配、集中采购商城、AI 纸价大盘预测以及创业孵化服务，
-            通过全流程数字化协同，帮助印刷行业上下游降低成本、提升效率、绿色低碳发展。
+            提供需求撮合、采购意向沟通、来源标注的纸价信息和创业孵化服务。
+            业务规则、数据来源和服务开放范围以页面最新说明为准。
           </p>
 
           {/* 三大价值色条 */}
@@ -111,4 +111,3 @@ function ValuePill({ color, label }: { color: string; label: string }) {
     </span>
   )
 }
-

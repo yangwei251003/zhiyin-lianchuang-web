@@ -33,19 +33,19 @@ export const PURCHASE_STATUS_BAR: Record<string, string> = {
 }
 
 // ===== 集采订单状态 =====
-// pending=待支付 / paid=已付款 / shipped=已发货 / completed=已完成
+// 历史表沿用 purchase_orders 名称，但当前产品语义为采购意向沟通，不含站内支付。
 export const PURCHASE_ORDER_STATUS_OPTIONS: StatusOption[] = [
   { value: 'all', label: '全部' },
-  { value: 'pending', label: '待支付' },
-  { value: 'paid', label: '已付款' },
-  { value: 'shipped', label: '已发货' },
+  { value: 'pending', label: '待沟通' },
+  { value: 'paid', label: '已确认' },
+  { value: 'shipped', label: '已安排' },
   { value: 'completed', label: '已完成' },
 ]
 
 export const PURCHASE_ORDER_STATUS_LABEL: Record<string, string> = {
-  pending: '待支付',
-  paid: '已付款',
-  shipped: '已发货',
+  pending: '待沟通',
+  paid: '已确认',
+  shipped: '已安排',
   completed: '已完成',
 }
 

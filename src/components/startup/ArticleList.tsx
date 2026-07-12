@@ -52,17 +52,23 @@ export function ArticleList({
   filters,
   availableTags,
 }: ArticleListProps) {
+  const filterKey = `${filters.tag}:${filters.keyword}`
+  return <ArticleListContent key={filterKey} initialArticles={initialArticles} totalCount={totalCount} currentPage={currentPage} pageSize={pageSize} filters={filters} availableTags={availableTags} />
+}
+
+function ArticleListContent({
+  initialArticles,
+  totalCount,
+  currentPage,
+  pageSize,
+  filters,
+  availableTags,
+}: ArticleListProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
   const [tag, setTag] = useState(filters.tag)
   const [keyword, setKeyword] = useState(filters.keyword)
-
-  // URL 参数变化时同步本地状态
-  useEffect(() => {
-    setTag(filters.tag)
-    setKeyword(filters.keyword)
-  }, [filters.tag, filters.keyword])
 
   // 关键词搜索防抖（500ms）
   useEffect(() => {

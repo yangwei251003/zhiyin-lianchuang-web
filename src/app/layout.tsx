@@ -9,18 +9,18 @@ import { BottomNav } from '@/components/layout/BottomNav'
 
 export const metadata: Metadata = {
   title: {
-    default: '智印联创 · 印刷产业 AI 协同平台',
+    default: '智印联创 · 印刷产业协同服务平台',
     template: '%s · 智印联创',
   },
-  description: '智印联创 — 印刷行业领先的 AI 智能撮合与纸价预测平台。汇聚订单撮合、集中采购、创业孵化、AI纸价预测四大核心能力，连接印刷产业上下游，驱动数字化转型与智能制造升级。',
-  keywords: ['印刷平台', 'AI印刷', '智印联创', '纸价预测', '印刷订单', '集采商城', '印刷供应链', '数字印刷', '智能制造'],
+  description: '智印联创提供印刷需求撮合、采购意向沟通、来源标注的纸价信息与创业孵化服务。',
+  keywords: ['印刷平台', '智印联创', '纸价信息', '印刷订单', '集采商城', '印刷供应链', '数字印刷'],
   authors: [{ name: '智印联创' }],
   creator: '智印联创',
   openGraph: {
     type: 'website',
     locale: 'zh_CN',
-    title: '智印联创 · 印刷产业 AI 协同平台',
-    description: '印刷行业领先的AI智能撮合与纸价预测平台，连接印刷产业上下游',
+    title: '智印联创 · 印刷产业协同服务平台',
+    description: '提供印刷需求撮合、采购意向沟通、纸价信息与创业孵化服务',
     siteName: '智印联创',
   },
   robots: {

@@ -128,7 +128,7 @@ export function MineContent({
     {
       icon: Users,
       value: stats.purchases,
-      label: '我的集采',
+      label: '采购意向',
       href: '/purchase/mine',
       accent: 'environment',
       badge: badges.pendingPurchases,
@@ -144,7 +144,7 @@ export function MineContent({
 
   const menuGroups: MenuGroup[] = [
     {
-      title: '交易相关',
+      title: '参与记录',
       items: [
         {
           icon: ShoppingBag,
@@ -162,8 +162,8 @@ export function MineContent({
         },
         {
           icon: Users,
-          title: '我的集采',
-          desc: '集采订单与进度',
+          title: '采购意向',
+          desc: '查看已提交的采购沟通意向',
           href: '/purchase/mine',
           badge: badges.pendingPurchases,
         },
@@ -315,6 +315,8 @@ function Avatar({
 
   if (avatarUrl) {
     return (
+      // Avatar URLs are user-provided and may not be known at build time.
+      // eslint-disable-next-line @next/next/no-img-element
       <img
         src={avatarUrl}
         alt={nickname}

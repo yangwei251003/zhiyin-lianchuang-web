@@ -31,7 +31,7 @@ const navItems: NavItem[] = [
   { label: '集采商城', href: '/purchase' },
   { label: '创业孵化', href: '/startup' },
   { label: '技术培训', href: '/training' },
-  { label: 'AI 预测',  href: '/prediction/铜版纸' },
+  { label: '纸价信息', href: '/prediction/铜版纸' },
   { label: '消息',     href: '/messages' },
 ]
 
@@ -52,7 +52,7 @@ function Avatar({ profile }: AvatarProps) {
     )
   }
   return (
-    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-dark text-sm font-semibold text-white shadow-blue-sm">
+    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
       {initial}
     </span>
   )
@@ -62,14 +62,17 @@ function MenuLink({
   href,
   icon,
   label,
+  onNavigate,
 }: {
   href: string
   icon: ReactNode
   label: string
+  onNavigate?: () => void
 }) {
   return (
     <Link
       href={href}
+      onClick={onNavigate}
       className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-ink-secondary transition-all duration-fast hover:bg-primary/5 hover:text-primary"
     >
       <span className="text-ink-tertiary">{icon}</span>
@@ -86,28 +89,12 @@ export function Header() {
   const profile  = useAuthStore((s) => s.profile)
   const signOut  = useAuthStore((s) => s.signOut)
 
-  const [scrolled,    setScrolled]    = useState(false)
   const [drawerOpen,  setDrawerOpen]  = useState(false)
   const [menuOpen,    setMenuOpen]    = useState(false)
   const unread              = useUIStore((s) => s.unreadCount)
   const refreshUnreadCount  = useUIStore((s) => s.refreshUnreadCount)
   const setUnreadCount      = useUIStore((s) => s.setUnreadCount)
   const menuRef = useRef<HTMLDivElement>(null)
-
-  // 首页时 header 透明（需要区分是否是首页）
-  const isHome = pathname === '/'
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  useEffect(() => {
-    setDrawerOpen(false)
-    setMenuOpen(false)
-  }, [pathname])
 
   useEffect(() => {
     if (!menuOpen) return
@@ -136,11 +123,7 @@ export function Header() {
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href)
 
-  // 首页未滚动：完全透明（文字根据浅色背景改为深色）
-  // 首页已滚动 / 其他页面：毛玻璃白色
-  const headerBg = isHome && !scrolled
-    ? 'bg-transparent border-transparent'
-    : 'bg-white/88 border-white/30 shadow-sm backdrop-blur-xl'
+  const headerBg = 'bg-white border-[#D9DEE6]'
 
   const navTextColor = (href: string) => {
     return isActive(href)
@@ -148,18 +131,17 @@ export function Header() {
       : 'text-ink-secondary hover:text-ink-primary'
   }
 
-  const logoTextColor = 'text-ink-primary'
   const menuBtnColor  = 'text-ink-primary hover:bg-canvas'
 
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 w-full border-b transition-all duration-slow ease-out-expo',
+        'sticky top-0 z-50 w-full border-b bg-white/95 transition-colors duration-fast supports-[backdrop-filter]:backdrop-blur-sm',
         headerBg,
       )}
     >
       <Container>
-        <div className="flex h-16 items-center justify-between gap-4 lg:h-[68px]">
+        <div className="flex h-16 items-center justify-between gap-4 lg:h-[72px]">
 
           {/* ===== Logo ===== */}
           <Link
@@ -179,20 +161,20 @@ export function Header() {
           </Link>
 
           {/* ===== 桌面主菜单 ===== */}
-          <nav className="hidden flex-1 items-center justify-center gap-0.5 lg:flex" aria-label="主导航">
+          <nav className="hidden flex-1 items-center justify-center gap-1 lg:flex" aria-label="主导航">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'relative rounded-md px-3 py-2 text-sm transition-all duration-fast',
+                  'relative px-3 py-2.5 text-sm transition-colors duration-fast',
                   navTextColor(item.href),
                 )}
               >
                 {item.label}
                 {/* Active 底部指示线 */}
                 {isActive(item.href) && (
-                  <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-primary" />
+                  <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#D97706]" />
                 )}
                 {/* 消息红点 */}
                 {item.href === '/messages' && unread > 0 && (
@@ -209,7 +191,7 @@ export function Header() {
                 {/* 消息铃铛 */}
                 <Link
                   href="/messages"
-                  className="relative flex h-9 w-9 items-center justify-center rounded-full transition-colors text-ink-secondary hover:bg-canvas hover:text-ink-primary"
+                  className="relative flex h-9 w-9 items-center justify-center rounded-sm transition-colors text-ink-secondary hover:bg-primary/5 hover:text-primary"
                   aria-label="消息"
                 >
                   <Bell className="h-5 w-5" />
@@ -225,7 +207,7 @@ export function Header() {
                   <button
                     type="button"
                     onClick={() => setMenuOpen((v) => !v)}
-                    className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2.5 transition-all duration-fast hover:bg-canvas"
+                    className="flex items-center gap-2 rounded-sm py-1 pl-1 pr-2.5 transition-colors duration-fast hover:bg-primary/5"
                     aria-label="用户菜单"
                     aria-expanded={menuOpen}
                   >
@@ -238,9 +220,9 @@ export function Header() {
 
                   {/* 下拉菜单 */}
                   {menuOpen && (
-                    <div className="absolute right-0 mt-2 w-52 overflow-hidden rounded-xl border border-line/80 bg-white shadow-xl">
+                    <div className="absolute right-0 mt-2 w-52 overflow-hidden rounded-sm border border-line bg-white">
                       {/* 用户信息头 */}
-                      <div className="border-b border-line/60 bg-gradient-to-br from-primary-bg to-white px-4 py-3">
+                      <div className="border-b border-line bg-primary-bg px-4 py-3">
                         <p className="truncate text-sm font-semibold text-ink-primary">
                           {profile?.nickname ?? '用户'}
                         </p>
@@ -253,11 +235,13 @@ export function Header() {
                           href="/mine"
                           icon={<UserIcon className="h-4 w-4" />}
                           label="我的中心"
+                          onNavigate={() => setMenuOpen(false)}
                         />
                         <MenuLink
                           href="/mine/auth"
                           icon={<ShieldCheck className="h-4 w-4" />}
                           label="企业认证"
+                          onNavigate={() => setMenuOpen(false)}
                         />
                       </div>
                       <div className="border-t border-line/60 py-1">
@@ -279,14 +263,14 @@ export function Header() {
                 <button
                   type="button"
                   onClick={() => router.push('/login')}
-                  className="rounded-lg px-4 py-2 text-sm font-medium transition-all duration-fast text-ink-secondary hover:bg-canvas hover:text-ink-primary"
+                  className="rounded-sm px-4 py-2 text-sm font-medium transition-colors duration-fast text-ink-secondary hover:bg-primary/5 hover:text-primary"
                 >
                   登录
                 </button>
                 <button
                   type="button"
                   onClick={() => router.push('/register')}
-                  className="group inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-4 text-sm font-semibold text-white shadow-blue transition-all duration-fast hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-blue-lg"
+                  className="group inline-flex h-10 items-center gap-1.5 rounded-sm bg-[#D97706] px-4 text-sm font-semibold text-white transition-colors duration-fast hover:bg-[#B45309]"
                 >
                   免费入驻
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-fast group-hover:translate-x-0.5" />
@@ -299,7 +283,7 @@ export function Header() {
           <button
             type="button"
             className={cn(
-              'inline-flex h-10 w-10 items-center justify-center rounded-lg transition-all duration-fast lg:hidden',
+              'inline-flex h-11 w-11 items-center justify-center rounded-sm transition-colors duration-fast lg:hidden',
               menuBtnColor,
             )}
             onClick={() => setDrawerOpen((v) => !v)}
@@ -315,22 +299,18 @@ export function Header() {
         </div>
       </Container>
 
-      {/* ===== CMYK 装饰色条（首页透明时隐藏）===== */}
-      {scrolled || !isHome ? (
-        <div className="h-[2px] w-full cmyk-bar opacity-70" aria-hidden />
-      ) : null}
-
       {/* ===== 移动端抽屉菜单 ===== */}
       {drawerOpen && (
-        <div className="border-t border-line/50 bg-white/95 backdrop-blur-xl shadow-lg lg:hidden">
+        <div className="border-t border-line bg-white lg:hidden">
           <Container>
             <nav className="flex flex-col gap-0.5 py-3" aria-label="移动端导航">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={() => setDrawerOpen(false)}
                   className={cn(
-                    'flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all',
+                    'flex min-h-11 items-center justify-between rounded-sm px-4 py-3 text-sm font-medium transition-colors',
                     isActive(item.href)
                       ? 'bg-primary/8 text-primary'
                       : 'text-ink-primary hover:bg-canvas',
@@ -348,19 +328,19 @@ export function Header() {
               <div className="mt-2 flex flex-col gap-2 border-t border-line/50 pt-3">
                 {user ? (
                   <>
-                    <div className="flex items-center gap-3 rounded-xl bg-canvas px-4 py-3">
+                    <div className="flex items-center gap-3 rounded-sm bg-canvas px-4 py-3">
                       <Avatar profile={profile} />
                       <div>
                         <p className="text-sm font-semibold text-ink-primary">{profile?.nickname ?? '用户'}</p>
                         <p className="text-xs text-ink-tertiary">{profile?.email}</p>
                       </div>
                     </div>
-                    <Link href="/mine"          className="rounded-xl px-4 py-2.5 text-sm text-ink-primary hover:bg-canvas">我的中心</Link>
-                    <Link href="/mine/auth"     className="rounded-xl px-4 py-2.5 text-sm text-ink-primary hover:bg-canvas">企业认证</Link>
+                    <Link href="/mine" onClick={() => setDrawerOpen(false)} className="rounded-sm px-4 py-2.5 text-sm text-ink-primary hover:bg-canvas">我的中心</Link>
+                    <Link href="/mine/auth" onClick={() => setDrawerOpen(false)} className="rounded-sm px-4 py-2.5 text-sm text-ink-primary hover:bg-canvas">企业认证</Link>
                     <button
                       type="button"
                       onClick={handleSignOut}
-                      className="rounded-xl px-4 py-2.5 text-left text-sm text-danger hover:bg-danger/5"
+                      className="rounded-sm px-4 py-2.5 text-left text-sm text-danger hover:bg-danger/5"
                     >
                       退出登录
                     </button>

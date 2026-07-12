@@ -60,7 +60,7 @@ const typeConfig: Record<MessageType, TypeConfig> = {
     icon: Package,
     bg: 'bg-success-bg',
     text: 'text-success',
-    label: '集采提醒',
+    label: '采购意向提醒',
   },
 }
 
@@ -68,7 +68,7 @@ const tabs: { key: string; label: string }[] = [
   { key: 'all', label: '全部' },
   { key: 'system', label: '系统通知' },
   { key: 'order', label: '订单消息' },
-  { key: 'purchase', label: '集采提醒' },
+  { key: 'purchase', label: '采购意向提醒' },
 ]
 
 function getTypeConfig(type: string): TypeConfig {

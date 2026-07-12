@@ -9,12 +9,20 @@
    ============================================================ */
 
 :root {
+  /* 工业编辑式界面令牌 */
+  --surface-page: #FFFFFF;
+  --surface-work: #F6F7F8;
+  --ink-strong: #172033;
+  --ink-body: #425066;
+  --line-subtle: #D9DEE6;
+  --brand-structure: #173B63;
+  --brand-action: #D97706;
   /* 品牌色 */
-  --color-primary:      #2A6CDB;
-  --color-primary-dark: #1A5CC8;
-  --color-primary-deep: #0E2040;
-  --color-green:        #2BAE6E;
-  --color-orange:       #F08035;
+  --color-primary:      #1E3A5F;
+  --color-primary-dark: #16324F;
+  --color-primary-deep: #102A43;
+  --color-green:        #047857;
+  --color-orange:       #D97706;
 
   /* 工业深色系 */
   --industrial-bg:       #061020;
@@ -31,8 +39,8 @@
   --cmyk-key:     #0D1117;
 
   /* 排版 */
-  --background: #ffffff;
-  --foreground: #0F172A;
+  --background: #FAFAF8;
+  --foreground: #1F2937;
 
   /* 字体变量 */
   --font-inter:      "Inter", sans-serif;
@@ -72,20 +80,32 @@ html {
 }
 
 body {
-  background: linear-gradient(
-    180deg,
-    #e8f1fb 0%,
-    #f0f6fd 30%,
-    #f5f9fe 60%,
-    #f1f5f9 100%
-  );
-  background-attachment: fixed;
-  color: var(--foreground);
+  background: var(--surface-page);
+  color: var(--ink-strong);
   font-family: var(--font-inter), var(--font-noto-sc), -apple-system,
     "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+.print-rule {
+  border-top: 2px solid var(--brand-structure);
+}
+
+.print-index {
+  color: var(--brand-structure);
+  font-variant-numeric: tabular-nums;
+}
+
+.workbench-panel {
+  border: 1px solid var(--line-subtle);
+  background: var(--surface-page);
+}
+
+.print-dots {
+  background-image: radial-gradient(rgba(23, 59, 99, 0.18) 0.75px, transparent 0.75px);
+  background-size: 6px 6px;
 }
 
 /* ============================================================

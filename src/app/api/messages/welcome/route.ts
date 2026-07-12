@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 import { sendMessage, welcomeMessage } from '@/lib/messages'
 import type { Database } from '@/types/database'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
 // POST /api/messages/welcome

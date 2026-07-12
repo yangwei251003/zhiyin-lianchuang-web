@@ -12,8 +12,8 @@ import {
 import type { Database } from '@/types/database'
 
 export const metadata: Metadata = {
-  title: '我的集采 · 智印联创',
-  description: '管理我参与的全部集采订单。',
+  title: '我的采购意向 · 智印联创',
+  description: '查看和管理已提交的采购沟通意向。',
 }
 
 type PurchaseRow = Database['public']['Tables']['purchases']['Row']
@@ -27,7 +27,7 @@ interface MyPurchasePageProps {
 }
 
 // 我的集采页（服务端组件）
-// requireAuth 取当前用户，查询其参团订单；状态/分页通过 searchParams 驱动
+// requireAuth 取当前用户，查询其采购意向；状态/分页通过 searchParams 驱动
 export default async function MyPurchasePage({
   searchParams,
 }: MyPurchasePageProps) {
@@ -100,16 +100,16 @@ export default async function MyPurchasePage({
             集采商城
           </Link>
           <span>/</span>
-          <span className="text-ink-secondary">我的集采</span>
+          <span className="text-ink-secondary">我的采购意向</span>
         </nav>
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="flex items-center gap-2 text-2xl font-bold text-ink-primary sm:text-3xl">
               <ShoppingBag className="h-7 w-7 text-primary" />
-              我的集采
+              我的采购意向
             </h1>
             <p className="mt-2 text-sm text-ink-secondary">
-              管理我参与的全部集采订单
+              查看已提交的采购意向与后续沟通状态
             </p>
           </div>
           <Link
@@ -117,7 +117,7 @@ export default async function MyPurchasePage({
             className="inline-flex h-10 items-center justify-center gap-1.5 rounded-md bg-primary px-4 text-sm font-medium text-white shadow-sm transition-all duration-base ease-out-expo hover:-translate-y-0.5 hover:bg-primary-light"
           >
             <ShoppingBag className="h-4 w-4" />
-            逛逛商城
+            浏览采购信息
           </Link>
         </div>
 

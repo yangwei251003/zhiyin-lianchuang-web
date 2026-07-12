@@ -2,7 +2,7 @@ import { type NextRequest } from 'next/server'
 import { zhipuChatStream, type ZhipuMessage } from '@/lib/ai/zhipu'
 import { getChatFallback } from '@/lib/ai/fallback'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
 // AI 对话 API（流式 SSE）

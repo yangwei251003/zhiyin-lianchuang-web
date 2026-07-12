@@ -57,6 +57,27 @@ export function OrderList({
   pageSize,
   filters,
 }: OrderListProps) {
+  const filterKey = `${filters.status}:${filters.category}:${filters.keyword}`
+
+  return (
+    <OrderListContent
+      key={filterKey}
+      initialOrders={initialOrders}
+      totalCount={totalCount}
+      currentPage={currentPage}
+      pageSize={pageSize}
+      filters={filters}
+    />
+  )
+}
+
+function OrderListContent({
+  initialOrders,
+  totalCount,
+  currentPage,
+  pageSize,
+  filters,
+}: OrderListProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
@@ -64,13 +85,6 @@ export function OrderList({
   const [status, setStatus] = useState(filters.status)
   const [category, setCategory] = useState(filters.category)
   const [keyword, setKeyword] = useState(filters.keyword)
-
-  // 当 URL 参数变化（如浏览器前进/后退）时同步本地状态
-  useEffect(() => {
-    setStatus(filters.status)
-    setCategory(filters.category)
-    setKeyword(filters.keyword)
-  }, [filters.status, filters.category, filters.keyword])
 
   // 关键词搜索防抖（500ms）
   useEffect(() => {
@@ -129,7 +143,7 @@ export function OrderList({
   return (
     <div className="space-y-5">
       {/* ===== 筛选条 ===== */}
-      <div className="rounded-xl border border-line bg-white p-4 shadow-sm sm:p-5">
+      <div className="border border-line bg-white p-4 sm:p-5">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
           <div className="flex-1">
             <Input
@@ -186,8 +200,8 @@ export function OrderList({
         </div>
         <div className="mt-3 flex items-center justify-between text-xs text-ink-tertiary">
           <span>
-            共 <span className="font-semibold text-ink-secondary">{totalCount}</span>{' '}
-            条订单
+            已找到 <span className="font-semibold text-ink-secondary">{totalCount}</span>{' '}
+            条公开需求
           </span>
         </div>
       </div>
@@ -202,14 +216,14 @@ export function OrderList({
           ))}
         </div>
       ) : (
-        <div className="rounded-xl border border-line bg-white shadow-sm">
+        <div className="border border-line bg-white">
           <EmptyState
             variant={hasFilters ? 'search' : 'default'}
-            title={hasFilters ? '未找到符合条件的订单' : '订单大厅暂无订单'}
+            title={hasFilters ? '未找到符合条件的需求' : '暂未收录公开需求'}
             description={
               hasFilters
                 ? '试试调整筛选条件或更换关键词'
-                : '成为第一个发布需求的用户吧'
+                : '发布需求后，平台会按流程审核并安排撮合沟通'
             }
           />
         </div>
@@ -236,7 +250,7 @@ function OrderListSkeleton() {
       {Array.from({ length: 6 }).map((_, i) => (
         <div
           key={i}
-          className="flex gap-2.5 rounded-2xl border border-line bg-white p-4"
+          className="flex gap-2.5 rounded-lg border border-line bg-white p-4"
         >
           <Skeleton className="h-full w-1.5 shrink-0" />
           <div className="flex-1 space-y-2.5">

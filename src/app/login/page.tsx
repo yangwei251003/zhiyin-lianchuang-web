@@ -6,7 +6,7 @@ import { LoginForm } from '@/components/auth/LoginForm'
 
 export const metadata: Metadata = {
   title: '登录 · 智印联创',
-  description: '登录智印联创账户，开启印刷行业 AI 智能撮合之旅。',
+  description: '登录智印联创账户，继续使用印刷产业协同服务。',
 }
 
 export const dynamic = 'force-dynamic'

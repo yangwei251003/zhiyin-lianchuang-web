@@ -1,12 +1,13 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useAuthStore } from '@/store/auth-store'
 import { useUIStore } from '@/store/ui-store'
 
 // 客户端守卫：校验登录状态，未登录弹 Toast 并跳转登录页
 export function useRequireAuth() {
   const router = useRouter()
+  const pathname = usePathname()
   const user = useAuthStore((s) => s.user)
   const isInitialized = useAuthStore((s) => s.isInitialized)
   const addToast = useUIStore((s) => s.addToast)
@@ -15,7 +16,7 @@ export function useRequireAuth() {
     if (!isInitialized) return false
     if (!user) {
       addToast({ type: 'warning', message: '请先登录后再操作' })
-      router.push('/login')
+      router.push(`/login?from=${encodeURIComponent(pathname)}`)
       return false
     }
     callback?.()
@@ -26,6 +27,7 @@ export function useRequireAuth() {
 // 客户端守卫：校验登录 + 企业认证状态
 export function useRequireVerified() {
   const router = useRouter()
+  const pathname = usePathname()
   const user = useAuthStore((s) => s.user)
   const company = useAuthStore((s) => s.company)
   const isInitialized = useAuthStore((s) => s.isInitialized)
@@ -35,12 +37,12 @@ export function useRequireVerified() {
     if (!isInitialized) return false
     if (!user) {
       addToast({ type: 'warning', message: '请先登录后再操作' })
-      router.push('/login')
+      router.push(`/login?from=${encodeURIComponent(pathname)}`)
       return false
     }
     if (company?.status !== 'approved') {
       addToast({ type: 'warning', message: '请先完成企业实名认证' })
-      router.push('/mine/auth')
+      router.push(`/mine/auth?from=${encodeURIComponent(pathname)}`)
       return false
     }
     callback?.()

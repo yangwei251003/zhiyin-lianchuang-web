@@ -43,16 +43,20 @@ export function CaseList({
   filters,
   availableIndustries,
 }: CaseListProps) {
+  const filterKey = `${filters.industry}:${filters.keyword}`
+  return <CaseListContent key={filterKey} initialCases={initialCases} filters={filters} availableIndustries={availableIndustries} />
+}
+
+function CaseListContent({
+  initialCases,
+  filters,
+  availableIndustries,
+}: CaseListProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
   const [industry, setIndustry] = useState(filters.industry)
   const [keyword, setKeyword] = useState(filters.keyword)
-
-  useEffect(() => {
-    setIndustry(filters.industry)
-    setKeyword(filters.keyword)
-  }, [filters.industry, filters.keyword])
 
   // 关键词搜索防抖（500ms）
   useEffect(() => {

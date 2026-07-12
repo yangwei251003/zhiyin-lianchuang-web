@@ -103,7 +103,7 @@ export function RegisterForm() {
             <div className="mb-6">
               <h1 className="text-2xl font-bold text-ink-primary">创建智印联创账户</h1>
               <p className="mt-1.5 text-sm text-ink-secondary">
-                加入印刷行业 AI 智能撮合平台
+                创建账户后可按需使用平台服务
               </p>
             </div>
 
@@ -182,13 +182,13 @@ export function RegisterForm() {
                   />
                   <span>
                     我已阅读并同意
-                    <a href="#" className="mx-0.5 font-medium text-primary hover:text-primary-light" onClick={(e) => e.preventDefault()}>
+                    <Link href="/terms" className="mx-0.5 font-medium text-primary hover:text-primary-light">
                       《服务条款》
-                    </a>
+                    </Link>
                     和
-                    <a href="#" className="mx-0.5 font-medium text-primary hover:text-primary-light" onClick={(e) => e.preventDefault()}>
+                    <Link href="/privacy" className="mx-0.5 font-medium text-primary hover:text-primary-light">
                       《隐私政策》
-                    </a>
+                    </Link>
                   </span>
                 </label>
                 {errors.agree?.message && (

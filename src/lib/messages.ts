@@ -69,9 +69,9 @@ export function welcomeMessage(userId: string): SendMessageParams {
   return {
     userId,
     type: 'system',
-    title: '🎉 欢迎加入智印联创！',
+    title: '欢迎加入智印联创',
     content:
-      '恭喜您成功注册！智印联创是印刷行业 AI 智能撮合平台，您可以在这里发布订单、参与报价、加入集采、获取 AI 纸价预测。完善企业信息，开启您的智能印刷之旅！',
+      '欢迎注册智印联创。您可以浏览公开需求、提交报价沟通、登记采购意向，并查看已标注来源的纸价信息。请按需完善企业资料。',
     link: '/mine/auth',
   }
 }
@@ -148,7 +148,7 @@ export function bidAcceptedMessage(
 }
 
 /**
- * 加入集采成功通知（发给参与者自己）
+ * 采购意向提交成功通知（发给提交者自己）
  */
 export function purchaseJoinedMessage(
   userId: string,
@@ -159,8 +159,8 @@ export function purchaseJoinedMessage(
   return {
     userId,
     type: 'purchase',
-    title: '成功加入集采活动',
-    content: `您已成功加入集采《${purchaseTitle}》，认购数量 ${quantity} 件。当集采达到目标数量后，我们将通知您进行确认。`,
+    title: '采购意向已提交',
+    content: `您已提交《${purchaseTitle}》的采购意向，预计数量 ${quantity}。平台后续将协助建立沟通；价格、供货与交期以双方确认的信息为准。`,
     link: `/purchase/${purchaseId}`,
   }
 }

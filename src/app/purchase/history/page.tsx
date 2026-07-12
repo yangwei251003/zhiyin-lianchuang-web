@@ -8,8 +8,8 @@ import { EmptyState } from '@/components/common/EmptyState'
 import type { Database } from '@/types/database'
 
 export const metadata: Metadata = {
-  title: '集采历史 · 智印联创',
-  description: '查看已结束的集采活动历史记录。',
+  title: '采购信息归档 · 智印联创',
+  description: '查看已停止收集采购意向的公开信息。',
 }
 
 type PurchaseRow = Database['public']['Tables']['purchases']['Row']
@@ -34,43 +34,28 @@ export default async function PurchaseHistoryPage() {
 
   return (
     <main className="pb-12">
-      {/* ===== 页头 ===== */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            'linear-gradient(135deg, #1E293B 0%, #334155 60%, #475569 100%)',
-        }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)',
-          }}
-        />
-        <Container className="relative py-10 sm:py-12">
+      <section className="border-b-2 border-line bg-white">
+        <Container className="py-8 sm:py-10">
           <nav
-            className="mb-3 text-xs text-white/60"
+            className="mb-4 text-xs text-ink-tertiary"
             aria-label="面包屑"
           >
-            <Link href="/" className="hover:text-white">
+            <Link href="/" className="hover:text-primary">
               首页
             </Link>
             <span className="mx-1.5">/</span>
-            <Link href="/purchase" className="hover:text-white">
+            <Link href="/purchase" className="hover:text-primary">
               集采商城
             </Link>
             <span className="mx-1.5">/</span>
-            <span className="text-white">集采历史</span>
+            <span className="text-ink-secondary">采购信息归档</span>
           </nav>
-          <h1 className="flex items-center gap-2 text-2xl font-bold text-white sm:text-3xl">
-            <History className="h-7 w-7" />
-            集采历史
+          <h1 className="flex items-center gap-2 text-2xl font-bold text-ink-primary sm:text-3xl">
+            <History className="h-7 w-7 text-primary" />
+            采购信息归档
           </h1>
-          <p className="mt-2 max-w-xl text-sm text-white/70 sm:text-base">
-            回顾已结束的集采活动，了解历史价格与成团情况
+          <p className="mt-2 max-w-xl text-sm leading-6 text-ink-secondary">
+            这里保留已停止收集的公开采购信息，仅供回顾需求说明，不代表可继续提交或达成交易。
           </p>
         </Container>
       </section>
@@ -85,7 +70,7 @@ export default async function PurchaseHistoryPage() {
                 <span className="font-semibold text-ink-secondary">
                   {historyList.length}
                 </span>{' '}
-                条历史记录
+                条归档信息
               </span>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -99,10 +84,10 @@ export default async function PurchaseHistoryPage() {
             </div>
           </>
         ) : (
-          <div className="rounded-xl border border-line bg-white shadow-sm">
+          <div className="rounded-lg border border-line bg-white">
             <EmptyState
-              title="暂无历史集采活动"
-              description="已结束的集采活动将展示在此处"
+              title="暂无归档采购信息"
+              description="已停止收集的采购信息会在这里保留记录"
               action={
                 <Link
                   href="/purchase"

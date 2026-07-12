@@ -14,18 +14,18 @@ const config: Config = {
       colors: {
         // === 品牌主色（经济价值 / 蓝） ===
         primary: {
-          DEFAULT: "#2A6CDB",
-          light: "#4A85E6",
-          lighter: "#7BA6F0",
-          dark: "#1A5CC8",
-          deeper: "#0E2040",
-          bg: "#E8F1FB",
-          "bg-subtle": "#F5F9FE",
+          DEFAULT: "#1E3A5F",
+          light: "#274C77",
+          lighter: "#DCE6F0",
+          dark: "#16324F",
+          deeper: "#102A43",
+          bg: "#EEF3F8",
+          "bg-subtle": "#F7F9FB",
         },
         // 深色蓝（辅助 / 强对比）
         deep: {
-          DEFAULT: "#1A4A9C",
-          darker: "#0D2F6E",
+          DEFAULT: "#1E3A5F",
+          darker: "#16324F",
         },
         // === 工业深色系（Industrial Dark System）===
         industrial: {
@@ -59,9 +59,9 @@ const config: Config = {
           bg:      "#E8F1FB",
         },
         environment: {
-          DEFAULT: "#2BAE6E",
-          light:   "#4ECB9E",
-          bg:      "#EBF9F3",
+          DEFAULT: "#047857",
+          light:   "#059669",
+          bg:      "#ECFDF5",
         },
         society: {
           DEFAULT: "#F08035",
@@ -75,35 +75,35 @@ const config: Config = {
           bg:      "#EBF9F3",
         },
         warning: {
-          DEFAULT: "#F0A040",
-          bg:      "#FFF8ED",
+          DEFAULT: "#B45309",
+          bg:      "#FFFBEB",
         },
         danger: {
           DEFAULT: "#E55541",
           bg:      "#FFF0EE",
         },
         accent: {
-          DEFAULT:   "#F08035",
-          light:     "#F5A66B",
-          bg:        "#FFF5ED",
-          "bg-subtle": "#FEF9F5",
+          DEFAULT:   "#D97706",
+          light:     "#F59E0B",
+          bg:        "#FFF7ED",
+          "bg-subtle": "#FFFBEB",
         },
         // === 中性色（slate 风格，对齐 wxss）===
         ink: {
-          primary:   "#0F172A",
-          secondary: "#475569",
-          tertiary:  "#94A3B8",
+          primary:   "#1F2937",
+          secondary: "#4B5563",
+          tertiary:  "#6B7280",
           disabled:  "#CBD5E1",
         },
         canvas: {
-          DEFAULT: "#F1F5F9",
+          DEFAULT: "#FAFAF8",
           white:   "#FFFFFF",
           card:    "#FFFFFF",
         },
         line: {
-          DEFAULT: "#E2E8F0",
-          light:   "#F1F5F9",
-          divider: "#E8EDF2",
+          DEFAULT: "#E5E7EB",
+          light:   "#F3F4F6",
+          divider: "#E5E7EB",
         },
         // 山峦渐变色
         mountain: {

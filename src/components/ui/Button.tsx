@@ -26,27 +26,27 @@ export interface ButtonProps
 
 const variantStyles: Record<ButtonVariant, string> = {
   default:
-    'bg-primary text-white shadow-sm hover:bg-primary-light hover:shadow-blue hover:-translate-y-0.5',
+    'border border-primary bg-primary text-white hover:border-primary-dark hover:bg-primary-dark',
   secondary:
-    'bg-white text-primary border border-primary/30 hover:bg-primary-bg hover:-translate-y-0.5',
+    'border border-primary/40 bg-white text-primary hover:bg-primary-bg',
   outline:
-    'bg-transparent text-ink-primary border border-line hover:bg-canvas hover:border-ink-tertiary',
+    'border border-line bg-transparent text-ink-primary hover:border-primary/50 hover:bg-canvas',
   ghost: 'bg-transparent text-ink-primary hover:bg-canvas',
   destructive:
-    'bg-danger text-white shadow-sm hover:brightness-110 hover:-translate-y-0.5',
+    'border border-danger bg-danger text-white hover:brightness-95',
   success:
-    'bg-success text-white shadow-sm hover:bg-success-light hover:shadow-green hover:-translate-y-0.5',
+    'border border-success bg-success text-white hover:bg-success-light',
   warning:
-    'bg-warning text-white shadow-sm hover:brightness-110 hover:-translate-y-0.5',
+    'border border-warning bg-warning text-white hover:brightness-95',
   premium:
-    'bg-gradient-to-r from-[#0E2040] via-[#1A5CC8] to-[#0E2040] text-white border border-white/10 shadow-lg hover:shadow-blue hover:-translate-y-0.5 btn-premium',
+    'border border-primary-dark bg-primary-deep text-white hover:bg-primary-dark',
 }
 
 const sizeStyles: Record<ButtonSize, string> = {
   sm: 'h-8 px-3 text-xs rounded-sm gap-1',
-  md: 'h-10 px-4 text-sm rounded-md gap-1.5',
-  lg: 'h-12 px-6 text-base rounded-md gap-2',
-  icon: 'h-10 w-10 rounded-md',
+  md: 'h-10 px-4 text-sm rounded-sm gap-1.5',
+  lg: 'h-12 px-6 text-base rounded-sm gap-2',
+  icon: 'h-10 w-10 rounded-sm',
 }
 
 // 按钮组件：支持多种样式与尺寸、加载态、左右图标
@@ -70,7 +70,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          'inline-flex items-center justify-center font-semibold transition-all duration-fast ease-out-expo select-none cursor-pointer',
+          'inline-flex items-center justify-center font-semibold transition-colors duration-fast select-none cursor-pointer',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-1',
           'disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-50',
           variantStyles[variant],
@@ -87,4 +87,3 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     )
   },
 )
-

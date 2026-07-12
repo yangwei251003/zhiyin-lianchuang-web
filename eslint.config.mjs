@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local developer helper, not shipped application code.
+    "cloudbase-mcp-call.js",
   ]),
 ]);
 
