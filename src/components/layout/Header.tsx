@@ -19,22 +19,7 @@ import { useUIStore } from '@/store/ui-store'
 import { cn } from '@/lib/utils'
 import { Container } from './Container'
 import { Button } from '@/components/ui/Button'
-
-interface NavItem {
-  label: string
-  href: string
-}
-
-const navItems: NavItem[] = [
-  { label: '首页',     href: '/' },
-  { label: '订单大厅', href: '/orders' },
-  { label: '集采商城', href: '/purchase' },
-  { label: '创业孵化', href: '/startup' },
-  { label: '技术培训', href: '/training' },
-  { label: '智印大脑', href: '/ai-chat' },
-  { label: '纸价信息', href: '/prediction/白卡纸' },
-  { label: '消息',     href: '/messages' },
-]
+import { PRIMARY_NAV_ITEMS } from '@/lib/navigation'
 
 interface AvatarProps {
   profile: { avatar_url: string | null; nickname: string } | null
@@ -82,7 +67,7 @@ function MenuLink({
   )
 }
 
-// 顶部导航：企业级玻璃拟态 Header，滚动毛玻璃，品牌Logo，CTA按钮
+// 顶部导航：任务导向的工业编辑式导航
 export function Header() {
   const pathname = usePathname()
   const router   = useRouter()
@@ -152,7 +137,7 @@ export function Header() {
           >
             {/* 您的网站 Logo */}
             <Image
-              src="/images/企业logo.png"
+              src="/images/zhiyin-logo.png"
               alt="智印联创"
               width={240}
               height={48}
@@ -163,7 +148,7 @@ export function Header() {
 
           {/* ===== 桌面主菜单 ===== */}
           <nav className="hidden flex-1 items-center justify-center gap-1 lg:flex" aria-label="主导航">
-            {navItems.map((item) => (
+            {PRIMARY_NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -177,16 +162,18 @@ export function Header() {
                 {isActive(item.href) && (
                   <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#D97706]" />
                 )}
-                {/* 消息红点 */}
-                {item.href === '/messages' && unread > 0 && (
-                  <span className="absolute right-1 top-1.5 inline-flex h-2 w-2 rounded-full bg-danger" />
-                )}
               </Link>
             ))}
           </nav>
 
           {/* ===== 右侧操作区（桌面） ===== */}
           <div className="hidden items-center gap-2 lg:flex">
+            <Link
+              href="/review"
+              className="inline-flex h-10 items-center border border-[#173B63] px-3 text-sm font-semibold text-[#173B63] transition-colors hover:bg-[#EEF3F8]"
+            >
+              评审演示
+            </Link>
             {user ? (
               <>
                 {/* 消息铃铛 */}
@@ -305,7 +292,7 @@ export function Header() {
         <div className="border-t border-line bg-white lg:hidden">
           <Container>
             <nav className="flex flex-col gap-0.5 py-3" aria-label="移动端导航">
-              {navItems.map((item) => (
+              {PRIMARY_NAV_ITEMS.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -318,15 +305,11 @@ export function Header() {
                   )}
                 >
                   <span>{item.label}</span>
-                  {item.href === '/messages' && unread > 0 && (
-                    <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1 text-2xs font-bold text-white">
-                      {unread}
-                    </span>
-                  )}
                 </Link>
               ))}
 
               <div className="mt-2 flex flex-col gap-2 border-t border-line/50 pt-3">
+                <Link href="/review" onClick={() => setDrawerOpen(false)} className="rounded-sm border border-[#173B63] px-4 py-2.5 text-center text-sm font-semibold text-[#173B63] hover:bg-[#EEF3F8]">进入评审演示</Link>
                 {user ? (
                   <>
                     <div className="flex items-center gap-3 rounded-sm bg-canvas px-4 py-3">

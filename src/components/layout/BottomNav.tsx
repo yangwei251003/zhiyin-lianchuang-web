@@ -21,7 +21,7 @@ interface BottomNavItem {
 
 const items: BottomNavItem[] = [
   { label: '首页', href: '/', icon: Home },
-  { label: '订单', href: '/orders', icon: ShoppingBag },
+  { label: '协同', href: '/orders', icon: ShoppingBag },
   { label: '消息', href: '/messages', icon: MessageCircle },
   { label: '我的', href: '/mine', icon: UserIcon },
 ]
@@ -53,6 +53,7 @@ export function BottomNav() {
             <span className="relative flex flex-col items-center justify-center">
               {/* 微交互缩放动画 */}
               <motion.div
+                data-motion-safe
                 animate={active ? { scale: 1.15, y: -1 } : { scale: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 className="relative"
@@ -70,6 +71,7 @@ export function BottomNav() {
             {/* Active指示点 */}
             {active && (
               <motion.span
+                data-motion-safe
                 layoutId="bottom-active-dot"
                 className="absolute bottom-1.5 h-1 w-1 rounded-full bg-primary"
                 transition={{ type: 'spring', stiffness: 350, damping: 25 }}

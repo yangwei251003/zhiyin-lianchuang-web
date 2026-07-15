@@ -38,3 +38,9 @@ export async function requireVerified(): Promise<{
   }
   return { session, company }
 }
+
+export async function requireAdmin(): Promise<Session> {
+  const session = await requireAuth()
+  if (session.user.app_metadata?.role !== 'admin') redirect('/mine')
+  return session
+}

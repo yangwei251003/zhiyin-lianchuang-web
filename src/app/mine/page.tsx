@@ -5,6 +5,8 @@ import { requireAuth } from '@/lib/auth/guard'
 import { Container } from '@/components/layout/Container'
 import { AuthGuard } from '@/components/auth/AuthGuard'
 import { MineContent } from '@/components/mine/MineContent'
+import { RoleWorkspace } from '@/components/mine/RoleWorkspace'
+import type { BusinessRole } from '@/types/platform'
 
 export const metadata: Metadata = {
   title: '我的中心 · 智印联创',
@@ -19,13 +21,14 @@ export default async function MinePage() {
   const supabase = await createClient()
 
   // 用户档案 + 企业认证
-  const [{ data: profile }, { data: company }] = await Promise.all([
+  const [{ data: profile }, { data: company }, { data: roleRows }] = await Promise.all([
     supabase.from('profiles').select('*').eq('id', userId).single(),
     supabase
       .from('companies')
       .select('*')
       .eq('user_id', userId)
       .maybeSingle(),
+    supabase.from('user_roles').select('role, status').eq('user_id', userId).eq('status', 'active'),
   ])
 
   // 数据概览计数
@@ -93,16 +96,25 @@ export default async function MinePage() {
         </nav>
 
         {/* 页面标题 */}
-        <div className="mb-6">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
           <h1 className="text-2xl font-bold text-ink-primary sm:text-3xl">
             我的中心
           </h1>
           <p className="mt-2 text-sm text-ink-secondary">
             管理个人资料、参与记录与企业资料
           </p>
+          </div>
+          {session.user.app_metadata?.role === 'admin' && <Link href="/admin" className="inline-flex w-fit bg-[#14263d] px-4 py-3 text-sm font-semibold text-white">进入运营后台</Link>}
         </div>
 
         <AuthGuard>
+          <div className="mb-6">
+            <RoleWorkspace
+              initialRoles={(roleRows ?? []).map((row) => row.role as BusinessRole)}
+              companyApproved={company?.status === 'approved'}
+            />
+          </div>
           <MineContent
             profile={profile}
             company={company}

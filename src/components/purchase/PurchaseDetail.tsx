@@ -7,6 +7,7 @@ import type { ReactNode } from 'react'
 import type { Database } from '@/types/database'
 import { Badge } from '@/components/ui/Badge'
 import { JoinPurchaseForm } from './JoinPurchaseForm'
+import { SupplyOfferForm } from './SupplyOfferForm'
 import {
   PURCHASE_STATUS_LABEL,
   PURCHASE_STATUS_VARIANT,
@@ -18,6 +19,8 @@ type PurchaseOrderRow = Database['public']['Tables']['purchase_orders']['Row']
 export interface PurchaseDetailProps {
   purchase: PurchaseRow
   myOrder: PurchaseOrderRow | null
+  canSupply?: boolean
+  mySupplyOffer?: Database['public']['Tables']['purchase_supply_offers']['Row'] | null
 }
 
 function formatDateTime(dateStr: string): string {
@@ -25,7 +28,7 @@ function formatDateTime(dateStr: string): string {
 }
 
 // 采购详情只展示发布方填写的公开信息。价格、供货和交期不在平台内生成或承诺。
-export function PurchaseDetail({ purchase, myOrder }: PurchaseDetailProps) {
+export function PurchaseDetail({ purchase, myOrder, canSupply = false, mySupplyOffer = null }: PurchaseDetailProps) {
   const statusVariant =
     PURCHASE_STATUS_VARIANT[purchase.status] ?? 'default'
   const statusLabel =
@@ -96,6 +99,7 @@ export function PurchaseDetail({ purchase, myOrder }: PurchaseDetailProps) {
       <aside className="lg:col-span-1">
         <div className="lg:sticky lg:top-6">
           <JoinPurchaseForm purchase={purchase} myOrder={myOrder} />
+          {canSupply && <SupplyOfferForm purchaseId={purchase.id} existing={mySupplyOffer} />}
         </div>
       </aside>
     </div>

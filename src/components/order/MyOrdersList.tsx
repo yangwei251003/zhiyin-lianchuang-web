@@ -10,7 +10,7 @@ import { Pagination } from '@/components/ui/Pagination'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/common/EmptyState'
 import { Button } from '@/components/ui/Button'
-import { ORDER_STATUS_OPTIONS } from '@/lib/order-config'
+import { MY_ORDER_STATUS_OPTIONS } from '@/lib/order-config'
 import type { Database } from '@/types/database'
 import { cn } from '@/lib/utils'
 
@@ -70,7 +70,7 @@ export function MyOrdersList({
         onValueChange={(v) => navigate({ status: v, page: 1 })}
       >
         <TabsList className="flex w-full overflow-x-auto sm:w-auto">
-          {ORDER_STATUS_OPTIONS.map((o) => (
+          {MY_ORDER_STATUS_OPTIONS.map((o) => (
             <TabsTrigger key={o.value} value={o.value}>
               {o.label}
             </TabsTrigger>

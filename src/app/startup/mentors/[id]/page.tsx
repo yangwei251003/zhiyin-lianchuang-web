@@ -71,7 +71,7 @@ export default async function MentorDetailPage({
           </Link>
           <span>/</span>
           <Link href="/startup" className="hover:text-primary">
-            创业孵化
+            产教实践
           </Link>
           <span>/</span>
           <Link href="/startup/mentors" className="hover:text-primary">

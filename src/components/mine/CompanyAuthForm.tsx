@@ -93,8 +93,6 @@ export function CompanyAuthForm({ company }: CompanyAuthFormProps) {
     },
   })
 
-  const licenseUrl = watch('license_image_url')
-
   // 营业执照上传
   const handleLicenseChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -148,33 +146,9 @@ export function CompanyAuthForm({ company }: CompanyAuthFormProps) {
   const onSubmit = async (values: CompanyFormValues) => {
     if (!user) return
     try {
-      const supabase = createClient()
-      const payload = {
-        user_id: user.id,
-        company_name: values.company_name.trim(),
-        credit_code: values.credit_code.trim().toUpperCase(),
-        license_image_url: values.license_image_url,
-        contact_name: values.contact_name.trim(),
-        contact_phone: values.contact_phone.trim(),
-        status: 'pending',
-        reject_reason: null,
-      }
-
-      if (!company) {
-        // 首次认证：插入
-        const { error } = await supabase.from('companies').insert(payload)
-        if (error) throw error
-      } else {
-        // 驳回后重新提交：更新
-        const { error } = await supabase
-          .from('companies')
-          .update({
-            ...payload,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', company.id)
-        if (error) throw error
-      }
+      const response = await fetch('/api/business/company', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ companyName: values.company_name, creditCode: values.credit_code.trim().toUpperCase(), licenseImageUrl: values.license_image_url, contactName: values.contact_name, contactPhone: values.contact_phone }) })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error)
 
       // 刷新 auth-store 中的 company
       await refreshProfile()

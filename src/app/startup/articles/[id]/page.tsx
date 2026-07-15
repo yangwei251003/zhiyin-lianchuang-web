@@ -90,7 +90,7 @@ export default async function ArticleDetailPage({
             </Link>
             <span>/</span>
             <Link href="/startup" className="hover:text-primary transition-colors">
-              创业孵化
+              产教实践
             </Link>
             <span>/</span>
             <Link href="/startup/articles" className="hover:text-primary transition-colors">

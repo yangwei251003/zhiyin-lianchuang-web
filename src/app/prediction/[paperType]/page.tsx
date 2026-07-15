@@ -5,15 +5,12 @@ import { AlertTriangle, ArrowRight, BarChart3, ExternalLink, Info } from 'lucide
 import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
 import { PriceChart } from '@/components/charts/PriceChart'
-import { AIAnalysis } from '@/components/prediction/AIAnalysis'
 import { PaperTypeTabs } from '@/components/prediction/PaperTypeTabs'
-import { PAPER_TYPES, type PaperType } from '@/lib/price-data'
+import { isMarketPriceFresh, PAPER_TYPES, type PaperType } from '@/lib/price-data'
 
 interface PredictionPageProps {
   params: Promise<{ paperType: string }>
 }
-
-const LATEST_QUOTE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000
 
 function formatTimestamp(value: string) {
   return new Intl.DateTimeFormat('zh-CN', {
@@ -35,8 +32,8 @@ export async function generateMetadata({ params }: PredictionPageProps): Promise
   }
 
   return {
-    title: `${paperType}价格信息`,
-    description: `${paperType}公开报价与数据来源说明。仅展示带规格、区域和更新时间的已验证信息。`,
+    title: `${paperType}纸价情报与采购辅助`,
+    description: `${paperType}已核验公开报价、同口径趋势与采购核对要点。`,
   }
 }
 
@@ -67,11 +64,8 @@ export default async function PredictionPage({ params }: PredictionPageProps) {
     .sort((a, b) => b.length - a.length || new Date(b[0].observed_at).getTime() - new Date(a[0].observed_at).getTime())[0]
     ?.sort((a, b) => new Date(a.observed_at).getTime() - new Date(b.observed_at).getTime()) ?? []
   const latest = selectedSeries.at(-1) ?? null
-  const latestIsFresh = latest
-    // Server-rendered price visibility must compare with the request-time clock.
-    // eslint-disable-next-line react-hooks/purity
-    ? Date.now() - new Date(latest.observed_at).getTime() <= LATEST_QUOTE_MAX_AGE_MS
-    : false
+  // Server-rendered visibility intentionally uses the request-time clock.
+  const latestIsFresh = latest ? isMarketPriceFresh(latest.observed_at, new Date()) : false
   const chartData = selectedSeries.slice(-30).map((row) => ({
     date: row.observed_at.slice(0, 10),
     price: row.price,
@@ -88,8 +82,8 @@ export default async function PredictionPage({ params }: PredictionPageProps) {
     <main className="min-h-screen bg-[#F6F7F8] pb-16">
       <section className="border-b border-[#E5E7EB] bg-white">
         <Container className="py-10 sm:py-14">
-          <p className="print-index text-xs font-semibold">03 / 市场信息参考</p>
-          <h1 className="mt-2 text-3xl font-bold text-[#1F2937] sm:text-4xl">{paperType}价格信息</h1>
+          <p className="print-index text-xs font-semibold">03 / 纸价情报与采购辅助</p>
+          <h1 className="mt-2 text-3xl font-bold text-[#1F2937] sm:text-4xl">{paperType}纸价情报</h1>
           <p className="mt-3 max-w-2xl text-base leading-7 text-[#4B5563]">
             仅展示已记录来源、规格、区域、单位和更新时间的公开报价。平台不将纸浆期货或随机生成值换算为纸种市场价格。
           </p>
@@ -99,7 +93,7 @@ export default async function PredictionPage({ params }: PredictionPageProps) {
       <Container className="py-6 sm:py-8">
         <PaperTypeTabs current={paperType} />
 
-        <section className="mt-6 grid gap-4 lg:grid-cols-[1.2fr_1fr]"><div className="rounded-xl border border-cyan-300/20 bg-gradient-to-br from-[#0d1a30] to-[#152d5e] p-5 text-white"><p className="text-xs font-semibold text-cyan-200">官方行业指标</p><h2 className="mt-2 text-xl font-bold">工业生产者价格指数（PPI）</h2><p className="mt-3 text-sm leading-6 text-slate-200">国家统计局公开数据发布库按月发布工业价格指标，可用于观察宏观成本环境，不作为纸种报价或采购建议。</p><a className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-200 hover:text-white" href="https://data.stats.gov.cn/" target="_blank" rel="noreferrer">查看国家统计局数据发布库 <ExternalLink className="size-4" /></a></div><div className="rounded-xl border border-fuchsia-300/20 bg-gradient-to-br from-[#1b143d] to-[#0d1a30] p-5 text-white"><p className="text-xs font-semibold text-fuchsia-200">期货行情参考</p><h2 className="mt-2 text-xl font-bold">纸浆期货与现货报价分开展示</h2><p className="mt-3 text-sm leading-6 text-slate-200">纸浆期货只能反映相关市场行情，平台不将其换算为铜版纸、白卡纸等成品纸价格。</p></div></section>
+        <section className="mt-6 grid gap-4 lg:grid-cols-[1.2fr_1fr]"><div className="border-l-4 border-[#c84f20] bg-[#14263d] p-5 text-white"><p className="text-xs font-semibold text-[#f4a27d]">官方行业指标</p><h2 className="mt-2 text-xl font-bold">工业生产者价格指数（PPI）</h2><p className="mt-3 text-sm leading-6 text-slate-200">国家统计局公开数据发布库按月发布工业价格指标，可用于观察宏观成本环境，不作为具体纸种报价。</p><a className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#f4a27d] hover:text-white" href="https://data.stats.gov.cn/" target="_blank" rel="noreferrer">查看国家统计局数据发布库 <ExternalLink className="size-4" /></a></div><div className="border border-[#cfd5dc] bg-[#edeae2] p-5"><p className="text-xs font-semibold text-[#c84f20]">口径边界</p><h2 className="mt-2 text-xl font-bold text-[#14263d]">纸浆期货与成品纸报价分开展示</h2><p className="mt-3 text-sm leading-6 text-[#5c6672]">纸浆期货只能反映相关市场行情，平台不将其换算为铜版纸、白卡纸等成品纸价格。</p></div></section>
 
         {latest && latestIsFresh ? (
           <>
@@ -150,23 +144,8 @@ export default async function PredictionPage({ params }: PredictionPageProps) {
             </section>
 
             <section className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
-              <AIAnalysis
-                analysis={null}
-                paperType={paperType}
-                changeRate={changeRate}
-                trend={trend}
-                recentPrices={chartData.map(({ date, price }) => ({ date, price }))}
-              />
-              <aside className="border border-[#D9DEE6] bg-white p-5">
-                <p className="text-xs font-semibold text-[#1E3A5F]">智印大脑 · 数据质量</p>
-                <h2 className="mt-2 text-lg font-bold text-[#1F2937]">AI 分析以可追溯数据为边界</h2>
-                <dl className="mt-5 space-y-4 text-sm">
-                  <div><dt className="text-[#6B7280]">当前输入</dt><dd className="mt-1 font-semibold text-[#1F2937]">{chartData.length} 条同口径公开报价</dd></div>
-                  <div><dt className="text-[#6B7280]">分析方式</dt><dd className="mt-1 font-semibold text-[#1F2937]">趋势识别、采购建议、风险提示</dd></div>
-                  <div><dt className="text-[#6B7280]">30 天数值预测</dt><dd className="mt-1 font-semibold text-[#1F2937]">待同口径历史样本达到 14 条后启用</dd></div>
-                </dl>
-                <p className="mt-5 border-t border-[#E5E7EB] pt-4 text-xs leading-5 text-[#6B7280]">AI 输出仅分析已接入数据，不把纸浆期货、不同规格或未核验网页价格混入成品纸预测。</p>
-              </aside>
+              <div className="border border-[#D9DEE6] bg-white p-5 sm:p-6"><p className="text-xs font-semibold text-[#c84f20]">采购辅助 · 不替代询价</p><h2 className="mt-2 text-xl font-bold text-[#1F2937]">按同口径变化核对采购条件</h2><p className="mt-3 text-sm leading-7 text-[#4B5563]">当前 {chartData.length} 条记录的首尾变化为 {changeRate.toFixed(1)}%，方向为{trend === 'up' ? '上行' : trend === 'down' ? '下行' : '相对平稳'}。该结果只描述历史记录，不外推未来价格。</p><ul className="mt-5 grid gap-3 text-sm text-[#4B5563] sm:grid-cols-3"><li className="border-t-2 border-[#14263d] pt-3">向供应商确认克重、品牌与含税口径</li><li className="border-t-2 border-[#14263d] pt-3">同时核对起订量、运输与交付日期</li><li className="border-t-2 border-[#14263d] pt-3">以正式报价单和合同作为最终依据</li></ul></div>
+              <aside className="border border-[#D9DEE6] bg-white p-5"><p className="text-xs font-semibold text-[#1E3A5F]">数据质量</p><h2 className="mt-2 text-lg font-bold text-[#1F2937]">可追溯是展示前提</h2><dl className="mt-5 space-y-4 text-sm"><div><dt className="text-[#6B7280]">当前输入</dt><dd className="mt-1 font-semibold text-[#1F2937]">{chartData.length} 条同口径公开报价</dd></div><div><dt className="text-[#6B7280]">公开条件</dt><dd className="mt-1 font-semibold text-[#1F2937]">来源、规格、区域、时间均已核验</dd></div><div><dt className="text-[#6B7280]">未来数值预测</dt><dd className="mt-1 font-semibold text-[#1F2937]">公开页面不提供</dd></div></dl></aside>
             </section>
           </>
         ) : (
@@ -181,10 +160,10 @@ export default async function PredictionPage({ params }: PredictionPageProps) {
                 </div>
               </div>
               <aside className="border-l-0 border-[#E5E7EB] pt-1 lg:border-l lg:pl-6">
-                <h3 className="font-bold text-[#1F2937]">AI 预测启用条件</h3>
+                <h3 className="font-bold text-[#1F2937]">公开数据启用条件</h3>
                 <ol className="mt-4 space-y-4 text-sm leading-6 text-[#4B5563]">
                   <li><span className="mr-2 font-semibold text-[#1E3A5F]">01</span>同一来源、地区、规格的历史报价达到 14 条。</li>
-                  <li><span className="mr-2 font-semibold text-[#1E3A5F]">02</span>AI 再输出趋势、采购建议和风险提示，不把预测值当成真实报价。</li>
+                  <li><span className="mr-2 font-semibold text-[#1E3A5F]">02</span>只描述同口径历史变化并给出采购核对项，不输出未来数值。</li>
                   <li><span className="mr-2 font-semibold text-[#1E3A5F]">03</span>每次分析都显示输入数据范围和来源，便于复核。</li>
                 </ol>
               </aside>

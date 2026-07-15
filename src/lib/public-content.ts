@@ -6,7 +6,7 @@ export const PUBLIC_PLATFORM_PROFILE = {
   name: '智印联创',
   tagline: '印刷产业协同服务平台',
   description:
-    '面向中小印刷企业的产教融合协同服务平台，连接订单撮合、集中采购、纸价信息与创业孵化服务。',
+    '面向中小印刷企业的产教融合协同服务平台，连接供需协同、集中采购、纸价情报与产教实践服务。',
   launchNotice: '本站当前为功能测试预览，完成备案与数据授权后正式上线。',
 } as const
 

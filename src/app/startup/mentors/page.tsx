@@ -17,7 +17,7 @@ export default function MentorsPage() {
           <nav className="mb-4 text-xs text-ink-tertiary" aria-label="面包屑">
             <Link href="/" className="hover:text-primary">首页</Link>
             <span className="mx-1.5">/</span>
-            <Link href="/startup" className="hover:text-primary">创业孵化</Link>
+            <Link href="/startup" className="hover:text-primary">产教实践</Link>
             <span className="mx-1.5">/</span>
             <span className="text-ink-secondary">创业导师</span>
           </nav>

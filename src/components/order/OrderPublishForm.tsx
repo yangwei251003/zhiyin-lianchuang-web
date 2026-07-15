@@ -9,12 +9,8 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Card } from '@/components/ui/Card'
-import { createClient } from '@/lib/supabase/client'
-import { useAuthStore } from '@/store/auth-store'
 import { useUIStore } from '@/store/ui-store'
-import { useRequireVerified } from '@/lib/auth/client-guard'
 import { ORDER_CATEGORIES, ORDER_CRAFTS, REGIONS } from '@/lib/order-config'
-import { sendMessage, orderPublishedMessage } from '@/lib/messages'
 import { cn } from '@/lib/utils'
 
 // 订单发布表单校验 schema
@@ -47,11 +43,9 @@ type OrderFormValues = z.infer<typeof orderSchema>
 
 // 订单发布表单（客户端组件）
 // react-hook-form + zod 校验，提交插入 orders 表
-export function OrderPublishForm() {
+export function OrderPublishForm({ orderId, initialValues }: { orderId?: string; initialValues?: Partial<OrderFormValues> } = {}) {
   const router = useRouter()
-  const user = useAuthStore((s) => s.user)
   const addToast = useUIStore((s) => s.addToast)
-  const requireVerified = useRequireVerified()
 
   const {
     register,
@@ -62,13 +56,13 @@ export function OrderPublishForm() {
   } = useForm<OrderFormValues>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
-      title: '',
-      category: '',
-      craft: '',
-      budget_min: undefined,
-      budget_max: undefined,
-      region: '',
-      description: '',
+      title: initialValues?.title ?? '',
+      category: initialValues?.category ?? '',
+      craft: initialValues?.craft ?? '',
+      budget_min: initialValues?.budget_min,
+      budget_max: initialValues?.budget_max,
+      region: initialValues?.region ?? '',
+      description: initialValues?.description ?? '',
     },
   })
 
@@ -87,36 +81,13 @@ export function OrderPublishForm() {
     })
   }
 
-  const onSubmit = async (values: OrderFormValues) => {
-    // 客户端认证守卫：未登录/未认证跳转
-    const ok = requireVerified()
-    if (!ok) return
-
+  const onSubmit = async (values: OrderFormValues, mode: 'draft' | 'publish' = 'publish') => {
     try {
-      const supabase = createClient()
-      const { data, error } = await supabase
-        .from('orders')
-        .insert({
-          user_id: user!.id,
-          title: values.title.trim(),
-          category: values.category,
-          craft: values.craft,
-          budget_min: values.budget_min,
-          budget_max: values.budget_max,
-          region: values.region,
-          description: values.description.trim(),
-          status: 'open',
-        })
-        .select('id')
-        .single()
-
-      if (error) throw error
-
-      // 发布成功：向发布者自己发送消息通知（非阻塞）
-      void sendMessage(supabase, orderPublishedMessage(user!.id, data.id, values.title.trim()))
-
-      addToast({ type: 'success', message: '订单发布成功' })
-      router.push(`/orders/${data.id}`)
+      const response = await fetch(orderId ? `/api/business/orders/${orderId}` : '/api/business/orders', { method: orderId ? 'PATCH' : 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ title: values.title, category: values.category, craft: values.craft, budgetMin: values.budget_min, budgetMax: values.budget_max, region: values.region, description: values.description, mode }) })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error)
+      addToast({ type: 'success', message: mode === 'draft' ? '需求草稿已保存，仅你可见' : '需求已公开发布' })
+      router.push(mode === 'draft' ? '/mine/orders' : `/orders/${result.order.id}`)
     } catch (err) {
       const message =
         err instanceof Error ? err.message : '发布失败，请稍后重试'
@@ -126,7 +97,7 @@ export function OrderPublishForm() {
 
   return (
     <Card padding="lg" className="animate-fade-in-up">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={handleSubmit((values) => onSubmit(values, 'publish'))} className="space-y-5">
         {/* 标题 */}
         <Input
           label="订单标题"
@@ -257,6 +228,14 @@ export function OrderPublishForm() {
           <Button
             type="button"
             variant="outline"
+            onClick={handleSubmit((values) => onSubmit(values, 'draft'))}
+            disabled={isSubmitting}
+          >
+            保存草稿
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
             onClick={() => router.back()}
             disabled={isSubmitting}
           >
@@ -268,7 +247,7 @@ export function OrderPublishForm() {
             loading={isSubmitting}
             disabled={isSubmitting}
           >
-            {isSubmitting ? '发布中...' : '发布订单'}
+            {isSubmitting ? '处理中...' : '公开发布需求'}
           </Button>
         </div>
       </form>

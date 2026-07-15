@@ -55,6 +55,12 @@ export const ORDER_STATUS_OPTIONS: StatusOption[] = [
   { value: 'cancelled', label: '已取消' },
 ]
 
+export const MY_ORDER_STATUS_OPTIONS: StatusOption[] = [
+  { value: 'all', label: '全部' },
+  { value: 'draft', label: '草稿' },
+  ...ORDER_STATUS_OPTIONS.slice(1),
+]
+
 export const CAPACITY_STATUS_OPTIONS: StatusOption[] = [
   { value: 'all', label: '全部' },
   { value: 'available', label: '可接单' },
@@ -71,6 +77,7 @@ export const BID_STATUS_OPTIONS: StatusOption[] = [
 
 // 状态文案映射
 export const ORDER_STATUS_LABEL: Record<string, string> = {
+  draft: '草稿',
   open: '招标中',
   in_progress: '进行中',
   completed: '已完成',

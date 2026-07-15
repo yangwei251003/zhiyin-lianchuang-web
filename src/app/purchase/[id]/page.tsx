@@ -5,6 +5,8 @@ import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
 import { PurchaseDetail } from '@/components/purchase/PurchaseDetail'
 import type { Database } from '@/types/database'
+import { getServerRoleContext } from '@/lib/auth/server-role-context'
+import { canPerformRoleAction } from '@/lib/auth/roles'
 
 type PurchaseRow = Database['public']['Tables']['purchases']['Row']
 type PurchaseOrderRow =
@@ -58,14 +60,17 @@ export default async function PurchaseDetailPage({
     data: { session },
   } = await supabase.auth.getSession()
   let myOrder: PurchaseOrderRow | null = null
+  let canSupply = false
+  let mySupplyOffer: Database['public']['Tables']['purchase_supply_offers']['Row'] | null = null
   if (session) {
-    const { data: orderData } = await supabase
-      .from('purchase_orders')
-      .select('*')
-      .eq('purchase_id', id)
-      .eq('user_id', session.user.id)
-      .maybeSingle()
+    const [{ data: orderData }, { data: offerData }, roleContext] = await Promise.all([
+      supabase.from('purchase_orders').select('*').eq('purchase_id', id).eq('user_id', session.user.id).maybeSingle(),
+      supabase.from('purchase_supply_offers').select('*').eq('purchase_id', id).eq('supplier_user_id', session.user.id).maybeSingle(),
+      getServerRoleContext(session.user.id, session.user.app_metadata?.role),
+    ])
     myOrder = (orderData as PurchaseOrderRow | null) ?? null
+    mySupplyOffer = offerData ?? null
+    canSupply = canPerformRoleAction('submit_supply_offer', roleContext)
   }
 
   return (
@@ -92,6 +97,8 @@ export default async function PurchaseDetailPage({
         <PurchaseDetail
           purchase={purchaseRow}
           myOrder={myOrder}
+          canSupply={canSupply}
+          mySupplyOffer={mySupplyOffer}
         />
       </Container>
     </main>

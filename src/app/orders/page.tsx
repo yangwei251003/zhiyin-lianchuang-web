@@ -36,6 +36,7 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
   let ordersQuery = supabase
     .from('orders')
     .select('*', { count: 'exact' })
+    .neq('status', 'draft')
 
   if (status !== 'all') ordersQuery = ordersQuery.eq('status', status)
   if (category !== 'all') ordersQuery = ordersQuery.eq('category', category)
@@ -76,20 +77,20 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
     }))
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#07152d] via-[#0d1b3a] to-[#07152d] pb-12">
-      <section className="relative overflow-hidden border-b border-cyan-300/20 bg-[#07152d]">
-        <Image src="/images/external/press-studio.jpg" alt="创意工作室内的传统印刷设备与海报" fill priority className="object-cover opacity-25" sizes="100vw" />
-        <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(7,21,45,.98),rgba(7,21,45,.84),rgba(7,21,45,.65))]" />
-        <Container className="relative py-8 sm:py-10">
-          <nav className="mb-4 text-xs text-slate-400" aria-label="面包屑">
-            <Link href="/" className="hover:text-cyan-200">首页</Link>
+    <main className="min-h-screen bg-[#f4f2ec] pb-12">
+      <section className="relative overflow-hidden border-b border-[#3a4a5e] bg-[#14263d]">
+        <Image src="/images/external/press-studio.jpg" alt="创意工作室内的传统印刷设备与海报" fill priority className="object-cover opacity-30" sizes="100vw" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,38,61,.98),rgba(20,38,61,.82),rgba(20,38,61,.38))]" />
+        <Container className="relative py-10 sm:py-14">
+          <nav className="mb-4 text-xs text-slate-300" aria-label="面包屑">
+            <Link href="/" className="hover:text-white">首页</Link>
             <span className="mx-1.5">/</span>
             <span className="text-slate-200">订单大厅</span>
           </nav>
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <p className="text-xs font-semibold text-cyan-300">01 / 供需撮合</p>
-              <h1 className="mt-2 text-2xl font-bold text-white sm:text-3xl">订单大厅</h1>
+              <p className="text-xs font-semibold uppercase tracking-[.16em] text-[#f29a70]">01 / 供需协同</p>
+              <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">公开印刷需求</h1>
               <p className="mt-3 text-sm leading-6 text-slate-200">
                 浏览已公开的印刷需求。提交需求或产能信息后，平台将协助供需双方进行报价沟通；实际合作条款由双方确认。
               </p>
@@ -97,21 +98,21 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
             <div className="flex flex-wrap gap-2">
               <Link
                 href="/orders/publish"
-                className="inline-flex h-10 items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-600 px-4 text-sm font-semibold text-slate-950 transition hover:brightness-110"
+                className="inline-flex h-11 items-center gap-2 bg-[#c84f20] px-5 text-sm font-semibold text-white transition hover:bg-[#aa3e18]"
               >
                 <Plus className="h-4 w-4" />
                 发布需求
               </Link>
               <Link
                 href="/orders/publish-capacity"
-                className="inline-flex h-10 items-center gap-2 rounded-lg border border-white/30 bg-white/10 px-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20"
+                className="inline-flex h-11 items-center gap-2 border border-white/60 px-5 text-sm font-semibold text-white transition hover:bg-white hover:text-[#14263d]"
               >
                 <Factory className="h-4 w-4" />
                 发布产能
               </Link>
               <Link
                 href="/orders/capacities"
-                className="inline-flex h-10 items-center gap-2 rounded-lg border border-white/30 bg-white/10 px-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20"
+                className="inline-flex h-11 items-center gap-2 border border-white/60 px-5 text-sm font-semibold text-white transition hover:bg-white hover:text-[#14263d]"
               >
                 <ShoppingBag className="h-4 w-4" />
                 查看产能
@@ -121,7 +122,7 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
         </Container>
       </section>
 
-      <Container className="mt-6">
+      <Container className="mt-8">
         <OrderList
           initialOrders={ordersWithCount}
           totalCount={count ?? 0}

@@ -19,6 +19,7 @@ import { Badge, type BadgeVariant } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import { EmptyState } from '@/components/common/EmptyState'
 import { OrderDetailActions } from '@/components/order/OrderDetailActions'
+import { BidReviewActions } from '@/components/order/BidReviewActions'
 import { ORDER_STATUS_LABEL } from '@/lib/order-config'
 import type { Database } from '@/types/database'
 
@@ -324,6 +325,7 @@ export default async function OrderDetailPage({
                               {bid.note}
                             </p>
                           )}
+                          {isOwner && bid.status === 'pending' && <BidReviewActions bidId={bid.id} />}
                         </div>
                       </div>
                       {/* 右：报价金额强调 */}

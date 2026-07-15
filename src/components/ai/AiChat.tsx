@@ -363,7 +363,7 @@ export function AiChat() {
                   你好，我是智印大脑
                 </h2>
                 <p className="max-w-md text-sm text-ink-secondary">
-                  印刷行业 AI 智能助手，可解答纸价趋势、采购建议、创业孵化、工艺材料等问题。
+                  印刷行业辅助问答，可解释工艺、材料、采购核对项与产教实践；不生成未经核验的价格或经营成绩。
                 </p>
               </div>
               <div className="grid w-full max-w-2xl grid-cols-1 gap-2 sm:grid-cols-2">

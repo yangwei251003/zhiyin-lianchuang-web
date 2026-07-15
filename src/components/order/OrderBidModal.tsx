@@ -8,11 +8,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { createClient } from '@/lib/supabase/client'
-import { useAuthStore } from '@/store/auth-store'
 import { useUIStore } from '@/store/ui-store'
 import { useRequireAuth } from '@/lib/auth/client-guard'
-import { sendMessages, bidSubmittedMessage, newBidReceivedMessage } from '@/lib/messages'
 import { cn } from '@/lib/utils'
 
 // 报价表单校验 schema
@@ -43,7 +40,6 @@ export function OrderBidModal({
   onClose,
   onSuccess,
 }: OrderBidModalProps) {
-  const user = useAuthStore((s) => s.user)
   const addToast = useUIStore((s) => s.addToast)
   const requireAuth = useRequireAuth()
 
@@ -78,37 +74,13 @@ export function OrderBidModal({
     if (!ok) return
 
     try {
-      const supabase = createClient()
-      const { error } = await supabase.from('bids').insert({
-        order_id: orderId,
-        user_id: user!.id,
-        price: values.price,
-        delivery_days: values.delivery_days,
-        note: values.note?.trim() ? values.note.trim() : null,
-        status: 'pending',
+      const response = await fetch('/api/business/bids', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ orderId, price: values.price, deliveryDays: values.delivery_days, note: values.note ?? '' }),
       })
-
-      if (error) throw error
-
-      // 异步发送消息（非阻塞）：向报价者自己 + 订单发布者发送消息
-      void (async () => {
-        try {
-          const { data: order } = await supabase
-            .from('orders')
-            .select('user_id, title')
-            .eq('id', orderId)
-            .single()
-          if (!order) return
-          const msgs = [
-            bidSubmittedMessage(user!.id, orderId, order.title, values.price),
-          ]
-          // 只有订单发布者不是报价者本人时，才发通知（防止自己接自己订单重复收到）
-          if (order.user_id !== user!.id) {
-            msgs.push(newBidReceivedMessage(order.user_id, orderId, order.title, values.price, values.delivery_days))
-          }
-          await sendMessages(supabase, msgs)
-        } catch { /* 消息发送失败不阻断主流程 */ }
-      })()
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error)
 
       addToast({ type: 'success', message: '报价提交成功' })
       onSuccess?.()

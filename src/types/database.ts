@@ -599,6 +599,46 @@ export type Database = {
         Relationships: []
       }
 
+      // ===== 单账号业务身份 =====
+      user_roles: {
+        Row: { id: string; user_id: string; role: 'requester' | 'printer' | 'material_supplier'; status: 'requested' | 'active' | 'suspended'; created_at: string; updated_at: string }
+        Insert: { id?: string; user_id: string; role: 'requester' | 'printer' | 'material_supplier'; status?: 'requested' | 'active' | 'suspended'; created_at?: string; updated_at?: string }
+        Update: { role?: 'requester' | 'printer' | 'material_supplier'; status?: 'requested' | 'active' | 'suspended'; updated_at?: string }
+        Relationships: []
+      }
+
+      // ===== 原料供应商供货方案 =====
+      purchase_supply_offers: {
+        Row: { id: string; purchase_id: string; supplier_user_id: string; unit_price: number; minimum_quantity: number; delivery_days: number; note: string; status: 'pending' | 'shortlisted' | 'accepted' | 'rejected' | 'withdrawn'; created_at: string; updated_at: string }
+        Insert: { id?: string; purchase_id: string; supplier_user_id: string; unit_price: number; minimum_quantity: number; delivery_days: number; note?: string; status?: 'pending' | 'shortlisted' | 'accepted' | 'rejected' | 'withdrawn'; created_at?: string; updated_at?: string }
+        Update: { unit_price?: number; minimum_quantity?: number; delivery_days?: number; note?: string; status?: 'pending' | 'shortlisted' | 'accepted' | 'rejected' | 'withdrawn'; updated_at?: string }
+        Relationships: []
+      }
+
+      // ===== 经审核公开内容快照 =====
+      public_content_snapshots: {
+        Row: { id: string; module: 'orders' | 'purchase' | 'startup' | 'training'; display_label: string; title: string; summary: string; cover_image: string | null; source_name: string; source_url: string; published_at: string | null; captured_at: string; is_demo: boolean; created_at: string; content_hash: string; source_type: 'project_owned' | 'official' | 'licensed_media'; license_name: string | null; license_url: string | null; review_status: 'pending' | 'approved' | 'rejected' | 'archived'; reviewed_by: string | null; reviewed_at: string | null; expires_at: string | null; raw_excerpt: string | null }
+        Insert: { id?: string; module: 'orders' | 'purchase' | 'startup' | 'training'; display_label: string; title: string; summary: string; cover_image?: string | null; source_name: string; source_url: string; published_at?: string | null; captured_at?: string; is_demo?: boolean; created_at?: string; content_hash: string; source_type: 'project_owned' | 'official' | 'licensed_media'; license_name?: string | null; license_url?: string | null; review_status?: 'pending' | 'approved' | 'rejected' | 'archived'; reviewed_by?: string | null; reviewed_at?: string | null; expires_at?: string | null; raw_excerpt?: string | null }
+        Update: { display_label?: string; title?: string; summary?: string; cover_image?: string | null; review_status?: 'pending' | 'approved' | 'rejected' | 'archived'; reviewed_by?: string | null; reviewed_at?: string | null; expires_at?: string | null; raw_excerpt?: string | null }
+        Relationships: []
+      }
+
+      // ===== 来源白名单 =====
+      source_registry: {
+        Row: { id: string; source_key: string; source_name: string; base_url: string; source_type: 'project_owned' | 'official' | 'licensed_media'; license_name: string | null; license_url: string | null; is_allowed: boolean; review_notes: string; created_at: string; updated_at: string }
+        Insert: { id?: string; source_key: string; source_name: string; base_url: string; source_type: 'project_owned' | 'official' | 'licensed_media'; license_name?: string | null; license_url?: string | null; is_allowed?: boolean; review_notes?: string; created_at?: string; updated_at?: string }
+        Update: { source_name?: string; base_url?: string; source_type?: 'project_owned' | 'official' | 'licensed_media'; license_name?: string | null; license_url?: string | null; is_allowed?: boolean; review_notes?: string; updated_at?: string }
+        Relationships: []
+      }
+
+      // ===== 管理员操作审计 =====
+      admin_audit_logs: {
+        Row: { id: string; admin_user_id: string | null; action: string; entity_type: string; entity_id: string; details: Json; created_at: string }
+        Insert: { id?: string; admin_user_id?: string | null; action: string; entity_type: string; entity_id: string; details?: Json; created_at?: string }
+        Update: Record<string, never>
+        Relationships: []
+      }
+
       // ===== 用户反馈 =====
       feedback_entries: {
         Row: {

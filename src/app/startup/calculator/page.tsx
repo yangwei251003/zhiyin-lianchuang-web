@@ -23,7 +23,7 @@ export default function CalculatorPage() {
           <nav className="mb-3 text-xs text-white/70" aria-label="面包屑">
             <Link href="/" className="hover:text-white">首页</Link>
             <span className="mx-1.5">/</span>
-            <Link href="/startup" className="hover:text-white">创业孵化</Link>
+            <Link href="/startup" className="hover:text-white">产教实践</Link>
             <span className="mx-1.5">/</span>
             <span className="text-white">智能测算中心</span>
           </nav>

@@ -8,10 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Card } from '@/components/ui/Card'
-import { createClient } from '@/lib/supabase/client'
-import { useAuthStore } from '@/store/auth-store'
 import { useUIStore } from '@/store/ui-store'
-import { useRequireVerified } from '@/lib/auth/client-guard'
 import { CAPACITY_DEVICES, REGIONS } from '@/lib/order-config'
 import { cn } from '@/lib/utils'
 
@@ -51,9 +48,7 @@ function todayStr(): string {
 // 产能发布表单（客户端组件）
 export function CapacityPublishForm() {
   const router = useRouter()
-  const user = useAuthStore((s) => s.user)
   const addToast = useUIStore((s) => s.addToast)
-  const requireVerified = useRequireVerified()
 
   const {
     register,
@@ -72,23 +67,14 @@ export function CapacityPublishForm() {
   })
 
   const onSubmit = async (values: CapacityFormValues) => {
-    const ok = requireVerified()
-    if (!ok) return
-
     try {
-      const supabase = createClient()
-      const { error } = await supabase.from('capacities').insert({
-        user_id: user!.id,
-        device_type: values.device_type,
-        capacity: values.capacity.trim(),
-        region: values.region,
-        price_min: values.price_min,
-        price_max: values.price_max,
-        available_date: values.available_date,
-        status: 'available',
+      const response = await fetch('/api/business/capacities', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ deviceType: values.device_type, capacity: values.capacity, region: values.region, priceMin: values.price_min, priceMax: values.price_max, availableDate: values.available_date }),
       })
-
-      if (error) throw error
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error)
 
       addToast({ type: 'success', message: '产能发布成功' })
       router.push('/orders/capacities')

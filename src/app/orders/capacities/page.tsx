@@ -48,26 +48,12 @@ export default async function CapacitiesPage({
   const capacityList = (capacities ?? []) as CapacityRow[]
 
   return (
-    <main className="pb-12">
+    <main className="bg-[#f4f2ec] pb-12">
       {/* ===== 页头 ===== */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            'linear-gradient(135deg, #2BAE6E 0%, #4ECB9E 60%, #5BD4AD 100%)',
-        }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%)',
-          }}
-        />
-        <Container className="relative py-10 sm:py-12">
+      <section className="relative overflow-hidden border-b border-[#3a4a5e] bg-[#14263d]">
+        <Container className="relative py-10 sm:py-14">
           <nav
-            className="mb-3 text-xs text-white/70"
+            className="mb-4 text-xs text-slate-300"
             aria-label="面包屑"
           >
             <Link href="/" className="hover:text-white">
@@ -80,24 +66,25 @@ export default async function CapacitiesPage({
             <span className="mx-1.5">/</span>
             <span className="text-white">产能大厅</span>
           </nav>
-          <h1 className="text-2xl font-bold text-white sm:text-3xl">
-            产能大厅
+          <p className="text-xs font-semibold uppercase tracking-[.16em] text-[#f29a70]">01B / 印刷产能</p>
+          <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
+            可用印刷产能
           </h1>
           <p className="mt-2 max-w-xl text-sm text-white/80 sm:text-base">
-            汇集全网印刷设备产能，闲置产能一键发布、精准撮合
+            展示认证印刷厂主动发布的设备、排期、区域与价格区间；信息不承诺全量覆盖或自动匹配结果。
           </p>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/orders/publish-capacity"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-white px-5 text-sm font-semibold text-success shadow-md transition-all duration-base ease-out-expo hover:-translate-y-0.5 hover:shadow-lg"
+              className="inline-flex h-11 items-center justify-center gap-2 bg-[#c84f20] px-5 text-sm font-semibold text-white hover:bg-[#aa3e18]"
             >
               <Plus className="h-4 w-4" />
               发布产能
             </Link>
             <Link
               href="/orders"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-white/40 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-base ease-out-expo hover:-translate-y-0.5 hover:bg-white/20"
+              className="inline-flex h-11 items-center justify-center gap-2 border border-white/60 px-5 text-sm font-semibold text-white hover:bg-white hover:text-[#14263d]"
             >
               查看订单需求
             </Link>
@@ -105,7 +92,7 @@ export default async function CapacitiesPage({
         </Container>
       </section>
 
-      <Container className="mt-6">
+      <Container className="mt-8">
         <CapacityList
           initialCapacities={capacityList}
           totalCount={count ?? 0}

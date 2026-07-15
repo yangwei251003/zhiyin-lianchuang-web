@@ -206,7 +206,7 @@ export function MineContent({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
         {/* 用户信息卡 */}
         <div className="lg:col-span-2">
-          <div className="relative overflow-hidden rounded-2xl bg-primary-gradient p-6 shadow-lg shadow-blue sm:p-7">
+          <div className="relative overflow-hidden rounded-xl bg-[#14263d] p-6 sm:p-7">
             {/* 装饰圆 */}
             <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10" />
             <div className="pointer-events-none absolute -bottom-10 -left-6 h-28 w-28 rounded-full bg-white/5" />
@@ -243,7 +243,7 @@ export function MineContent({
               <div className="mt-5 flex gap-2">
                 <Link
                   href="/mine/profile"
-                  className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-md bg-white/15 px-3 text-sm font-medium text-white backdrop-blur-sm transition-all duration-fast ease-out-expo hover:bg-white/25"
+                  className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 border border-white/50 px-3 text-sm font-medium text-white transition-colors hover:bg-white hover:text-[#14263d]"
                 >
                   <Pencil className="h-3.5 w-3.5" />
                   编辑资料
@@ -252,7 +252,7 @@ export function MineContent({
                   type="button"
                   onClick={handleSignOut}
                   disabled={loggingOut}
-                  className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-md bg-white/15 px-3 text-sm font-medium text-white backdrop-blur-sm transition-all duration-fast ease-out-expo hover:bg-white/25 disabled:opacity-60"
+                  className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 border border-white/50 px-3 text-sm font-medium text-white transition-colors hover:bg-white hover:text-[#14263d] disabled:opacity-60"
                 >
                   {loggingOut ? (
                     <Spinner size="sm" className="text-white" />

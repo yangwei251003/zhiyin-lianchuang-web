@@ -5,7 +5,7 @@ import { AiChat } from '@/components/ai/AiChat'
 export const metadata: Metadata = {
   title: '智印大脑 · AI 智能助手 · 智印联创',
   description:
-    '智印大脑是印刷行业 AI 智能助手，可解答印刷工艺、纸张选购、价格趋势、集采商城、创业孵化等问题。',
+    '智印大脑提供印刷工艺、材料、采购核对项与产教实践辅助问答，不输出未经核验的价格或经营成绩。',
 }
 
 // AI 对话页：作为产品演示与行业咨询入口，无需登录即可体验。

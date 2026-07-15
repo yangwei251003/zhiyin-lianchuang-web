@@ -19,7 +19,7 @@ export interface OrderCardProps {
   onClick?: (id: string) => void
 }
 
-type OrderStatus = 'open' | 'in_progress' | 'completed' | 'cancelled'
+type OrderStatus = 'draft' | 'open' | 'in_progress' | 'completed' | 'cancelled'
 
 interface StatusConfig {
   label: string
@@ -29,6 +29,7 @@ interface StatusConfig {
 }
 
 const statusConfig: Record<OrderStatus, StatusConfig> = {
+  draft: { label: '草稿', variant: 'default', bar: 'bg-ink-tertiary' },
   open: { label: '招标中', variant: 'primary', bar: 'bg-primary' },
   in_progress: { label: '进行中', variant: 'warning', bar: 'bg-warning' },
   completed: { label: '已完成', variant: 'success', bar: 'bg-success' },

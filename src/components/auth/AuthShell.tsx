@@ -73,7 +73,7 @@ export function AuthShell({ children }: AuthShellProps) {
             开启数字智造新时代
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-white/70">
-            提供需求撮合、采购意向沟通、来源标注的纸价信息和创业孵化服务。
+            提供供需协同、采购意向沟通、来源标注的纸价情报和产教实践服务。
             业务规则、数据来源和服务开放范围以页面最新说明为准。
           </p>
 

@@ -12,10 +12,10 @@ const sections: FooterSection[] = [
   {
     title: '平台服务',
     links: [
-      { label: '订单大厅', href: '/orders' },
-      { label: '集采商城', href: '/purchase' },
-      { label: '纸价信息', href: '/prediction/白卡纸' },
-      { label: '创业孵化', href: '/startup' },
+      { label: '供需协同', href: '/orders' },
+      { label: '集中采购', href: '/purchase' },
+      { label: '纸价情报', href: '/prediction/白卡纸' },
+      { label: '产教实践', href: '/startup' },
     ],
   },
   {
@@ -23,7 +23,7 @@ const sections: FooterSection[] = [
     links: [
       { label: '平台介绍', href: '/about' },
       { label: '团队介绍', href: '/about/team' },
-      { label: '技术培训', href: '/training' },
+      { label: '学习资源', href: '/training' },
       { label: '帮助中心', href: '/help' },
     ],
   },
@@ -34,6 +34,8 @@ const sections: FooterSection[] = [
       { label: '意见反馈', href: '/feedback' },
       { label: '隐私政策', href: '/privacy' },
       { label: '用户协议', href: '/terms' },
+      { label: 'Cookie 说明', href: '/cookies' },
+      { label: '数据与媒体来源', href: '/sources' },
     ],
   },
 ]
@@ -76,7 +78,7 @@ export function Footer() {
 
         <div className="mt-6 flex flex-col gap-2 border-t border-white/20 pt-6 text-xs text-[#B8CBDD] sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} 智印联创</p>
-          <p>备案信息将在正式上线前完成配置；当前不提供在线支付或资金监管服务。</p>
+          <p>备案信息将在正式上线前按实际情况配置；当前不提供在线支付或资金监管服务。</p>
         </div>
       </Container>
     </footer>

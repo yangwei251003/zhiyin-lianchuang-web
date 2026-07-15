@@ -92,7 +92,7 @@ export default async function ArticlesPage({
             </Link>
             <span className="mx-1.5">/</span>
             <Link href="/startup" className="hover:text-white">
-              创业孵化
+              产教实践
             </Link>
             <span className="mx-1.5">/</span>
             <span className="text-white">创业文章</span>

@@ -45,10 +45,10 @@ export function OrderDetailActions({
           variant="outline"
           leftIcon={<Settings2 className="h-4 w-4" />}
           onClick={() => router.push(`/orders/${orderId}/edit`)}
-          disabled
-          title="功能开发中"
+          disabled={orderStatus !== 'draft'}
+          title={orderStatus === 'draft' ? '继续编辑草稿' : '公开需求暂不支持直接修改'}
         >
-          修改订单
+          {orderStatus === 'draft' ? '继续编辑草稿' : '修改需求'}
         </Button>
         <span className="text-xs text-ink-tertiary">
           这是您发布的订单

@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg'
-export type CardVariant = 'default' | 'glass' | 'dark' | 'elevated'
+export type CardVariant = 'default' | 'elevated'
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   hover?: boolean
@@ -18,8 +18,6 @@ const paddingStyles: Record<CardPadding, string> = {
 
 const variantStyles: Record<CardVariant, string> = {
   default: 'bg-white border border-line shadow-sm',
-  glass: 'glass-card border border-white/10 shadow-glass',
-  dark: 'bg-gradient-to-br from-industrial-surface1 to-industrial-surface2 border border-industrial-border text-white shadow-industrial',
   elevated: 'bg-white border border-line/80 shadow-md hover:shadow-xl',
 }
 

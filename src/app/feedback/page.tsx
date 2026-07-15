@@ -10,7 +10,7 @@ import { requestJson } from '@/lib/api/request'
 import { useUIStore } from '@/store/ui-store'
 
 const CATEGORIES = ['建议', '问题反馈', '合作联系', '其他'] as const
-const MODULES = ['首页', '订单大厅', '集采商城', '纸价信息', '创业孵化', '个人中心', '其他'] as const
+const MODULES = ['首页', '供需协同', '集中采购', '纸价情报', '产教实践', '个人中心', '其他'] as const
 
 export default function FeedbackPage() {
   const requireAuth = useRequireAuth()

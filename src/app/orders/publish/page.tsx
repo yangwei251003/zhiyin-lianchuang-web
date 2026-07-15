@@ -6,8 +6,8 @@ import { AuthGuard } from '@/components/auth/AuthGuard'
 import { OrderPublishForm } from '@/components/order/OrderPublishForm'
 
 export const metadata: Metadata = {
-  title: '发布订单 · 智印联创',
-  description: '发布印刷需求，获取供应商报价。',
+  title: '发布印刷需求 · 智印联创',
+  description: '保存需求草稿，资料完整后公开发布并获取认证印刷厂报价。',
 }
 
 // 订单发布页（服务端组件）
@@ -25,14 +25,14 @@ export default function OrderPublishPage() {
         </Link>
         <div className="mt-3 mb-6">
           <h1 className="text-2xl font-bold text-ink-primary sm:text-3xl">
-            发布订单
+            发布印刷需求
           </h1>
           <p className="mt-2 text-sm text-ink-secondary">
-            填写印刷需求详情，发布后供应商将在线报价
+            可先保存仅自己可见的草稿；公开发布需启用需求方身份并完善个人资料
           </p>
         </div>
 
-        <AuthGuard requireVerified>
+        <AuthGuard>
           <OrderPublishForm />
         </AuthGuard>
       </Container>

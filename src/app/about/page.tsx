@@ -18,7 +18,7 @@ const SERVICES = [
   { icon: Factory, title: '订单与产能撮合', detail: '公开需求和产能信息经平台流程处理后，协助供需双方建立沟通。', href: '/orders' },
   { icon: ClipboardList, title: '采购意向收集', detail: '收集相近的印刷耗材采购需求，不在站内提供付款或价格承诺。', href: '/purchase' },
   { icon: LineChart, title: '纸价信息参考', detail: '仅展示有来源、规格、区域、单位和更新时间的公开或授权数据。', href: '/prediction/白卡纸' },
-  { icon: BookOpen, title: '创业孵化服务', detail: '提供公开学习资源、导师信息和投入测算工具。', href: '/startup' },
+  { icon: BookOpen, title: '产教实践中心', detail: '围绕真实印刷问题提供学习资源、导师辅导与实践测算工具。', href: '/startup' },
 ] as const
 
 export default function AboutPage() {
