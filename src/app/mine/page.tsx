@@ -6,6 +6,7 @@ import { Container } from '@/components/layout/Container'
 import { AuthGuard } from '@/components/auth/AuthGuard'
 import { MineContent } from '@/components/mine/MineContent'
 import { RoleWorkspace } from '@/components/mine/RoleWorkspace'
+import { BrainContextLauncher } from '@/components/brain/BrainContextLauncher'
 import type { BusinessRole } from '@/types/platform'
 
 export const metadata: Metadata = {
@@ -114,6 +115,9 @@ export default async function MinePage() {
               initialRoles={(roleRows ?? []).map((row) => row.role as BusinessRole)}
               companyApproved={company?.status === 'approved'}
             />
+          </div>
+          <div className="mb-6">
+            <BrainContextLauncher context="order" label="打开我的协同助手" description="结合你的当前身份，先整理需求、产能、报价或采购沟通需要确认的内容。" />
           </div>
           <MineContent
             profile={profile}

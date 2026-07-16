@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
 import { PurchaseList } from '@/components/purchase/PurchaseList'
 import { ShowcaseRail } from '@/components/common/ShowcaseRail'
+import { BrainContextLauncher } from '@/components/brain/BrainContextLauncher'
 import type { Database } from '@/types/database'
 
 export const metadata: Metadata = {
@@ -95,6 +96,7 @@ export default async function PurchasePage({
       </section>
 
       <Container className="mt-8">
+        <BrainContextLauncher context="purchase" label="整理采购核对项" description="先核对材料规格、数量、起订条件和交付要求，再进入采购意向沟通。" />
         <PurchaseList
           initialPurchases={purchaseList}
           totalCount={count ?? 0}

@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
 import { OrderList } from '@/components/order/OrderList'
 import { ShowcaseRail } from '@/components/common/ShowcaseRail'
+import { BrainContextLauncher } from '@/components/brain/BrainContextLauncher'
 import type { Database } from '@/types/database'
 
 export const metadata: Metadata = {
@@ -123,6 +124,7 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
       </section>
 
       <Container className="mt-8">
+        <BrainContextLauncher context="order" label="整理需求核对项" description="在发布或报价前，先把规格、工艺、交期和地区整理为可确认字段。" />
         <OrderList
           initialOrders={ordersWithCount}
           totalCount={count ?? 0}

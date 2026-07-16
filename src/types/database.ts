@@ -639,6 +639,35 @@ export type Database = {
         Relationships: []
       }
 
+      // ===== 智印大脑私有工作区 =====
+      brain_conversations: {
+        Row: { id: string; user_id: string; context_kind: 'general' | 'order' | 'purchase' | 'price' | 'education'; title: string; created_at: string; updated_at: string }
+        Insert: { id?: string; user_id: string; context_kind: 'general' | 'order' | 'purchase' | 'price' | 'education'; title?: string; created_at?: string; updated_at?: string }
+        Update: { title?: string; context_kind?: 'general' | 'order' | 'purchase' | 'price' | 'education'; updated_at?: string }
+        Relationships: []
+      }
+
+      brain_messages: {
+        Row: { id: string; conversation_id: string; user_id: string; role: 'user' | 'assistant'; content: string; source_snapshot: Json; created_at: string }
+        Insert: { id?: string; conversation_id: string; user_id: string; role: 'user' | 'assistant'; content: string; source_snapshot?: Json; created_at?: string }
+        Update: Record<string, never>
+        Relationships: []
+      }
+
+      brain_drafts: {
+        Row: { id: string; user_id: string; conversation_id: string | null; context_kind: 'order' | 'purchase' | 'price' | 'education'; title: string; fields: Json; status: 'needs_confirmation' | 'confirmed' | 'dismissed'; created_at: string; updated_at: string }
+        Insert: { id?: string; user_id: string; conversation_id?: string | null; context_kind: 'order' | 'purchase' | 'price' | 'education'; title: string; fields?: Json; status?: 'needs_confirmation' | 'confirmed' | 'dismissed'; created_at?: string; updated_at?: string }
+        Update: { title?: string; fields?: Json; status?: 'needs_confirmation' | 'confirmed' | 'dismissed'; updated_at?: string }
+        Relationships: []
+      }
+
+      brain_usage_logs: {
+        Row: { id: string; user_id: string | null; conversation_id: string | null; mode: 'chat' | 'review'; context_kind: string; created_at: string }
+        Insert: { id?: string; user_id?: string | null; conversation_id?: string | null; mode: 'chat' | 'review'; context_kind: string; created_at?: string }
+        Update: Record<string, never>
+        Relationships: []
+      }
+
       // ===== 用户反馈 =====
       feedback_entries: {
         Row: {

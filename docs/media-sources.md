@@ -3,9 +3,9 @@
 | 资源 | 类型 | 来源 | 许可/授权 | 使用范围 | 状态 |
 |---|---|---|---|---|---|
 | `public/videos/heidelberg.mp4` | 印刷设备视频 | 项目既有素材 | 项目仓库既有授权范围 | 首页媒体窗 | 已有 |
-| `public/videos/manroland.mp4` | 印刷设备视频 | 项目既有素材 | 项目仓库既有授权范围 | 首页媒体窗/产教实践 | 已有 |
+| `public/videos/manroland.mp4` | 印刷设备视频 | 项目既有素材 | 项目仓库既有授权范围 | 首页媒体窗/产教实践/智印大脑 | 已有 |
 | `public/images/external/press-tools.jpg` | 印刷设备图片 | 项目既有外部素材 | 以仓库现有许可记录为准 | 产教实践 | 已有 |
-| `public/images/external/press-studio.jpg` | 印刷现场图片 | 项目既有外部素材 | 以仓库现有许可记录为准 | 首页/产教实践 | 已有 |
+| `public/images/external/press-studio.jpg` | 印刷现场图片 | 项目既有外部素材 | 以仓库现有许可记录为准 | 首页/产教实践/智印大脑 | 已有 |
 | Pexels 后续素材 | 图片/视频 | https://www.pexels.com/license/ | 可用于网站并允许修改；不得暗示人物或品牌背书 | 仅在来源、作者与下载日期补齐后使用 | 待选 |
 | 中国政府采购网 | 公开采购信息 | https://www.ccgp.gov.cn/ | 财政部指定公开信息媒体；仅保存公开摘要与原链接 | 采购基准与案例参考 | 白名单 |
 

@@ -88,7 +88,7 @@ export function RegisterForm() {
   }
 
   return (
-    <div className="rounded-2xl border border-line bg-white p-6 shadow-lg sm:p-8">
+    <div className="border border-line bg-white p-6 sm:p-8">
       <AnimatePresence mode="wait">
         {/* ====== 注册输入表单 ====== */}
         {step === 'form' && (

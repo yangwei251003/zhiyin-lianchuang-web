@@ -33,7 +33,7 @@ export function Card({
   return (
     <div
       className={cn(
-        'rounded-2xl transition-all duration-base ease-out-expo',
+        'rounded-sm transition-colors duration-fast ease-out',
         variantStyles[variant],
         hover &&
           'cursor-pointer hover:-translate-y-1 hover:shadow-lg',

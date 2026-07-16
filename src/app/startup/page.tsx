@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ArrowRight, BookOpen, Calculator, ClipboardCheck, GraduationCap, MessagesSquare, Users } from 'lucide-react'
 import { Container } from '@/components/layout/Container'
 import { Reveal } from '@/components/motion/Reveal'
+import { BrainContextLauncher } from '@/components/brain/BrainContextLauncher'
 import { PUBLIC_MENTORS, PUBLIC_PARTNERS, PUBLIC_RESEARCH_FACTS } from '@/lib/public-content'
 
 export const metadata: Metadata = { title: '产教实践中心 · 智印联创', description: '围绕真实印刷产业问题开展学习、实训、导师辅导与项目验证。' }
@@ -26,6 +27,7 @@ export default function PracticeCenterPage() {
     </section>
 
     <Container className="py-14 sm:py-20">
+      <BrainContextLauncher context="education" label="拆解实践任务" description="从需求、生产和采购的真实约束出发，形成可复核的实践任务草稿。" />
       <Reveal><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#c84f20]">Practice modules</p><div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"><h2 className="text-3xl font-bold text-[#14263d] sm:text-4xl">从学习到真实问题验证</h2><p className="max-w-md text-sm leading-6 text-[#5c6672]">每个模块都以可交付成果为终点：需求单、工艺清单、测算表、复盘记录。</p></div></Reveal>
       <div className="mt-9 grid gap-px overflow-hidden border border-[#cbd1d7] bg-[#cbd1d7] sm:grid-cols-2 lg:grid-cols-4">{modules.map((module, i) => { const Icon = module.icon; return <Reveal key={module.title} delay={i * .05} className="bg-white p-6"><span className="font-mono text-xs font-bold text-[#c84f20]">{module.index}</span><Icon className="mt-8 h-7 w-7 text-[#14263d]" strokeWidth={1.6} /><h3 className="mt-5 text-lg font-bold text-[#14263d]">{module.title}</h3><p className="mt-3 min-h-24 text-sm leading-6 text-[#5c6672]">{module.desc}</p><Link href={module.href} className="inline-flex items-center gap-1 text-sm font-bold text-[#c84f20]">进入模块 <ArrowRight className="h-4 w-4" /></Link></Reveal> })}</div>
     </Container>

@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Container } from '@/components/layout/Container'
 import { PriceChart } from '@/components/charts/PriceChart'
 import { PaperTypeTabs } from '@/components/prediction/PaperTypeTabs'
+import { BrainContextLauncher } from '@/components/brain/BrainContextLauncher'
 import { isMarketPriceFresh, PAPER_TYPES, type PaperType } from '@/lib/price-data'
 
 interface PredictionPageProps {
@@ -92,6 +93,10 @@ export default async function PredictionPage({ params }: PredictionPageProps) {
 
       <Container className="py-6 sm:py-8">
         <PaperTypeTabs current={paperType} />
+
+        <div className="mt-6">
+          <BrainContextLauncher context="price" label="整理采购核对项" description="智印大脑只解释页面已核验记录的来源、规格、地区和时间边界，不生成未来纸价。" />
+        </div>
 
         <section className="mt-6 grid gap-4 lg:grid-cols-[1.2fr_1fr]"><div className="border-l-4 border-[#c84f20] bg-[#14263d] p-5 text-white"><p className="text-xs font-semibold text-[#f4a27d]">官方行业指标</p><h2 className="mt-2 text-xl font-bold">工业生产者价格指数（PPI）</h2><p className="mt-3 text-sm leading-6 text-slate-200">国家统计局公开数据发布库按月发布工业价格指标，可用于观察宏观成本环境，不作为具体纸种报价。</p><a className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#f4a27d] hover:text-white" href="https://data.stats.gov.cn/" target="_blank" rel="noreferrer">查看国家统计局数据发布库 <ExternalLink className="size-4" /></a></div><div className="border border-[#cfd5dc] bg-[#edeae2] p-5"><p className="text-xs font-semibold text-[#c84f20]">口径边界</p><h2 className="mt-2 text-xl font-bold text-[#14263d]">纸浆期货与成品纸报价分开展示</h2><p className="mt-3 text-sm leading-6 text-[#5c6672]">纸浆期货只能反映相关市场行情，平台不将其换算为铜版纸、白卡纸等成品纸价格。</p></div></section>
 

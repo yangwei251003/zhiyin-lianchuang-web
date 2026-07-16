@@ -8,7 +8,6 @@ const protectedPaths = [
   '/mine',
   '/messages',
   '/purchase/mine',
-  '/ai-chat',
 ]
 
 // 需企业认证（status === 'approved'）才能访问的路径前缀

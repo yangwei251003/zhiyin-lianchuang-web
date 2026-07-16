@@ -206,7 +206,7 @@ export function MineContent({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
         {/* 用户信息卡 */}
         <div className="lg:col-span-2">
-          <div className="relative overflow-hidden rounded-xl bg-[#14263d] p-6 sm:p-7">
+          <div className="relative overflow-hidden border border-[#102A43] bg-[#14263d] p-6 sm:p-7">
             {/* 装饰圆 */}
             <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10" />
             <div className="pointer-events-none absolute -bottom-10 -left-6 h-28 w-28 rounded-full bg-white/5" />
@@ -283,7 +283,7 @@ export function MineContent({
             <h3 className="mb-2 px-1 text-xs font-medium text-ink-tertiary">
               {group.title}
             </h3>
-            <div className="overflow-hidden rounded-xl border border-line bg-white shadow-sm">
+            <div className="overflow-hidden border border-line bg-white">
               {group.items.map((item, idx) => (
                 <MenuRow
                   key={item.title}
@@ -428,7 +428,7 @@ function StatCard({ item }: { item: StatItem }) {
   return (
     <Link
       href={item.href}
-      className="group relative overflow-hidden rounded-xl border border-line bg-white p-4 shadow-sm transition-all duration-base ease-out-expo hover:-translate-y-0.5 hover:shadow-md sm:p-5"
+      className="group relative overflow-hidden border border-line bg-white p-4 transition-colors duration-fast hover:border-[#173B63] hover:bg-[#FAFBFC] sm:p-5"
     >
       {/* 待处理红点 */}
       {item.badge ? (

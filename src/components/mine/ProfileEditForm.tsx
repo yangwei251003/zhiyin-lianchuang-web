@@ -13,7 +13,6 @@ import { Spinner } from '@/components/ui/Spinner'
 import { createClient } from '@/lib/supabase/client'
 import { useAuthStore } from '@/store/auth-store'
 import { useUIStore } from '@/store/ui-store'
-import { cn } from '@/lib/utils'
 import type { Database } from '@/types/database'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
@@ -56,7 +55,6 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -66,8 +64,6 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
       avatar_url: profile.avatar_url ?? null,
     },
   })
-
-  const avatarUrl = watch('avatar_url')
 
   // 头像上传：选择文件 → 上传到 Supabase Storage → 回填 publicUrl
   const handleAvatarChange = async (

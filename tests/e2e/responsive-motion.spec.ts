@@ -22,7 +22,25 @@ test('reduced motion pauses the hero video and keeps controls usable', async ({ 
   expect(consoleErrors.filter((message) => /hydration|uncaught/i.test(message))).toEqual([])
 })
 
-for (const route of ['/review', '/orders', '/purchase', '/startup', '/training', '/cookies', '/sources']) {
+test('brain keeps role guidance and business drafts in a confirmation-only boundary', async ({ page }) => {
+  const businessWrites: string[] = []
+  page.on('request', (request) => {
+    if (request.method() !== 'GET' && request.url().includes('/api/business/')) businessWrites.push(request.url())
+  })
+
+  await page.goto('/brain', { waitUntil: 'domcontentloaded' })
+  await expect(page.getByRole('heading', { name: '智印大脑' })).toBeVisible()
+  await page.getByRole('button', { name: /印刷厂/ }).click()
+  await expect(page.getByLabel('向智印大脑提出问题')).toHaveValue(/印刷厂视角/)
+  await page.getByRole('tab', { name: '供需协同' }).click()
+  await expect(page.getByRole('heading', { name: '需求信息核对' })).toBeVisible()
+  await page.getByRole('button', { name: '把当前需求整理成一张待确认草稿' }).click()
+  await expect(page.getByRole('heading', { name: '需求草稿' })).toBeVisible({ timeout: 20_000 })
+  await expect(page.getByRole('button', { name: '登录后保存并前往表单' })).toBeVisible()
+  expect(businessWrites).toEqual([])
+})
+
+for (const route of ['/brain', '/review', '/orders', '/purchase', '/startup', '/training', '/cookies', '/sources']) {
   test(`${route} remains usable on a 390px viewport`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 })
     await page.goto(route, { waitUntil: 'domcontentloaded' })

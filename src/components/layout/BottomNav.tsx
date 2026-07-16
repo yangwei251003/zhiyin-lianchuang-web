@@ -4,12 +4,11 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   Home,
-  MessageCircle,
   ShoppingBag,
+  Sparkles,
   User as UserIcon,
   type LucideIcon,
 } from 'lucide-react'
-import { useUIStore } from '@/store/ui-store'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 
@@ -22,13 +21,12 @@ interface BottomNavItem {
 const items: BottomNavItem[] = [
   { label: '首页', href: '/', icon: Home },
   { label: '协同', href: '/orders', icon: ShoppingBag },
-  { label: '消息', href: '/messages', icon: MessageCircle },
+  { label: '大脑', href: '/brain', icon: Sparkles },
   { label: '我的', href: '/mine', icon: UserIcon },
 ]
 
 export function BottomNav() {
   const pathname = usePathname()
-  const unread = useUIStore((s) => s.unreadCount)
 
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href)
@@ -59,11 +57,6 @@ export function BottomNav() {
                 className="relative"
               >
                 <Icon className="h-5 w-5" />
-                {href === '/messages' && unread > 0 && (
-                  <span className="absolute -right-1.5 -top-1 inline-flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-danger px-1 text-2xs font-bold text-white shadow-sm">
-                    {unread > 99 ? '99+' : unread}
-                  </span>
-                )}
               </motion.div>
             </span>
             <span className="mt-0.5">{label}</span>

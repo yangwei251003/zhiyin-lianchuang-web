@@ -76,7 +76,7 @@ export function RoleWorkspace({ initialRoles, companyApproved }: { initialRoles:
 
   const Icon = content.icon
   return (
-    <section aria-labelledby="role-workspace-title" className="overflow-hidden rounded-2xl border border-[#cfd5dc] bg-[#f3f1eb]">
+    <section aria-labelledby="role-workspace-title" className="overflow-hidden border border-[#cfd5dc] bg-[#f3f1eb]">
       <div className="border-b border-[#cfd5dc] px-5 py-5 sm:px-7">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#c84f20]">Business roles</p>
         <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

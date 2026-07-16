@@ -12,11 +12,13 @@ import {
   PackageSearch,
   ShieldCheck,
   ShoppingCart,
+  Sparkles,
 } from 'lucide-react'
 import { HomeHeroMedia } from '@/components/home/HomeHeroMedia'
 import { Reveal } from '@/components/motion/Reveal'
 import {
   HOME_CAPABILITIES,
+  HOME_BRAIN,
   HOME_FAQ,
   HOME_FLOW,
   HOME_ROLES,
@@ -101,6 +103,31 @@ export default function HomePage() {
               </Reveal>
             )
           })}
+        </div>
+      </section>
+
+      <section className="border-y border-[#102A43] bg-[#173B63] text-white">
+        <div className="mx-auto grid max-w-7xl lg:grid-cols-[.9fr_1.1fr]">
+          <div className="relative min-h-80 border-b border-white/20 lg:border-b-0 lg:border-r">
+            <Image src="/images/external/press-detail.jpg" alt="印刷设备中的生产细节" fill className="object-cover opacity-80" sizes="(min-width:1024px) 45vw, 100vw" />
+            <div className="absolute inset-x-0 bottom-0 border-t border-white/25 bg-[#102A43]/85 p-5">
+              <p className="text-xs font-semibold tracking-[.16em] text-[#F5B45B]">需求方 → 印刷厂 → 原料供应商</p>
+              <p className="mt-2 text-sm leading-6 text-[#DCE6F0]">智印大脑在每一环只整理已明确的信息，业务确认仍回到对应工作台。</p>
+            </div>
+          </div>
+          <Reveal className="flex items-center p-7 sm:p-10 lg:p-14">
+            <div>
+              <div className="flex items-center gap-3 text-[#F5B45B]"><Sparkles className="size-6" strokeWidth={1.6} aria-hidden /><p className="text-sm font-semibold">{HOME_BRAIN.eyebrow}</p></div>
+              <h2 className="mt-6 max-w-2xl text-3xl font-bold leading-tight tracking-tight sm:text-4xl">{HOME_BRAIN.title}</h2>
+              <p className="mt-5 max-w-2xl text-base leading-7 text-[#DCE6F0]">{HOME_BRAIN.description}</p>
+              <ol className="mt-8 grid gap-px border border-white/25 bg-white/25 sm:grid-cols-3">
+                {HOME_BRAIN.steps.map((step, index) => <li key={step} className="bg-[#173B63] p-4"><span className="text-xs font-semibold text-[#F5B45B]">0{index + 1}</span><p className="mt-3 text-sm font-bold">{step}</p></li>)}
+              </ol>
+              <Link href={HOME_BRAIN.href} className="mt-8 inline-flex min-h-11 items-center gap-2 bg-white px-5 text-sm font-semibold text-[#173B63] transition hover:bg-[#F6F7F8] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5B45B]">
+                进入智印大脑 <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 

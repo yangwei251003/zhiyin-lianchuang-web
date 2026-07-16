@@ -3,6 +3,7 @@
 import { Check, Factory, FileText, PackageCheck } from 'lucide-react'
 import { REVIEW_ROLES, REVIEW_STORY } from '@/lib/review/review-content'
 import type { BusinessRole, ReviewAction } from '@/lib/review/scenario'
+import { ReviewBrainDecision } from './ReviewBrainDecision'
 
 interface ReviewRolePanelProps {
   role: BusinessRole
@@ -93,6 +94,7 @@ export function ReviewRolePanel({
           <p className="mt-3 text-sm leading-6 text-[#526174]">
             完成后会自动切换到下一角色，展示同一业务在产业链中的传递。
           </p>
+          <ReviewBrainDecision role={role} />
           {completed ? (
             <div className="mt-6 flex items-center gap-3 border border-[#86B8A5] bg-[#F0FDF7] p-4 text-sm font-semibold text-[#046C4E]" role="status">
               <Check className="size-5" aria-hidden />

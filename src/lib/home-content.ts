@@ -40,6 +40,14 @@ export const HOME_CAPABILITIES = [
   },
 ] as const
 
+export const HOME_BRAIN = {
+  href: '/brain',
+  eyebrow: '智印大脑 / 决策层',
+  title: '让信息先完成协同，再进入真实业务',
+  description: '智印大脑不替代需求方、印刷厂或原料供应商；它把当前场景中的来源边界、核对项和待确认草稿放在一起，最后一步始终由用户在真实表单中确认。',
+  steps: ['证据边界', '协同判断', '待确认草稿'],
+} as const
+
 export const HOME_FLOW = [
   ['需求成形', '把产品、数量、工艺、交期与预算转为可比较的需求。'],
   ['产能响应', '印刷厂依据设备、排期和交付条件提交报价。'],

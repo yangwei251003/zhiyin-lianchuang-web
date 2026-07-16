@@ -1,113 +1,33 @@
 import type { ReactNode } from 'react'
 import Image from 'next/image'
 
-interface AuthShellProps {
-  children: ReactNode
-}
-
-export function AuthShell({ children }: AuthShellProps) {
+export function AuthShell({ children }: { children: ReactNode }) {
   return (
-    <main className="flex min-h-[calc(100vh-4.25rem)] items-stretch">
-      {/* ===== 左侧品牌装饰区（桌面） ===== */}
-      <aside
-        className="relative hidden w-1/2 overflow-hidden md:flex flex-col justify-between p-12"
-      >
-        {/* 背景视觉图片 */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/auth_side.jpg"
-            alt="印刷产业协同服务"
-            fill
-            priority
-            className="object-cover"
-          />
-          {/* 暗色偏蓝遮罩：确保文字识别度 */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(135deg, rgba(6,16,32,0.85) 0%, rgba(13,26,48,0.7) 100%)',
-            }}
-          />
-        </div>
-
-        {/* 工业网格 */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-1 opacity-20"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
-          }}
-        />
-
-        {/* 顶部 Logo (一致的视觉样式) */}
-        <div className="relative z-10 flex items-center gap-2.5">
-          <div
-            className="relative h-9 w-9 overflow-hidden rounded-lg"
-            style={{ background: 'linear-gradient(135deg, #1A75E8, #0D4FC4)' }}
-          >
-            <div className="absolute bottom-1 left-1 h-3 w-3 rounded-full bg-[#2BAE6E] opacity-90" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-base font-black text-white leading-none" style={{ letterSpacing: '-0.03em' }}>智</span>
+    <main className="grid min-h-[calc(100vh-4.25rem)] bg-[#F6F7F8] md:grid-cols-[minmax(320px,.88fr)_minmax(0,1.12fr)]">
+      <aside className="relative hidden overflow-hidden border-r border-[#D9DEE6] bg-[#102A43] text-white md:block">
+        <Image src="/images/auth_side.jpg" alt="印刷生产与协同场景" fill priority className="object-cover opacity-35" />
+        <div className="relative flex min-h-full flex-col justify-between p-10 lg:p-14">
+          <div>
+            <div className="inline-flex border border-white/30 bg-white px-3 py-2">
+              <Image src="/images/zhiyin-logo.png" alt="智印联创" width={160} height={32} className="h-7 w-auto object-contain" />
             </div>
+            <p className="mt-16 text-xs font-semibold tracking-[.18em] text-[#F5B45B]">印刷产业协同服务平台</p>
+            <h1 className="mt-5 max-w-lg text-4xl font-bold leading-[1.08] tracking-tight lg:text-5xl">从身份建立，进入真实协同</h1>
+            <p className="mt-6 max-w-md text-sm leading-7 text-[#DCE6F0]">账号资料、企业认证与业务身份分别核验。需求、报价、供货与采购意向均保留在明确的规则与确认流程中。</p>
           </div>
-          <span className="text-lg font-bold text-white tracking-tight">智印联创</span>
+          <ol className="grid gap-px border border-white/25 bg-white/20 sm:grid-cols-3">
+            {['建立账号', '完善主体资料', '进入对应工作台'].map((step, index) => (
+              <li key={step} className="bg-[#102A43]/90 p-4">
+                <span className="text-xs font-semibold text-[#F5B45B]">0{index + 1}</span>
+                <p className="mt-2 text-sm font-bold">{step}</p>
+              </li>
+            ))}
+          </ol>
         </div>
-
-        {/* 主标语 & 品牌叙事 */}
-        <div className="relative z-10 max-w-md my-auto">
-          <span
-            className="inline-flex rounded-full px-3 py-1 text-2xs font-semibold uppercase tracking-wider mb-4"
-            style={{
-              background: 'rgba(42,108,219,0.25)',
-              border: '1px solid rgba(42,108,219,0.35)',
-              color: '#7BA6F0',
-            }}
-          >
-            印刷产业协同服务
-          </span>
-          <h2 className="text-3xl font-extrabold leading-tight text-white xl:text-4xl">
-            连接印刷全产业链
-            <br />
-            开启数字智造新时代
-          </h2>
-          <p className="mt-4 text-sm leading-relaxed text-white/70">
-            提供供需协同、采购意向沟通、来源标注的纸价情报和产教实践服务。
-            业务规则、数据来源和服务开放范围以页面最新说明为准。
-          </p>
-
-          {/* 三大价值色条 */}
-          <div className="mt-8 flex flex-wrap gap-2.5">
-            <ValuePill color="#2A6CDB" label="经济价值" />
-            <ValuePill color="#2BAE6E" label="环境价值" />
-            <ValuePill color="#F08035" label="社会价值" />
-          </div>
-        </div>
-
-        {/* 底部版权 */}
-        <p className="relative z-10 text-xs text-white/40">
-          © {new Date().getFullYear()} 智印联创 · 推动印刷产业高质量协同
-        </p>
       </aside>
-
-      {/* ===== 右侧表单区 ===== */}
-      <section className="flex flex-1 items-center justify-center px-4 py-12 sm:px-6 bg-white/50 backdrop-blur-lg">
+      <section className="flex items-center justify-center bg-white px-4 py-12 sm:px-6 lg:px-10">
         <div className="w-full max-w-md">{children}</div>
       </section>
     </main>
-  )
-}
-
-function ValuePill({ color, label }: { color: string; label: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/8 px-3 py-1.5 text-2xs font-semibold text-white/95 border border-white/10 backdrop-blur-sm transition-all duration-base hover:bg-white/15">
-      <span
-        className="inline-block h-1.5 w-1.5 rounded-full"
-        style={{ backgroundColor: color }}
-        aria-hidden
-      />
-      {label}
-    </span>
   )
 }

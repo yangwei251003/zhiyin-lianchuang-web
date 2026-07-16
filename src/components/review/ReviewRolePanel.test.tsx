@@ -15,6 +15,8 @@ describe('ReviewRolePanel', () => {
     expect(html).toContain('演示场景')
     expect(html).toContain('招生画册 2,000 册')
     expect(html).toContain('发布演示需求')
+    expect(html).toContain('智印大脑')
+    expect(html).toContain('稳定演示')
   })
 
   it('shows a completed state instead of another submission action', () => {

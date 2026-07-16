@@ -2,9 +2,10 @@ import { describe, expect, it } from 'vitest'
 import { PRIMARY_NAV_ITEMS } from './navigation'
 
 describe('primary navigation', () => {
-  it('keeps the competition story focused on six public destinations', () => {
+  it('makes 智印大脑 a first-class public destination beside the business flow', () => {
     expect(PRIMARY_NAV_ITEMS.map((item) => item.label)).toEqual([
       '首页',
+      '智印大脑',
       '供需协同',
       '集中采购',
       '纸价情报',
@@ -13,8 +14,8 @@ describe('primary navigation', () => {
     ])
   })
 
-  it('does not promote the retired AI-first or startup-first labels', () => {
+  it('does not promote the retired startup-first label', () => {
     const labels = PRIMARY_NAV_ITEMS.map((item) => item.label).join('')
-    expect(labels).not.toMatch(/智印大脑|创业孵化/)
+    expect(labels).not.toMatch(/创业孵化/)
   })
 })

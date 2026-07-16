@@ -55,7 +55,7 @@ export function ForgotPasswordForm() {
   // 成功状态
   if (sent) {
     return (
-      <div className="rounded-2xl border border-line bg-white p-6 text-center shadow-lg sm:p-8">
+      <div className="border border-line bg-white p-6 text-center sm:p-8">
         <span className="mx-auto mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full bg-success-bg">
           <CheckCircle2 className="h-9 w-9 text-success" />
         </span>
@@ -93,7 +93,7 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <div className="rounded-2xl border border-line bg-white p-6 shadow-lg sm:p-8">
+    <div className="border border-line bg-white p-6 sm:p-8">
       {/* 标题 */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-ink-primary">重置密码</h1>

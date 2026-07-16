@@ -81,7 +81,7 @@ export function LoginForm({ from }: { from?: string }) {
   }
 
   return (
-    <div className="rounded-2xl border border-line bg-white p-6 shadow-lg sm:p-8">
+    <div className="border border-line bg-white p-6 sm:p-8">
       {/* 标题 */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-ink-primary">欢迎回到智印联创</h1>
