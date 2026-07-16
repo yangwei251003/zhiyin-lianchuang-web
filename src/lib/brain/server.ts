@@ -70,10 +70,14 @@ export async function runBrainRequest(input: BrainResponseRequest): Promise<Brai
 
   const evidence = toEvidenceSnapshot(input)
   const { error: messageError } = await supabase.from('brain_messages').insert([
-    { conversation_id: conversationId, user_id: user.id, role: 'user', content: input.message },
+    { conversation_id: conversationId, user_id: user.id, role: 'user', content: input.message, source_snapshot: [] },
     { conversation_id: conversationId, user_id: user.id, role: 'assistant', content: response.content, source_snapshot: evidence },
   ])
-  if (messageError) throw new BrainRequestError(500, '智印大脑消息保存失败。')
+  if (messageError) {
+    // 对话存储短暂失败不应阻断已生成的核对建议；清理空会话并退回当前页临时会话。
+    await supabase.from('brain_conversations').delete().eq('id', conversationId)
+    return { conversationId: null, content: response.content, fallback: response.fallback, draft: null }
+  }
 
   await supabase
     .from('brain_conversations')
